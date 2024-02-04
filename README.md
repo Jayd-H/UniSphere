@@ -1,7 +1,5 @@
 # Unisphere
 
-## Introduction 
-
 ### Background 
 
 University campuses are much more than a ground for learning, they are a place where students from all walks of life come together with a goal of bettering themselves for their futures and making valuable connections along the way. However, despite the advancements in technology, we believe that there is a gap for online interconnectivity between the society and the students involved. 
