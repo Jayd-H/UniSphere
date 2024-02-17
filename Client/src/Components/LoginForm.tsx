@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {ReactComponent as UniSphereLogo} from '../assets/UniSphereLogo.svg';
+import uniSphereLogo from '../assets/UniSphereLogo.svg';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -16,7 +16,7 @@ const LoginForm = () => {
     <div className="flex justify-center items-center h-screen bg-luni-light-blue"> 
     <div className="bg-luni-white p-8 rounded-lg shadow-lg max-w-sm w-full"> 
       <div className="text-center mb-6">
-        <UniSphereLogo className="mx-auto h-16 w-16" /> 
+      <img src={uniSphereLogo} alt="UniSphere Logo" className="h-16 w-16" />
       </div>
       <form onSubmit={handleSubmit}>
           <div className="mb-4">
