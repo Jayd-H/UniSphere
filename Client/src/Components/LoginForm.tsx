@@ -63,27 +63,27 @@ const LoginForm = () => {
                 required
               />
             </div>
-            <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-1 px-4 rounded-xl focus:outline-none focus:shadow-outline ${
-                  isOverLimit ? 'bg-gray-500 hover:bg-gray-500 cursor-not-allowed' : ''
-                }`}
-                disabled={isOverLimit}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                className={`ml-4 inline-block align-baseline font-bold text-sm text-luni-blue hover:text-luni-dark-blue ${
-                  isOverLimit ? 'text-gray-500 cursor-not-allowed' : ''
-                }`}
-                disabled={isOverLimit}
-                // register button logic
-              >
-                Register
-              </button>
-            </div>
+            <div className="flex flex-col items-center justify-center mt-8">
+  <button
+    type="submit"
+    className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36 ${
+      isOverLimit ? 'bg-gray-500 hover:bg-gray-500 cursor-not-allowed' : ''
+    }`}
+    disabled={isOverLimit}
+  >
+    Login
+  </button>
+  <button
+    type="button"
+    className={`mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36 ${
+      isOverLimit ? 'text-gray-500 cursor-not-allowed' : ''
+    }`}
+    disabled={isOverLimit}
+    // register button logic
+  >
+    Register
+  </button>
+</div>
             {isOverLimit && (
               <div className="text-red-500 text-sm">
                 Username and password must be less than 32 characters long.
