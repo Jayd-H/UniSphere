@@ -13,8 +13,8 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-luni-light-blue font-arimo">
-    <div className="bg-luni-white shadow-lg rounded-lg max-w-sm mx-auto p-6">
+    <div className="flex justify-center items-center h-screen glowing-background font-arimo"> 
+    <div className="frosted-glass w-full max-w-xs p-8 rounded-lg shadow-lg">
         <div className="flex flex-col items-center p-8">
           <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48" />
           <h1 className="text-xl font-bold text-luni-grey mb-6">Login</h1>

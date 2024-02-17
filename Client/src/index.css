@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@keyframes glowing-spot {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+  
+  .glowing-background {
+    background: linear-gradient(180deg, #83a4d4 0%, #b6fbff 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glowing-background::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 20%, transparent 70%);
+    filter: blur(80px);
+    animation: glowing-spot 15s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  .frosted-glass {
+    background: white; /* Fallback for browsers that don't support backdrop-filter */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    z-index: 0;
+  }
+  
+  @supports (backdrop-filter: blur(100px)) {
+    .frosted-glass {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+    }
+  }
