@@ -1,13 +1,18 @@
-import LoginForm from './Components/LoginForm'; 
+// src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginForm from './Components/LoginForm';
+import HomePage from './Pages/HomePage'; // Import the homepage component
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <LoginForm />
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<LoginForm />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
