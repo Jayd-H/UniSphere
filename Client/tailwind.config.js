@@ -11,6 +11,10 @@ module.exports = {
         'luni-black': '#2E2E2E',
         'luni-grey': '#787878',
       },
+      fontFamily: {
+        'arimo': ['Arimo', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
+      },
 
     },
   },
