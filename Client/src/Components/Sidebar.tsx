@@ -56,10 +56,13 @@ const Sidebar = () => {
           <span className={labelClasses}>Events</span>
         </NavLink>
       </div>
-      <NavLink to="/settings" className={`${getNavLinkClasses({ isActive: false })} mb-2 self-center`}>
-        <CogIcon className={iconClasses} />
-        <span className={labelClasses}>Settings</span>
-      </NavLink>
+      <NavLink
+  to="/settings"
+  className={({ isActive }) => getNavLinkClasses({ isActive }) + " mb-2 self-center"} // Use the isActive provided by NavLink
+>
+  <CogIcon className={iconClasses} />
+  <span className={labelClasses}>Settings</span>
+</NavLink>
       <motion.button
         className="absolute top-1/2 right-0 -mr-2 transform -translate-y-1/2 bg-gray-100 p-2 rounded-l-full shadow-lg focus:outline-none"
         onClick={toggleSidebar}
