@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { ChatBubbleLeftRightIcon, HeartIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import Reply from './Reply';
+import { timeSince } from './TimeUtils';
 
 // Interface for the props expected by the Reply component
-interface ReplyProps {
-  username: string;
-  content: string;
-  timestamp: string;
-}
+export interface ReplyProps {
+    username: string;
+    content: string;
+    timestamp: string;
+    likesCount: number; 
+  }
+  
 
 interface PostProps {
   username: string;
@@ -37,7 +40,10 @@ const Post: React.FC<PostProps> = ({
   return (
     <div className="bg-white rounded-lg p-4 shadow max-w-xl mx-auto my-4">
       <div className="flex justify-between items-center mb-3">
-        <span className="font-semibold">{username}</span>
+        <div>
+          <span className="font-semibold">{username}</span>
+          <span className="text-xs text-luni-grey ml-2">{timeSince(timestamp)}</span>
+        </div>
         <span className="text-sm font-semibold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white">{societyName}</span>
       </div>
       <p className="mb-3">{content}</p>
@@ -53,7 +59,6 @@ const Post: React.FC<PostProps> = ({
           <span>{repliesCount} Replies</span>
           </button>
         </div>
-        <span className="text-xs">{timestamp}</span>
         <button type="button" className="flex items-center">
           <HeartIcon className="w-6 h-6 mr-1" />
           {likesCount}
