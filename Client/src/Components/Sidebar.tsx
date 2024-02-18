@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   // Define sidebar animation variants
   const sidebarVariants = {
-    open: { x: 0, width: '4rem', transition: { stiffness: 100 } }, // Adjusted width
+    open: { x: 0, width: '4rem', transition: { stiffness: 100 } },
     closed: { x: '-100%', transition: { stiffness: 100 } },
   };
 
@@ -58,7 +58,7 @@ const Sidebar = () => {
       </div>
       <NavLink
   to="/settings"
-  className={({ isActive }) => getNavLinkClasses({ isActive }) + " mb-2 self-center"} // Use the isActive provided by NavLink
+  className={({ isActive }) => getNavLinkClasses({ isActive }) + " mb-2 self-center"}
 >
   <CogIcon className={iconClasses} />
   <span className={labelClasses}>Settings</span>
