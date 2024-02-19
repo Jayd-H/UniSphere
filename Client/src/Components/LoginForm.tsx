@@ -6,8 +6,16 @@ import { motion } from "framer-motion";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [isOverLimit, setIsOverLimit] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const sendRegistrationData = (username: string, password: string, displayName: string) => {
+    // POST request to backend
+    console.log("Sending registration data to the backend:", { username, password, displayName });
+    // handle the response
+    alert("Registered successfully!");
+  };
 
   // Handle form submit for login
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -18,8 +26,7 @@ const LoginForm = () => {
   // Handle form submit for registration (display name creation)
   const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would handle the display name submission logic
-    console.log("Display name submitted");
+    sendRegistrationData(username, password, displayName);
   };
 
   // Function to handle username change and check the length
@@ -33,6 +40,10 @@ const LoginForm = () => {
     const inputLength = e.target.value.length;
     setPassword(e.target.value);
     setIsOverLimit(username.length > 32 || inputLength > 32);
+  };
+
+  const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayName(e.target.value);
   };
 
   // Conditional rendering based on whether the user is registering or logging in
@@ -59,8 +70,10 @@ const LoginForm = () => {
               <div className="relative w-full"> 
                 <UserIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
                 <input
-                  type="text"
-                  id="displayName"
+        type="text"
+        id="displayName"
+        value={displayName}
+        onChange={handleDisplayNameChange}
                   className="py-2 pl-10 pr-3 block w-full bg-transparent border-0 border-b-2 border-gray-300 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey"
                   placeholder="Enter display name..."
                   required
