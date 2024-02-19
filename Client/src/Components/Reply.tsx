@@ -6,7 +6,7 @@ import { ReplyProps } from "./Post";
 import { timeSince } from "./TimeUtils";
 
 const Reply: React.FC<ReplyProps> = ({
-  username,
+  displayName,
   content,
   timestamp,
   likesCount,
@@ -30,7 +30,7 @@ const Reply: React.FC<ReplyProps> = ({
     <div className="pl-4 py-2 bg-luni-lighter-grey my-2">
         <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
       <div className="mb-1">
-        <span className="font-semibold text-md">{username}</span>
+        <span className="font-semibold text-md">{displayName}</span>
         <span className="text-xs text-luni-grey ml-2">
           {timeSince(timestamp)}
         </span>

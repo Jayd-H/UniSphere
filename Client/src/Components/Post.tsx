@@ -11,14 +11,14 @@ import Reply from "./Reply";
 import { timeSince } from "./TimeUtils";
 
 export interface ReplyProps {
-  username: string;
+  displayName: string; // Renamed from username
   content: string;
   timestamp: string;
   likesCount: number;
 }
 
 export interface PostProps {
-  username: string;
+  displayName: string; // Renamed from username
   societyName: string;
   timestamp: string;
   content: string;
@@ -28,7 +28,7 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({
-  username,
+  displayName,
   societyName,
   timestamp,
   content,
@@ -61,7 +61,7 @@ const Post: React.FC<PostProps> = ({
       <div className="flex justify-between items-center mb-3">
         {/* Post user info */}
         <div>
-          <span className="font-semibold text-lg">{username}</span>
+          <span className="font-semibold text-lg">{displayName}</span>
           <span className="text-sm text-luni-grey ml-2">
             {timeSince(timestamp)}
           </span>
