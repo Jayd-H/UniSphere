@@ -10,7 +10,7 @@ import Sidebar from './Components/Sidebar';
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
   return (
-    <div className="flex h-screen bg-luni-white">
+    <div className="flex h-screen bg-luni-light-blue">
       <Sidebar />
       <div className="flex-grow p-4 overflow-auto">
         <Outlet /> {/* This will render the content of the routed pages */}
