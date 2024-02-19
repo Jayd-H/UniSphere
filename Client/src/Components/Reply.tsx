@@ -51,7 +51,6 @@ const Reply: React.FC<ReplyProps> = ({
               <HeartOutlineIcon className="w-4 h-4 text-luni-grey" />
             )}
           </motion.button>
-          {/* Move the span outside of the motion.button but within the flex container to keep layout */}
           <span className="text-xs text-luni-grey ml-1">
             {likesCount + (isLiked ? 1 : 0)}
           </span>
