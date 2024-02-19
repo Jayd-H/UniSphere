@@ -12,7 +12,7 @@ export interface ReplyProps {
   }
   
 
-interface PostProps {
+export interface PostProps {
   username: string;
   societyName: string;
   timestamp: string;
