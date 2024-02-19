@@ -7,8 +7,11 @@ const HomePage: React.FC = () => {
   return (
     <>
       <PostBox />
-        <Feed />
-</>
+      <div>
+        <br/>
+      </div>
+      <Feed />
+    </>
   );
 };
 
