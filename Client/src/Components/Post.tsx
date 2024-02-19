@@ -56,23 +56,23 @@ const Post: React.FC<PostProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow max-w-xl mx-auto my-4">
+    <div className="bg-white rounded-xl p-6 shadow-lg max-w-2xl mx-auto my-6">
       {/* Post header */}
       <div className="flex justify-between items-center mb-3">
         {/* Post user info */}
         <div>
-          <span className="font-semibold">{username}</span>
-          <span className="text-xs text-luni-grey ml-2">
+          <span className="font-semibold text-lg">{username}</span>
+          <span className="text-sm text-luni-grey ml-2">
             {timeSince(timestamp)}
           </span>
         </div>
         {/* Society badge */}
-        <span className="text-sm font-bold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white">
+        <span className="text-md font-bold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white">
           {societyName}
         </span>
       </div>
       {/* Post content */}
-      <p className="mb-3">{content}</p>
+      <p className="mb-3 mr-2 text-luni-black">{content}</p>
       {/* Post interactions */}
       <div className="flex justify-between items-center text-sm text-luni-grey">
         {/* Replies button */}
@@ -92,7 +92,7 @@ const Post: React.FC<PostProps> = ({
           </button>
         </div>
         {/* Like button */}
-        <div className="flex items-center">
+        <div className="flex items-center mr-0.5">
           <motion.button
             type="button"
             onClick={handleLike}

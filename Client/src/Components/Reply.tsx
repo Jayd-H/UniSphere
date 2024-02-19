@@ -27,16 +27,17 @@ const Reply: React.FC<ReplyProps> = ({
   };
 
   return (
-    <div className="pl-4 pr-2 py-2 bg-luni-lighter-grey rounded-lg my-2">
+    <div className="pl-4 py-2 bg-luni-lighter-grey my-2">
+        <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
       <div className="mb-1">
-        <span className="font-semibold text-sm">{username}</span>
+        <span className="font-semibold text-md">{username}</span>
         <span className="text-xs text-luni-grey ml-2">
           {timeSince(timestamp)}
         </span>
       </div>
       <div className="flex justify-between">
-        <p className="text-sm text-luni-grey flex-grow">{content}</p>
-        <div className="flex-shrink-0 ml-4 self-end flex items-center">
+        <p className="text-sm text-luni-black flex-grow">{content}</p>
+        <div className="flex-shrink-0 ml-4 self-end flex items-center pr-1">
           <motion.button
             type="button"
             className="focus:outline-none"
@@ -46,12 +47,12 @@ const Reply: React.FC<ReplyProps> = ({
             whileTap="tap"
           >
             {isLiked ? (
-              <HeartSolidIcon className="w-4 h-4 text-red-500" />
+              <HeartSolidIcon className="w-5 h-5 text-red-500" />
             ) : (
-              <HeartOutlineIcon className="w-4 h-4 text-luni-grey" />
+              <HeartOutlineIcon className="w-5 h-5 text-luni-grey" />
             )}
           </motion.button>
-          <span className="text-xs text-luni-grey ml-1">
+          <span className="text-sm text-luni-grey ml-1">
             {likesCount + (isLiked ? 1 : 0)}
           </span>
         </div>
