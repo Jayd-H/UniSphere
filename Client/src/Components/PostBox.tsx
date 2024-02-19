@@ -20,7 +20,7 @@ const PostBox = () => {
         <select
           value={selectedSociety}
           onChange={(e) => setSelectedSociety(e.target.value)}
-          className="bg-luni-lighter-grey text-md font-semibold py-2 px-4 rounded border border-luni-grey shadow-sm"
+          className="text-md font-bold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white"
         >
           <option value="" disabled>Select Society</option>
           {societies.map((society, idx) => (
@@ -29,12 +29,12 @@ const PostBox = () => {
         </select>
       </div>
       <textarea
-        className="w-full p-4 text-sm text-luni-black border border-luni-grey rounded-lg focus:outline-none focus:ring-2 focus:ring-luni-blue focus:border-transparent"
+        className="w-full p-4 text-md text-luni-black focus:outline-none"
         placeholder="What's going on?"
         value={postContent}
         onChange={(e) => setPostContent(e.target.value)}
       />
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mr-2">
         <button
           className="bg-luni-blue text-white font-bold py-2 px-4 rounded hover:bg-luni-dark-blue"
           onClick={handlePostSubmit}
