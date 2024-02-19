@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ChatBubbleLeftRightIcon, ChevronDownIcon, ChevronUpIcon, HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-import Reply from './Reply';
-import { timeSince } from './TimeUtils';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ChatBubbleLeftRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/24/outline";
+import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
+import Reply from "./Reply";
+import { timeSince } from "./TimeUtils";
 
 export interface ReplyProps {
   username: string;
@@ -29,39 +34,45 @@ const Post: React.FC<PostProps> = ({
   content,
   repliesCount,
   likesCount,
-  replies
+  replies,
 }) => {
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  const toggleRepliesVisibility = () => {
+  const toggleRepliesVisibility = () =>
     setAreRepliesVisible(!areRepliesVisible);
-  };
 
   const handleLike = () => {
     setIsLiked(!isLiked);
     // BACKEND TODO: Send a request to the backend to update the like count
   };
 
+  // Animation variants for the like button
+  const likeButtonVariants = {
+    hover: { scale: 1.2 },
+    tap: { scale: 0.8 },
+    liked: { scale: 1, color: "#ff0000" },
+    unliked: { scale: 1, color: "#000000" },
+  };
+
   return (
     <div className="bg-white rounded-lg p-4 shadow max-w-xl mx-auto my-4">
-
-      {/* Post header */}  
+      {/* Post header */}
       <div className="flex justify-between items-center mb-3">
-
         {/* Post user info */}
         <div>
           <span className="font-semibold">{username}</span>
-          <span className="text-xs text-luni-grey ml-2">{timeSince(timestamp)}</span>
+          <span className="text-xs text-luni-grey ml-2">
+            {timeSince(timestamp)}
+          </span>
         </div>
-
         {/* Society badge */}
-        <span className="text-sm font-bold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white">{societyName}</span>
+        <span className="text-sm font-bold mr-2 px-2.5 py-0.5 rounded bg-luni-blue text-white">
+          {societyName}
+        </span>
       </div>
-
       {/* Post content */}
       <p className="mb-3">{content}</p>
-
       {/* Post interactions */}
       <div className="flex justify-between items-center text-sm text-luni-grey">
         {/* Replies button */}
@@ -72,30 +83,33 @@ const Post: React.FC<PostProps> = ({
             className="flex items-center"
             onClick={toggleRepliesVisibility}
           >
-            {areRepliesVisible ? <ChevronUpIcon className="w-5 h-5 mr-1" /> : <ChevronDownIcon className="w-5 h-5 mr-1" />}
+            {areRepliesVisible ? (
+              <ChevronUpIcon className="w-5 h-5 mr-1" />
+            ) : (
+              <ChevronDownIcon className="w-5 h-5 mr-1" />
+            )}
             <span>{repliesCount} Replies</span>
           </button>
         </div>
-
         {/* Like button */}
-        <motion.button
-          type="button"
-          className="flex items-center"
-          onClick={handleLike}
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.8 }}
-        >
-          {isLiked ? (
-            <motion.div className="w-6 h-6 mr-1 text-red-500" initial={{ scale: 0 }} animate={{ scale: 1 }}>
-              <HeartSolidIcon fill="#ff0000" />
-            </motion.div>
-          ) : (
-            <HeartOutlineIcon className="w-6 h-6 mr-1" />
-          )}
-          <span>{likesCount + (isLiked ? 1 : 0)}</span>
-        </motion.button>
+        <div className="flex items-center">
+          <motion.button
+            type="button"
+            onClick={handleLike}
+            variants={likeButtonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            className="focus:outline-none"
+          >
+            {isLiked ? (
+              <HeartSolidIcon className="w-6 h-6 text-red-500" />
+            ) : (
+              <HeartOutlineIcon className="w-6 h-6" />
+            )}
+          </motion.button>
+          <span className="ml-1">{likesCount + (isLiked ? 1 : 0)}</span>
+        </div>
       </div>
-
       {/* Replies */}
       {areRepliesVisible && (
         <div className="mt-4">
