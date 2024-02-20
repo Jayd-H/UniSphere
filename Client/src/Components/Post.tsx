@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import {
   ChatBubbleLeftRightIcon,
   ChevronDownIcon,
@@ -11,14 +12,15 @@ import Reply from "./Reply";
 import { timeSince } from "./TimeUtils";
 
 export interface ReplyProps {
-  displayName: string; // Renamed from username
+  displayName: string;
   content: string;
   timestamp: string;
   likesCount: number;
+  index: number;
 }
 
 export interface PostProps {
-  displayName: string; // Renamed from username
+  displayName: string;
   societyName: string;
   timestamp: string;
   content: string;
@@ -53,6 +55,18 @@ const Post: React.FC<PostProps> = ({
     tap: { scale: 0.8 },
     liked: { scale: 1, color: "#ff0000" },
     unliked: { scale: 1, color: "#000000" },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        opacity: { duration: 0.2 },
+        height: { duration: 0.5, delay: 0.05 } 
+      },
+    },
   };
 
   return (
@@ -111,13 +125,21 @@ const Post: React.FC<PostProps> = ({
         </div>
       </div>
       {/* Replies */}
-      {areRepliesVisible && (
-        <div className="mt-4">
-          {replies.map((reply, index) => (
-            <Reply key={index} {...reply} />
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {areRepliesVisible && (
+          <motion.div
+            className="overflow-hidden" // Use overflow-hidden to ensure smooth height animation
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden" // Defines the animation state when the component exits
+          >
+            {replies.map((reply, index) => (
+              <Reply key={index} {...reply} index={index} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -10,25 +10,37 @@ const Reply: React.FC<ReplyProps> = ({
   content,
   timestamp,
   likesCount,
+  index,
 }) => {
-  // State to manage like status
   const [isLiked, setIsLiked] = useState(false);
 
-  // Handle the like button click
   const handleLike = () => {
     setIsLiked(!isLiked);
-    // BACKEND TODO: Update like status in the backend
+    // implement functionality to persist like state
   };
 
-  // Animation variants
-  const likeButtonVariants = {
-    hover: { scale: 1.1 },
-    tap: { scale: 0.9 },
+  // Animation variants for each reply
+  const replyVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        ease: "easeOut",
+        duration: 0.4,
+        delay: index * 0.1, // Each reply will start animating 0.1 seconds after the previous one
+      },
+    },
   };
 
   return (
-    <div className="pl-4 py-2 bg-luni-lighter-grey my-2">
-        <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
+    <motion.div
+      className="pl-4 py-2 bg-luni-lighter-grey my-2"
+      variants={replyVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
       <div className="mb-1">
         <span className="font-semibold text-md">{displayName}</span>
         <span className="text-xs text-luni-grey ml-2">
@@ -40,11 +52,10 @@ const Reply: React.FC<ReplyProps> = ({
         <div className="flex-shrink-0 ml-4 self-end flex items-center pr-1">
           <motion.button
             type="button"
-            className="focus:outline-none"
             onClick={handleLike}
-            variants={likeButtonVariants}
-            whileHover="hover"
-            whileTap="tap"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="focus:outline-none"
           >
             {isLiked ? (
               <HeartSolidIcon className="w-5 h-5 text-red-500" />
@@ -57,7 +68,7 @@ const Reply: React.FC<ReplyProps> = ({
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
