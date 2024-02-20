@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { UserIcon, LockClosedIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+  UserIcon,
+  LockClosedIcon,
+  ArrowLeftIcon,
+} from "@heroicons/react/24/outline";
 import uniSphereLogo from "../assets/UniSphereLogo.svg"; // Ensure this path matches your project structure
 import { motion } from "framer-motion";
 
@@ -10,49 +14,60 @@ const LoginForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const validateInput = (input: string, min: number, max: number, allowSpaces: boolean) => {
-    if (input.length < min || input.length > max || (!allowSpaces && input.includes(' '))) {
+  // Validation works by checking the length of the input and whether it contains spaces.
+  // If the input is valid, the function returns true and the error message is cleared.
+  // The error message being empty or not determines whether the form is valid
+  
+  const validateInput = (
+    input: string,
+    min: number,
+    max: number,
+    allowSpaces: boolean
+  ) => {
+    if (
+      input.length < min ||
+      input.length > max ||
+      (!allowSpaces && input.includes(" "))
+    ) {
       return false;
     }
     return true;
   };
 
-  const validateForm = () => {
-    if (!validateInput(username, 5, 32, false) || !validateInput(password, 5, 32, false)) {
-      setErrorMessage("Username and password must be 5-32 characters long without spaces.");
-      return false;
-    }
-    if (isRegistering && !validateInput(displayName, 5, 64, true)) {
+  const setValidationMessage = () => {
+    if (!validateInput(username, 5, 32, false)) {
+      setErrorMessage("Username must be 5-32 characters long without spaces.");
+    } else if (!validateInput(password, 5, 32, false)) {
+      setErrorMessage("Password must be 5-32 characters long without spaces.");
+    } else if (isRegistering && !validateInput(displayName, 5, 64, true)) {
       setErrorMessage("Display name must be 5-64 characters long.");
-      return false;
+    } else {
+      setErrorMessage("");
     }
-    setErrorMessage("");
-    return true;
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+    setValidationMessage();
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    setValidationMessage();
   };
 
   const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayName(e.target.value);
+    if (isRegistering) {
+      setValidationMessage();
+    }
   };
 
-  const handleRegistration = (
-    username: string,
-    password: string,
-    displayName: string
-  ) => {
-    console.log("Sending registration data to the backend:", {
-      username,
-      password,
-      displayName,
-    });
-    alert("Registered successfully!");
+  const validateForm = () => {
+    if (errorMessage === "") {
+      return true;
+    }
+    return false;
   };
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
@@ -65,12 +80,15 @@ const LoginForm = () => {
   const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
-      handleRegistration(username, password, displayName);
+      // Proceed with registration
     }
   };
 
   const shouldDisableForm = () => {
-    if (!validateInput(username, 5, 32, false) || !validateInput(password, 5, 32, false)) {
+    if (
+      !validateInput(username, 5, 32, false) ||
+      !validateInput(password, 5, 32, false)
+    ) {
       return true;
     }
     if (isRegistering && !validateInput(displayName, 5, 64, true)) {
@@ -80,6 +98,7 @@ const LoginForm = () => {
   };
 
   return (
+    // Registration form
     <div className="flex justify-center items-center h-screen glowing-background font-arimo">
       <motion.div
         className="frosted-glass w-full max-w-xs p-4 rounded-lg shadow-lg relative"
@@ -99,7 +118,10 @@ const LoginForm = () => {
               <h1 className="text-xl font-bold text-luni-grey mb-8 text-center w-full">
                 Create Display Name
               </h1>
-              <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
+              <form
+                onSubmit={handleRegisterSubmit}
+                className="space-y-8 w-full"
+              >
                 <input
                   type="text"
                   id="displayName"
@@ -112,7 +134,9 @@ const LoginForm = () => {
                 <button
                   type="submit"
                   disabled={shouldDisableForm()}
-                  className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline ${shouldDisableForm() ? "opacity-50 cursor-not-allowed" : ""}`}
+                  className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline ${
+                    shouldDisableForm() ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   Submit
                 </button>
@@ -120,9 +144,14 @@ const LoginForm = () => {
             </div>
           </>
         ) : (
+          // Login form
           <>
             <div className="flex flex-col items-center p-8">
-              <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48" />
+              <img
+                src={uniSphereLogo}
+                alt="UniSphere Logo"
+                className="h-15 w-48"
+              />
               <h1 className="text-xl font-bold text-luni-grey mb-6">Login</h1>
               <form onSubmit={handleLogin} className="space-y-8">
                 <div className="relative">
@@ -152,7 +181,11 @@ const LoginForm = () => {
                 <div className="flex flex-col items-center justify-center mt-8">
                   <button
                     type="submit"
-                    className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36 ${shouldDisableForm() ? "bg-gray-500 hover:bg-gray-500 cursor-not-allowed" : ""}`}
+                    className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36 ${
+                      shouldDisableForm()
+                        ? "bg-gray-500 hover:bg-gray-500 cursor-not-allowed"
+                        : ""
+                    }`}
                     disabled={shouldDisableForm()}
                   >
                     Login
@@ -166,7 +199,9 @@ const LoginForm = () => {
                   </button>
                 </div>
                 {errorMessage && (
-                  <div className="text-red-500 text-sm mt-4">{errorMessage}</div>
+                  <div className="text-red-600 bg-red-100 border border-red-400 text-sm p-3 rounded mt-4">
+                    {errorMessage}
+                  </div>
                 )}
               </form>
             </div>
