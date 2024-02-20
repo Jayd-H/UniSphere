@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import {
   ChatBubbleLeftRightIcon,
   ChevronDownIcon,
@@ -57,13 +58,13 @@ const Post: React.FC<PostProps> = ({
   };
 
   const containerVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { opacity: 0, height: 0 },
     visible: {
       opacity: 1,
-      y: 0,
+      height: "auto",
       transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.1,
+        opacity: { duration: 0.2 },
+        height: { duration: 0.5, delay: 0.05 } 
       },
     },
   };
@@ -124,18 +125,21 @@ const Post: React.FC<PostProps> = ({
         </div>
       </div>
       {/* Replies */}
-      {areRepliesVisible && (
-        <motion.div
-          className="mt-4"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {replies.map((reply, index) => (
-            <Reply key={index} {...reply} index={index} />
-          ))}
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {areRepliesVisible && (
+          <motion.div
+            className="overflow-hidden" // Use overflow-hidden to ensure smooth height animation
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden" // Defines the animation state when the component exits
+          >
+            {replies.map((reply, index) => (
+              <Reply key={index} {...reply} index={index} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
