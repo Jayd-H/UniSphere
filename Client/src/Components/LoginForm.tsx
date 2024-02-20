@@ -13,10 +13,10 @@ const LoginForm = () => {
   const [displayName, setDisplayName] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorField, setErrorField] = useState("");
 
   // Validation works by checking the length of the input and whether it contains spaces.
   // If the input is valid, the function returns true and the error message is cleared.
-  // The error message being empty or not determines whether the form is valid
 
   // This function validates the input based on the min, max, and allowSpaces parameters
   const validateInput = (
@@ -41,15 +41,19 @@ const LoginForm = () => {
   ) => {
     if (field === "username" && !validateInput(username, 5, 32, false)) {
       setErrorMessage("Username must be 5-32 characters long without spaces.");
+      setErrorField("username");
     } else if (field === "password" && !validateInput(password, 5, 32, false)) {
       setErrorMessage("Password must be 5-32 characters long without spaces.");
+      setErrorField("password");
     } else if (
       field === "displayName" &&
       !validateInput(displayName, 5, 64, true)
     ) {
       setErrorMessage("Display name must be 5-64 characters long.");
+      setErrorField("displayName");
     } else {
       setErrorMessage("");
+      setErrorField(""); // Clear the error field if there are no errors
     }
   };
 
@@ -136,10 +140,10 @@ const LoginForm = () => {
                   id="displayName"
                   value={displayName}
                   onChange={handleDisplayNameChange}
-                  className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 outline-none font-montserrat placeholder-luni-grey${
-                    errorMessage.includes("Display name")
+                  className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
+                    errorField === "displayName"
                       ? "border-red-500"
-                      : "border-gray-600"
+                      : "border-gray-300"
                   } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
                   placeholder="Enter display name..."
                   required
@@ -176,7 +180,11 @@ const LoginForm = () => {
                     id="username"
                     value={username}
                     onChange={handleUsernameChange}
-                    className="py-2 pl-10 block w-full bg-transparent border-0 border-b-2 border-gray-300 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey"
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
+                      errorField === "username"
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
                     placeholder="Enter username..."
                     required
                   />
@@ -188,7 +196,11 @@ const LoginForm = () => {
                     id="password"
                     value={password}
                     onChange={handlePasswordChange}
-                    className="py-2 pl-10 block w-full bg-transparent border-0 border-b-2 border-gray-300 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey"
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
+                      errorField === "password"
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
                     placeholder="Enter password..."
                     required
                   />
