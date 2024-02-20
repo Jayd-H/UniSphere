@@ -17,7 +17,8 @@ const LoginForm = () => {
   // Validation works by checking the length of the input and whether it contains spaces.
   // If the input is valid, the function returns true and the error message is cleared.
   // The error message being empty or not determines whether the form is valid
-  
+
+  // This function validates the input based on the min, max, and allowSpaces parameters
   const validateInput = (
     input: string,
     min: number,
@@ -34,6 +35,7 @@ const LoginForm = () => {
     return true;
   };
 
+  // This function sets the error message based on the input validation
   const setValidationMessage = () => {
     if (!validateInput(username, 5, 32, false)) {
       setErrorMessage("Username must be 5-32 characters long without spaces.");
@@ -46,6 +48,7 @@ const LoginForm = () => {
     }
   };
 
+  // These functions handle the input changes and set the error message
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
     setValidationMessage();
@@ -63,6 +66,7 @@ const LoginForm = () => {
     }
   };
 
+  // This function checks if the form is valid based on the error message
   const validateForm = () => {
     if (errorMessage === "") {
       return true;
@@ -70,6 +74,7 @@ const LoginForm = () => {
     return false;
   };
 
+  // These functions handle the form submissions and proceed with login or registration
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
@@ -84,6 +89,7 @@ const LoginForm = () => {
     }
   };
 
+  // This function checks if the form should be disabled based on the input validation 
   const shouldDisableForm = () => {
     if (
       !validateInput(username, 5, 32, false) ||
