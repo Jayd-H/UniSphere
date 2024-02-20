@@ -152,9 +152,13 @@ const LoginForm = () => {
                     required
                   />
                 </div>
+                <div className="text-center">
                 {errorMessage.includes("Display name") && (
-                  <p className="text-red-500 text-xs italic">{errorMessage}</p>
+                  <div className="text-red-600 text-sm p-3 rounded mt-4">
+                    {errorMessage}
+                  </div>
                 )}
+                </div>
                 <div className="flex flex-col items-center justify-center mt-8">
                   <button
                     type="submit"
@@ -232,11 +236,13 @@ const LoginForm = () => {
                     Register
                   </button>
                 </div>
+                <div className="text-center">
                 {errorMessage && !errorMessage.includes("Display name") && (
-                  <div className="text-red-600 bg-red-100 border border-red-400 text-sm p-3 rounded mt-4">
+                  <div className="text-red-600 text-sm p-3 rounded mt-4">
                     {errorMessage}
                   </div>
                 )}
+                </div>
               </form>
             </div>
           </>
