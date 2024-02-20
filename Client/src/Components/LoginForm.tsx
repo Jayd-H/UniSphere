@@ -19,16 +19,19 @@ const LoginForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const usernameChecks = {
-    lengthCheck: formData.username.length >= 5 && formData.username.length <= 32,
+    lengthCheck:
+      formData.username.length >= 5 && formData.username.length <= 32,
     spaceCheck: !formData.username.includes(" "),
   };
 
   const passwordChecks = {
-    lengthCheck: formData.password.length >= 5 && formData.password.length <= 32,
+    lengthCheck:
+      formData.password.length >= 5 && formData.password.length <= 32,
   };
 
   const displayNameChecks = {
-    lengthCheck: formData.displayName.length >= 5 && formData.displayName.length <= 64,
+    lengthCheck:
+      formData.displayName.length >= 5 && formData.displayName.length <= 64,
   };
 
   const handleInputChange = (
@@ -46,6 +49,9 @@ const LoginForm = () => {
       (isRegistering && !displayNameChecks.lengthCheck)
     );
   };
+
+  const getInputBorderClass = (isValid: boolean) =>
+    isValid ? "border-gray-300" : "border-red-500";
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,7 +98,9 @@ const LoginForm = () => {
                     id="displayName"
                     value={formData.displayName}
                     onChange={(e) => handleInputChange(e, "displayName")}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2  focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      displayNameChecks.lengthCheck
+                    )}`}
                     placeholder="Enter display name..."
                     required
                   />
@@ -128,7 +136,9 @@ const LoginForm = () => {
                     id="username"
                     value={formData.username}
                     onChange={(e) => handleInputChange(e, "username")}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      usernameChecks.lengthCheck && usernameChecks.spaceCheck
+                    )}`}
                     placeholder="Enter username..."
                     required
                   />
@@ -140,12 +150,14 @@ const LoginForm = () => {
                     id="password"
                     value={formData.password}
                     onChange={(e) => handleInputChange(e, "password")}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      passwordChecks.lengthCheck
+                    )}`}
                     placeholder="Enter password..."
                     required
                   />
                 </div>
-              
+
                 <div className="flex flex-col items-center justify-center mt-8">
                   <button
                     type="submit"
@@ -174,23 +186,63 @@ const LoginForm = () => {
           <ul>
             {!isRegistering && (
               <>
-                <li className={`flex items-center ${usernameChecks.lengthCheck ? 'text-green-500' : 'text-red-500'}`}>
-                  {usernameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+                <li
+                  className={`flex items-center ${
+                    usernameChecks.lengthCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameChecks.lengthCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
                   Username must be between 5-32 characters
                 </li>
-                <li className={`flex items-center ${usernameChecks.spaceCheck ? 'text-green-500' : 'text-red-500'}`}>
-                  {usernameChecks.spaceCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+                <li
+                  className={`flex items-center ${
+                    usernameChecks.spaceCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameChecks.spaceCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
                   Username must not contain spaces
                 </li>
-                <li className={`flex items-center ${passwordChecks.lengthCheck ? 'text-green-500' : 'text-red-500'}`}>
-                  {passwordChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+                <li
+                  className={`flex items-center ${
+                    passwordChecks.lengthCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {passwordChecks.lengthCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
                   Password must be between 5-32 characters
                 </li>
               </>
             )}
             {isRegistering && (
-              <li className={`flex items-center ${displayNameChecks.lengthCheck ? 'text-green-500' : 'text-red-500'}`}>
-                {displayNameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+              <li
+                className={`flex items-center ${
+                  displayNameChecks.lengthCheck
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
+              >
+                {displayNameChecks.lengthCheck ? (
+                  <CheckCircleIcon className="h-5 w-5 mr-2" />
+                ) : (
+                  <XCircleIcon className="h-5 w-5 mr-2" />
+                )}
                 Display name must be between 5-64 characters
               </li>
             )}
