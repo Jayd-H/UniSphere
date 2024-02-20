@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { UserIcon, LockClosedIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+  UserIcon,
+  LockClosedIcon,
+  ArrowLeftIcon,
+} from "@heroicons/react/24/outline";
 import uniSphereLogo from "../assets/UniSphereLogo.svg";
 import { motion } from "framer-motion";
 
@@ -10,9 +14,17 @@ const LoginForm = () => {
   const [isOverLimit, setIsOverLimit] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
-  const sendRegistrationData = (username: string, password: string, displayName: string) => {
+  const sendRegistrationData = (
+    username: string,
+    password: string,
+    displayName: string
+  ) => {
     // POST request to backend
-    console.log("Sending registration data to the backend:", { username, password, displayName });
+    console.log("Sending registration data to the backend:", {
+      username,
+      password,
+      displayName,
+    });
     // handle the response
     alert("Registered successfully!");
   };
@@ -63,17 +75,18 @@ const LoginForm = () => {
           >
             <ArrowLeftIcon className="h-5 w-5 mt-2 ml-2" />
           </button>
-          
-          <div className="flex flex-col items-center p-8 w-full"> 
-            <h1 className="text-xl font-bold text-luni-grey mb-8 text-center w-full">Create Display Name</h1> 
-            <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full"> 
-              <div className="relative w-full"> 
+          <div className="flex flex-col items-center p-8 w-full">
+            <h1 className="text-xl font-bold text-luni-grey mb-8 text-center w-full">
+              Create Display Name
+            </h1>
+            <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
+              <div className="relative w-full">
                 <UserIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
                 <input
-        type="text"
-        id="displayName"
-        value={displayName}
-        onChange={handleDisplayNameChange}
+                  type="text"
+                  id="displayName"
+                  value={displayName}
+                  onChange={handleDisplayNameChange}
                   className="py-2 pl-10 pr-3 block w-full bg-transparent border-0 border-b-2 border-gray-300 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey"
                   placeholder="Enter display name..."
                   required
@@ -82,7 +95,8 @@ const LoginForm = () => {
               <div className="flex justify-center w-full">
                 <button
                   type="submit"
-                  className="bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline"
+                  className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline ${!displayName ? "opacity-50 cursor-not-allowed" : ""}`}
+                  disabled={!displayName} // Button is disabled if displayName is empty
                 >
                   Submit
                 </button>
