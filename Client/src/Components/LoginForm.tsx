@@ -3,6 +3,7 @@ import {
   UserIcon,
   LockClosedIcon,
   ArrowLeftIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
 import uniSphereLogo from "../assets/UniSphereLogo.svg"; // Ensure this path matches your project structure
 import { motion } from "framer-motion";
@@ -135,31 +136,36 @@ const LoginForm = () => {
                 onSubmit={handleRegisterSubmit}
                 className="space-y-8 w-full"
               >
-                <input
-                  type="text"
-                  id="displayName"
-                  value={displayName}
-                  onChange={handleDisplayNameChange}
-                  className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
-                    errorField === "displayName"
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
-                  placeholder="Enter display name..."
-                  required
-                />
+                <div className="relative">
+                  <ChatBubbleBottomCenterTextIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
+                  <input
+                    type="text"
+                    id="displayName"
+                    value={displayName}
+                    onChange={handleDisplayNameChange}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
+                      errorField === "displayName"
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    placeholder="Enter display name..."
+                    required
+                  />
+                </div>
                 {errorMessage.includes("Display name") && (
                   <p className="text-red-500 text-xs italic">{errorMessage}</p>
                 )}
-                <button
-                  type="submit"
-                  disabled={shouldDisableForm()}
-                  className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline ${
-                    shouldDisableForm() ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  Submit
-                </button>
+                <div className="flex flex-col items-center justify-center mt-8">
+                  <button
+                    type="submit"
+                    disabled={shouldDisableForm()}
+                    className={`bg-luni-blue hover:bg-luni-dark-blue text-white font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline ${
+                      shouldDisableForm() ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    Submit
+                  </button>
+                </div>
               </form>
             </div>
           </>
