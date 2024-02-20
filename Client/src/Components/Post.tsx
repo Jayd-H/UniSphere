@@ -11,14 +11,15 @@ import Reply from "./Reply";
 import { timeSince } from "./TimeUtils";
 
 export interface ReplyProps {
-  displayName: string; // Renamed from username
+  displayName: string;
   content: string;
   timestamp: string;
   likesCount: number;
+  index: number;
 }
 
 export interface PostProps {
-  displayName: string; // Renamed from username
+  displayName: string;
   societyName: string;
   timestamp: string;
   content: string;
@@ -53,6 +54,18 @@ const Post: React.FC<PostProps> = ({
     tap: { scale: 0.8 },
     liked: { scale: 1, color: "#ff0000" },
     unliked: { scale: 1, color: "#000000" },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   return (
@@ -112,11 +125,16 @@ const Post: React.FC<PostProps> = ({
       </div>
       {/* Replies */}
       {areRepliesVisible && (
-        <div className="mt-4">
+        <motion.div
+          className="mt-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {replies.map((reply, index) => (
-            <Reply key={index} {...reply} />
+            <Reply key={index} {...reply} index={index} />
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );
