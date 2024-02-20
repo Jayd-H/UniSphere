@@ -3,113 +3,68 @@ import {
   UserIcon,
   LockClosedIcon,
   ArrowLeftIcon,
+  CheckCircleIcon,
+  XCircleIcon,
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
-import uniSphereLogo from "../assets/UniSphereLogo.svg"; // Ensure this path matches your project structure
+import uniSphereLogo from "../assets/UniSphereLogo.svg";
 import { motion } from "framer-motion";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    displayName: "",
+  });
   const [isRegistering, setIsRegistering] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorField, setErrorField] = useState("");
 
-  // Validation works by checking the length of the input and whether it contains spaces.
-  // If the input is valid, the function returns true and the error message is cleared.
+  const usernameChecks = {
+    lengthCheck:
+      formData.username.length >= 5 && formData.username.length <= 32,
+    spaceCheck: !formData.username.includes(" "),
+  };
 
-  // This function validates the input based on the min, max, and allowSpaces parameters
-  const validateInput = (
-    input: string,
-    min: number,
-    max: number,
-    allowSpaces: boolean
+  const passwordChecks = {
+    lengthCheck:
+      formData.password.length >= 5 && formData.password.length <= 32,
+  };
+
+  const displayNameChecks = {
+    lengthCheck:
+      formData.displayName.length >= 5 && formData.displayName.length <= 64,
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof typeof formData
   ) => {
-    if (
-      input.length < min ||
-      input.length > max ||
-      (!allowSpaces && input.includes(" "))
-    ) {
-      return false;
-    }
-    return true;
+    setFormData({ ...formData, [field]: e.target.value });
   };
 
-  // This function sets the error message based on the input validation
-  const setValidationMessage = (
-    field: "username" | "password" | "displayName"
-  ) => {
-    if (field === "username" && !validateInput(username, 5, 32, false)) {
-      setErrorMessage("Username must be 5-32 characters long without spaces.");
-      setErrorField("username");
-    } else if (field === "password" && !validateInput(password, 5, 32, false)) {
-      setErrorMessage("Password must be 5-32 characters long without spaces.");
-      setErrorField("password");
-    } else if (
-      field === "displayName" &&
-      !validateInput(displayName, 5, 64, true)
-    ) {
-      setErrorMessage("Display name must be 5-64 characters long.");
-      setErrorField("displayName");
-    } else {
-      setErrorMessage("");
-      setErrorField(""); // Clear the error field if there are no errors
-    }
+  const shouldDisableForm = () => {
+    return (
+      !usernameChecks.lengthCheck ||
+      !usernameChecks.spaceCheck ||
+      !passwordChecks.lengthCheck ||
+      (isRegistering && !displayNameChecks.lengthCheck)
+    );
   };
 
-  // These functions handle the input changes and set the error message
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-    setValidationMessage("username");
-  };
+  const getInputBorderClass = (isValid: boolean) =>
+    isValid ? "border-gray-300" : "border-red-500";
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setValidationMessage("password");
-  };
-
-  const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDisplayName(e.target.value);
-    if (isRegistering) {
-      setValidationMessage("displayName");
-    }
-  };
-  // This function checks if the form is valid based on the error message
-  const validateForm = () => {
-    if (errorMessage === "") {
-      return true;
-    }
-    return false;
-  };
-
-  // These functions handle the form submissions and proceed with login or registration
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (validateForm()) {
+    if (!shouldDisableForm()) {
       // Proceed with login
     }
   };
 
   const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (validateForm()) {
+    if (!shouldDisableForm()) {
       // Proceed with registration
     }
-  };
-
-  // This function checks if the form should be disabled based on the input validation
-  const shouldDisableForm = () => {
-    if (
-      !validateInput(username, 5, 32, false) ||
-      !validateInput(password, 5, 32, false)
-    ) {
-      return true;
-    }
-    if (isRegistering && !validateInput(displayName, 5, 64, true)) {
-      return true;
-    }
-    return false;
   };
 
   return (
@@ -141,23 +96,14 @@ const LoginForm = () => {
                   <input
                     type="text"
                     id="displayName"
-                    value={displayName}
-                    onChange={handleDisplayNameChange}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
-                      errorField === "displayName"
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    value={formData.displayName}
+                    onChange={(e) => handleInputChange(e, "displayName")}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      displayNameChecks.lengthCheck
+                    )}`}
                     placeholder="Enter display name..."
                     required
                   />
-                </div>
-                <div className="text-center">
-                {errorMessage.includes("Display name") && (
-                  <div className="text-red-600 text-sm p-3 rounded mt-4">
-                    {errorMessage}
-                  </div>
-                )}
                 </div>
                 <div className="flex flex-col items-center justify-center mt-8">
                   <button
@@ -188,13 +134,11 @@ const LoginForm = () => {
                   <input
                     type="text"
                     id="username"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
-                      errorField === "username"
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    value={formData.username}
+                    onChange={(e) => handleInputChange(e, "username")}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      usernameChecks.lengthCheck && usernameChecks.spaceCheck
+                    )}`}
                     placeholder="Enter username..."
                     required
                   />
@@ -204,17 +148,16 @@ const LoginForm = () => {
                   <input
                     type="password"
                     id="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 ${
-                      errorField === "password"
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey`}
+                    value={formData.password}
+                    onChange={(e) => handleInputChange(e, "password")}
+                    className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
+                      passwordChecks.lengthCheck
+                    )}`}
                     placeholder="Enter password..."
                     required
                   />
                 </div>
+
                 <div className="flex flex-col items-center justify-center mt-8">
                   <button
                     type="submit"
@@ -227,26 +170,84 @@ const LoginForm = () => {
                   </button>
                   <button
                     type="button"
-                    disabled={shouldDisableForm()}
+                    onClick={() => setIsRegistering(true)}
                     className={`mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36 ${
                       shouldDisableForm() ? "opacity-50 cursor-not-allowed" : ""
                     }`}
-                    onClick={() => setIsRegistering(true)}
                   >
                     Register
                   </button>
-                </div>
-                <div className="text-center">
-                {errorMessage && !errorMessage.includes("Display name") && (
-                  <div className="text-red-600 text-sm p-3 rounded mt-4">
-                    {errorMessage}
-                  </div>
-                )}
                 </div>
               </form>
             </div>
           </>
         )}
+        <div className="-mt-2 p-4 bg-white bg-opacity-80 rounded-lg shadow-inner">
+          <ul>
+            {!isRegistering && (
+              <>
+                <li
+                  className={`flex items-center ${
+                    usernameChecks.lengthCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameChecks.lengthCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
+                  Username must be between 5-32 characters
+                </li>
+                <li
+                  className={`flex items-center ${
+                    usernameChecks.spaceCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameChecks.spaceCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
+                  Username must not contain spaces
+                </li>
+                <li
+                  className={`flex items-center ${
+                    passwordChecks.lengthCheck
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {passwordChecks.lengthCheck ? (
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  ) : (
+                    <XCircleIcon className="h-5 w-5 mr-2" />
+                  )}
+                  Password must be between 5-32 characters
+                </li>
+              </>
+            )}
+            {isRegistering && (
+              <li
+                className={`flex items-center ${
+                  displayNameChecks.lengthCheck
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
+              >
+                {displayNameChecks.lengthCheck ? (
+                  <CheckCircleIcon className="h-5 w-5 mr-2" />
+                ) : (
+                  <XCircleIcon className="h-5 w-5 mr-2" />
+                )}
+                Display name must be between 5-64 characters
+              </li>
+            )}
+          </ul>
+        </div>
       </motion.div>
     </div>
   );
