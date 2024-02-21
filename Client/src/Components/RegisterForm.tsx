@@ -5,8 +5,8 @@ import {
   LockClosedIcon,
   CheckCircleIcon,
   XCircleIcon,
+  GlobeAltIcon,
 } from "@heroicons/react/24/outline";
-import uniSphereLogo from "../assets/UniSphereLogo.svg";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -18,27 +18,39 @@ const RegisterForm = () => {
   });
 
   const usernameChecks = {
-    lengthCheck: formData.username.length >= 5 && formData.username.length <= 32,
+    lengthCheck:
+      formData.username.length >= 5 && formData.username.length <= 32,
     spaceCheck: !formData.username.includes(" "),
   };
 
   const passwordChecks = {
-    lengthCheck: formData.password.length >= 5 && formData.password.length <= 32,
+    lengthCheck:
+      formData.password.length >= 5 && formData.password.length <= 32,
   };
 
   const displayNameChecks = {
-    lengthCheck: formData.displayName.length >= 5 && formData.displayName.length <= 64,
+    lengthCheck:
+      formData.displayName.length >= 5 && formData.displayName.length <= 64,
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof typeof formData) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof typeof formData
+  ) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
   const shouldDisableForm = () => {
-    return !usernameChecks.lengthCheck || !usernameChecks.spaceCheck || !passwordChecks.lengthCheck || !displayNameChecks.lengthCheck;
+    return (
+      !usernameChecks.lengthCheck ||
+      !usernameChecks.spaceCheck ||
+      !passwordChecks.lengthCheck ||
+      !displayNameChecks.lengthCheck
+    );
   };
 
-  const getInputBorderClass = (isValid: boolean) => isValid ? "border-gray-300" : "border-red-500";
+  const getInputBorderClass = (isValid: boolean) =>
+    isValid ? "border-gray-300" : "border-red-500";
 
   const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,8 +68,15 @@ const RegisterForm = () => {
         transition={{ type: "spring", stiffness: 120, damping: 25 }}
       >
         <div className="flex flex-col items-center p-8 w-full">
-          <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48 mb-2" />
-          <h1 className="text-xl font-bold text-luni-grey mb-8">Register</h1>
+          <div className="logo-container transition-transform">
+            <motion.div
+            whileHover={{ rotate: 360, scale: 1.1 }}
+            transition={{ duration: 0.5 }}
+            >
+            <GlobeAltIcon className="h-15 w-15 text-luni-black" />
+            </motion.div>
+            <span className="text-sm font-semibold mt-2">UniSphere</span>
+          </div>
           <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
             {/* Username Input */}
             <div className="relative">
@@ -121,28 +140,65 @@ const RegisterForm = () => {
         {/* Validation Checklist */}
         <div className="-mt-2 p-4 bg-white bg-opacity-80 rounded-lg shadow-inner">
           <ul>
-            <li className={`flex items-center ${usernameChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
-              {usernameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+            <li
+              className={`flex items-center ${
+                usernameChecks.lengthCheck ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {usernameChecks.lengthCheck ? (
+                <CheckCircleIcon className="h-5 w-5 mr-2" />
+              ) : (
+                <XCircleIcon className="h-5 w-5 mr-2" />
+              )}
               Username must be between 5-32 characters
             </li>
-            <li className={`flex items-center ${usernameChecks.spaceCheck ? "text-green-500" : "text-red-500"}`}>
-              {usernameChecks.spaceCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+            <li
+              className={`flex items-center ${
+                usernameChecks.spaceCheck ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {usernameChecks.spaceCheck ? (
+                <CheckCircleIcon className="h-5 w-5 mr-2" />
+              ) : (
+                <XCircleIcon className="h-5 w-5 mr-2" />
+              )}
               Username must not contain spaces
             </li>
-            <li className={`flex items-center ${passwordChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
-              {passwordChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+            <li
+              className={`flex items-center ${
+                passwordChecks.lengthCheck ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {passwordChecks.lengthCheck ? (
+                <CheckCircleIcon className="h-5 w-5 mr-2" />
+              ) : (
+                <XCircleIcon className="h-5 w-5 mr-2" />
+              )}
               Password must be between 5-32 characters
             </li>
-            <li className={`flex items-center ${displayNameChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
-              {displayNameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+            <li
+              className={`flex items-center ${
+                displayNameChecks.lengthCheck
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {displayNameChecks.lengthCheck ? (
+                <CheckCircleIcon className="h-5 w-5 mr-2" />
+              ) : (
+                <XCircleIcon className="h-5 w-5 mr-2" />
+              )}
               Display name must be between 5-64 characters
             </li>
           </ul>
         </div>
-        <div className="flex flex-col items-center justify-center mt-8">
-        <Link to="/login" className="mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline">
-                Already have an account? Log in
-              </Link>
+        <div className="flex items-center justify-center mt-4 text-luni-grey">
+                <Link
+                  to="/login"
+                  className="hover:text-luni-dark-blue text-luni-blue font-bold"
+                >
+                  Login
+                </Link>
               </div>
       </motion.div>
     </div>

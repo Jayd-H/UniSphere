@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { UserIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import uniSphereLogo from "../assets/UniSphereLogo.svg";
+import {
+  UserIcon,
+  LockClosedIcon,
+  GlobeAltIcon,
+} from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -11,23 +14,33 @@ const LoginForm = () => {
   });
 
   const usernameChecks = {
-    lengthCheck: formData.username.length >= 5 && formData.username.length <= 32,
+    lengthCheck:
+      formData.username.length >= 5 && formData.username.length <= 32,
     spaceCheck: !formData.username.includes(" "),
   };
 
   const passwordChecks = {
-    lengthCheck: formData.password.length >= 5 && formData.password.length <= 32,
+    lengthCheck:
+      formData.password.length >= 5 && formData.password.length <= 32,
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof typeof formData) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof typeof formData
+  ) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
   const shouldDisableForm = () => {
-    return !usernameChecks.lengthCheck || !usernameChecks.spaceCheck || !passwordChecks.lengthCheck;
+    return (
+      !usernameChecks.lengthCheck ||
+      !usernameChecks.spaceCheck ||
+      !passwordChecks.lengthCheck
+    );
   };
 
-  const getInputBorderClass = (isValid: boolean) => isValid ? "border-gray-300" : "border-red-500";
+  const getInputBorderClass = (isValid: boolean) =>
+    isValid ? "border-gray-300" : "border-red-500";
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,8 +58,15 @@ const LoginForm = () => {
         transition={{ type: "spring", stiffness: 120, damping: 25 }}
       >
         <div className="flex flex-col items-center p-8">
-          <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48" />
-          <h1 className="text-xl font-bold text-luni-grey mb-6">Login</h1>
+          <div className="logo-container transition-transform text-luni-black pb-2">
+            <motion.div
+              whileHover={{ rotate: 180, scale: 1.1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <GlobeAltIcon className="h-15 w-15" />
+            </motion.div>
+            <span className="text-sm font-semibold mt-2">Login</span>
+          </div>
           <form onSubmit={handleLogin} className="space-y-8">
             <div className="relative">
               <UserIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
@@ -58,7 +78,7 @@ const LoginForm = () => {
                 className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
                   usernameChecks.lengthCheck && usernameChecks.spaceCheck
                 )}`}
-                placeholder="Enter username..."
+                placeholder="Username..."
                 required
               />
             </div>
@@ -72,7 +92,7 @@ const LoginForm = () => {
                 className={`py-2 pl-10 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
                   passwordChecks.lengthCheck
                 )}`}
-                placeholder="Enter password..."
+                placeholder="Password..."
                 required
               />
             </div>
@@ -86,9 +106,14 @@ const LoginForm = () => {
               >
                 Login
               </button>
-              <Link to="/register" className="mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline w-36">
-                Don't have an account? Sign up
-              </Link>
+              <div className="flex items-center justify-center mt-8 -mb-8 text-luni-grey">
+                <Link
+                  to="/register"
+                  className="hover:text-luni-dark-blue text-luni-blue font-bold"
+                >
+                  Sign up
+                </Link>
+              </div>
             </div>
           </form>
         </div>
