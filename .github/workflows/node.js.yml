@@ -25,7 +25,7 @@ jobs:
         cache-dependency-path: '**/package-lock.json'
     
     - name: Install Server Dependencies
-      run: npm ci
+      run: npm install
       working-directory: Server
     
     - name: Install Client Dependencies
