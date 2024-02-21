@@ -141,7 +141,7 @@ const RegisterForm = () => {
         {/* Validation Checklist */}
 <div className="-mt-4 p-2">
   <ul>
-    <li className={`flex items-center m-2 font-semibold ${usernameChecks.lengthCheck ? "text-green-700" : "text-red-800"}`}>
+    <li className={`flex items-center m-2 font-semibold ${usernameChecks.lengthCheck ? "text-green-700" : "text-red-700"}`}>
       <div className="flex-shrink-0">
         {usernameChecks.lengthCheck ? (
           <CheckCircleIcon className="h-6 w-6 mr-3" />
