@@ -2,45 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+.glowing-background {
+  background: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
+  position: relative;
+  overflow: hidden;
+}
 
-@keyframes glowing-spot {
-    0%, 100% {
-      opacity: 0.5;
-    }
-    50% {
-      opacity: 0.2;
-    }
-  }
-  
-  .glowing-background {
-    background: linear-gradient(180deg, #83a4d4 0%, #b6fbff 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .glowing-background::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    bottom: -50%;
-    left: -50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 20%, transparent 70%);
-    filter: blur(80px);
-    animation: glowing-spot 15s ease-in-out infinite;
-    z-index: -1;
-  }
+/* Squares */
+.glowing-background::before,
+.glowing-background::after {
+  content: "";
+  position: absolute;
+  background-color: #7DD3FC;
+  transform: rotate(45deg);
+  opacity: 0.7;
+  animation: glowing-background-animation 10s ease-in-out infinite alternate;
+  z-index: -2;
+}
 
+.glowing-background::before {
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+}
+
+.glowing-background::after {
+  top: 40%;
+  left: 60%;
+  width: 150px;
+  height: 150px;
+}
+
+.frosted-glass {
+  background: white; /* Fallback for browsers that don't support backdrop-filter */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  z-index: 0;
+  overflow: hidden;
+}
+
+@supports (backdrop-filter: blur(100px)) {
   .frosted-glass {
-    background: white; /* Fallback for browsers that don't support backdrop-filter */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-    z-index: 0;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(50px);
   }
-  
-  @supports (backdrop-filter: blur(100px)) {
-    .frosted-glass {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-    }
-  }
+}
