@@ -184,7 +184,7 @@ const RegisterForm = () => {
   </ul>
 </div>
 
-        <div className="flex items-center justify-center mt-4 text-luni-grey">
+        <div className="flex items-center justify-center mt-4 mb-2 text-luni-grey">
                 <Link
                   to="/login"
                   className="hover:text-luni-dark-blue text-luni-blue font-bold"
