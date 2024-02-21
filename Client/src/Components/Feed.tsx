@@ -1,4 +1,3 @@
-// Feed.tsx
 import React from 'react';
 import Post from './Post';
 
@@ -70,8 +69,8 @@ const Feed: React.FC = () => {
             timestamp={post.timestamp}
             content={post.content}
             likesCount={post.likesCount}
-            replies={post.replies}
-            repliesCount={post.replies.length} // Dynamically calculate the repliesCount here
+            replies={post.replies.map((reply, replyIndex) => ({ ...reply, index: replyIndex }))}
+            repliesCount={post.replies.length}
           />
         ))}
       </div>
