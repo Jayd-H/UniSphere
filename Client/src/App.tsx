@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import LoginForm from './Components/LoginForm';
+import LoginForm from './Components/Forms/LoginForm';
 import HomePage from './Pages/HomePage';
 import EventsPage from './Pages/EventsPage';
 import SocietiesPage from './Pages/SocietiesPage';
 import UserSettingsPage from './Pages/UserSettingsPage';
 import Sidebar from './Components/Sidebar';
-import RegisterForm from './Components/RegisterForm';
+import RegisterForm from './Components/Forms/RegisterForm';
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
