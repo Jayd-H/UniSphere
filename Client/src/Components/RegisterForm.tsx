@@ -120,7 +120,7 @@ const RegisterForm = () => {
                 className={`py-2 pl-8 block w-full bg-transparent border-0 border-b-2 focus:border-luni-blue outline-none font-montserrat placeholder-luni-grey ${getInputBorderClass(
                   displayNameChecks.lengthCheck
                 )}`}
-                placeholder="Enter display name..."
+                placeholder="Display Name..."
                 required
               />
             </div>
