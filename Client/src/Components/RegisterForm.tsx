@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { ChatBubbleBottomCenterTextIcon, UserIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import {
+  ChatBubbleBottomCenterTextIcon,
+  UserIcon,
+  LockClosedIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import uniSphereLogo from "../assets/UniSphereLogo.svg";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // Assuming you're using react-router for navigation
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -50,9 +56,10 @@ const RegisterForm = () => {
         transition={{ type: "spring", stiffness: 120, damping: 25 }}
       >
         <div className="flex flex-col items-center p-8 w-full">
-          <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48 mb-6" />
+          <img src={uniSphereLogo} alt="UniSphere Logo" className="h-15 w-48 mb-2" />
           <h1 className="text-xl font-bold text-luni-grey mb-8">Register</h1>
           <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
+            {/* Username Input */}
             <div className="relative">
               <UserIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
               <input
@@ -67,6 +74,7 @@ const RegisterForm = () => {
                 required
               />
             </div>
+            {/* Password Input */}
             <div className="relative">
               <LockClosedIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
               <input
@@ -81,6 +89,7 @@ const RegisterForm = () => {
                 required
               />
             </div>
+            {/* Display Name Input */}
             <div className="relative">
               <ChatBubbleBottomCenterTextIcon className="h-5 w-5 text-luni-grey absolute left-2 inset-y-0 flex items-center mt-2.5" />
               <input
@@ -95,6 +104,7 @@ const RegisterForm = () => {
                 required
               />
             </div>
+            {/* Submit Button */}
             <div className="flex flex-col items-center justify-center mt-8">
               <button
                 type="submit"
@@ -105,12 +115,35 @@ const RegisterForm = () => {
               >
                 Register
               </button>
-              <Link to="/login" className="mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline">
-                Already have an account? Log in
-              </Link>
             </div>
           </form>
         </div>
+        {/* Validation Checklist */}
+        <div className="-mt-2 p-4 bg-white bg-opacity-80 rounded-lg shadow-inner">
+          <ul>
+            <li className={`flex items-center ${usernameChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
+              {usernameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+              Username must be between 5-32 characters
+            </li>
+            <li className={`flex items-center ${usernameChecks.spaceCheck ? "text-green-500" : "text-red-500"}`}>
+              {usernameChecks.spaceCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+              Username must not contain spaces
+            </li>
+            <li className={`flex items-center ${passwordChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
+              {passwordChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+              Password must be between 5-32 characters
+            </li>
+            <li className={`flex items-center ${displayNameChecks.lengthCheck ? "text-green-500" : "text-red-500"}`}>
+              {displayNameChecks.lengthCheck ? <CheckCircleIcon className="h-5 w-5 mr-2" /> : <XCircleIcon className="h-5 w-5 mr-2" />}
+              Display name must be between 5-64 characters
+            </li>
+          </ul>
+        </div>
+        <div className="flex flex-col items-center justify-center mt-8">
+        <Link to="/login" className="mt-4 hover:text-luni-dark-blue text-luni-blue font-bold py-2 px-6 rounded-xl focus:outline-none focus:shadow-outline">
+                Already have an account? Log in
+              </Link>
+              </div>
       </motion.div>
     </div>
   );

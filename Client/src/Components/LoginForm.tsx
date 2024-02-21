@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UserIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import uniSphereLogo from "../assets/UniSphereLogo.svg";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // Assuming you're using react-router for navigation
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
