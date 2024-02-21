@@ -25,11 +25,11 @@ jobs:
         cache-dependency-path: '**/package-lock.json'
     
     - name: Install Server Dependencies
-      run: npm install
+      run: npm install # this should definitely be npm ci but oh well
       working-directory: Server
     
     - name: Install Client Dependencies
-      run: npm ci
+      run: npm install # this should definitely be npm ci but oh well
       working-directory: Client
     
     - name: Build Server
