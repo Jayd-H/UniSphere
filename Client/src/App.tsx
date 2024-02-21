@@ -6,6 +6,7 @@ import EventsPage from './Pages/EventsPage';
 import SocietiesPage from './Pages/SocietiesPage';
 import UserSettingsPage from './Pages/UserSettingsPage';
 import Sidebar from './Components/Sidebar';
+import RegisterForm from './Components/RegisterForm';
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
@@ -25,6 +26,8 @@ const App = () => {
       <Routes>
         {/* The login form is separate and does not include the sidebar */}
         <Route path="/" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
         
         {/* Nested routes for the main layout with the sidebar */}
         <Route element={<LayoutWithSidebar />}>
