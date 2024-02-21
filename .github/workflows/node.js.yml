@@ -22,21 +22,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
     
-    - name: Cache Server node_modules
-      uses: actions/cache@v2
-      with:
-        path: Server/node_modules
-        key: ${{ runner.os }}-server-${{ hashFiles('Server/package-lock.json') }}
-        restore-keys: ${{ runner.os }}-server-
-    
-    - name: Cache Client node_modules
-      uses: actions/cache@v2
-      with:
-        path: Client/node_modules
-        key: ${{ runner.os }}-client-${{ hashFiles('Client/package-lock.json') }}
-        restore-keys: ${{ runner.os }}-client-
-
     - name: Install Server Dependencies
       run: npm ci
       working-directory: Server
