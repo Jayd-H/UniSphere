@@ -100,7 +100,7 @@ const RegisterForm = () => {
             type="text"
             value={formData.displayName}
             onChange={(e) => handleInputChange(e, "displayName")}
-            placeholder="Enter display name..."
+            placeholder="Display Name..."
             inputKey="displayName"
             isValid={displayNameChecks.lengthCheck}
           />
