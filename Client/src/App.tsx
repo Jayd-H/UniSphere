@@ -4,7 +4,7 @@ import HomePage from './Pages/HomePage';
 import EventsPage from './Pages/EventsPage';
 import SocietiesPage from './Pages/SocietiesPage';
 import UserSettingsPage from './Pages/UserSettingsPage';
-import Sidebar from './Components/Sidebar';
+import Sidebar from './Components/Sidebar/Sidebar';
 import RegisterForm from './Components/Forms/RegisterForm';
 
 // Define a layout component that includes the sidebar
