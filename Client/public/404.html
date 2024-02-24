@@ -2,15 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting to index...</title>
-  <script>
-    var baseURL = '/UniSphere/';
-    if (!window.location.pathname.includes(baseURL)) {
-      window.location.replace(baseURL + window.location.pathname.slice(1) + window.location.search + window.location.hash);
-    }
-  </script>
+  <title>Redirecting...</title>
 </head>
 <body>
-  <p>If you are not redirected, please <a href="/UniSphere/">click here to go to the homepage</a>.</p>
+  <script>
+    (function() {
+      var baseURL = '/UniSphere/';
+      var path = window.location.pathname;
+
+      if (path.indexOf(baseURL) === -1) {
+        var newPath = path.replace(/^\//, '');
+
+        window.location.replace(baseURL + '#' + newPath);
+      }
+    })();
+  </script>
+  <noscript>
+    If you are not redirected, please <a href="/UniSphere/">click here to go to the homepage</a>.
+  </noscript>
 </body>
 </html>
