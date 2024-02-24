@@ -21,7 +21,7 @@ const LayoutWithSidebar = () => {
 
 const App = () => {
   return (
-    <Router>
+    <Router basename='/UniSphere'>
       <Routes>
         {/* The login form is separate and does not include the sidebar */}
         <Route path="/" element={<LoginForm />} />
