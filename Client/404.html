@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting to index...</title>
+  <script>
+    if (window.location.pathname !== '/') {
+      window.location.replace('/UniSphere/' +
+        window.location.pathname + window.location.search + window.location.hash);
+    }
+  </script>
+</head>
+<body>
+  <p>If you are not redirected, please <a href="/UniSphere/">click here to go to the homepage</a>.</p>
+</body>
+</html>
