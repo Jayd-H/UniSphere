@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <title>Redirecting to index...</title>
   <script>
-    if (window.location.pathname !== '/') {
-      window.location.replace('/UniSphere/' +
-        window.location.pathname + window.location.search + window.location.hash);
+    var baseURL = '/UniSphere/';
+    if (!window.location.pathname.includes(baseURL)) {
+      window.location.replace(baseURL + window.location.pathname.slice(1) + window.location.search + window.location.hash);
     }
   </script>
 </head>
