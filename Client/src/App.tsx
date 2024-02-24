@@ -30,10 +30,10 @@ const App = () => {
         
         {/* Nested routes for the main layout with the sidebar */}
         <Route element={<LayoutWithSidebar />}>
-          <Route path="home" element={<HomePage />} />
-          <Route path="societies" element={<SocietiesPage />} />
-          <Route path="events" element={<EventsPage />} />
-          <Route path="settings" element={<UserSettingsPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/societies" element={<SocietiesPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/settings" element={<UserSettingsPage />} />
         </Route>
       </Routes>
     </Router>
