@@ -1,5 +1,6 @@
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
+import CountdownTimer from '../Components/Common/CountdownTimer';
 
 const SplashPage = () => {
   return (
@@ -10,11 +11,11 @@ const SplashPage = () => {
           whileHover={{ rotate: 360, scale: 1.1 }}
           transition={{ duration: 0.5 }}
         >
-          <GlobeAltIcon className="w-16 h-16 mx-auto text-luni-black" />
+          <GlobeAltIcon className="w-14 h-14 mx-auto text-luni-black" />
         </motion.div>
-        <h1 className="text-4xl font-bold text-luni-black mb-2">UniSphere</h1>
-        <p className="text-xl text-luni-dark-blue font-montserrat">Coming Soon</p>
+        <h1 className="text-3xl font-bold text-luni-black -mt-2 font-montserrat">U N I S P H E R E</h1>
         {/* Countdown Timer */}
+        <CountdownTimer targetDate="2024-05-03" />
       </div>
     </div>
   );
