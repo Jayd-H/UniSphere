@@ -43,23 +43,23 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
     return () => clearTimeout(timer);
   });
 
-  const timerComponents: JSX.Element[] = [];
-
-  Object.keys(timeLeft).forEach((interval) => {
-    if (!timeLeft[interval as keyof TimeLeft]) {
-      return;
-    }
-
-    timerComponents.push(
-      <span key={interval}>
-        {timeLeft[interval as keyof TimeLeft]} {interval}{" "}
-      </span>
-    );
-  });
+  // Formatting the time left into MM:SS or HH:MM:SS etc.
+  const formatTimeLeft = () => {
+    const { days, hours, minutes, seconds } = timeLeft;
+    const paddedHours = `${hours}`.padStart(2, '0');
+    const paddedMinutes = `${minutes}`.padStart(2, '0');
+    const paddedSeconds = `${seconds}`.padStart(2, '0');
+    return `${days ? `${days}:` : ''}${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+  };
 
   return (
-    <div>
-      {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+    <div className="text-center">
+      <div className="text-lg">
+        {new Date(targetDate).toLocaleDateString()}
+      </div>
+      <div className="text-2xl font-semibold mt-8">
+        {formatTimeLeft()}
+      </div>
     </div>
   );
 };

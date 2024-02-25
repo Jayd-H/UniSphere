@@ -15,7 +15,9 @@ const SplashPage = () => {
         </motion.div>
         <h1 className="text-3xl font-bold text-luni-black -mt-2 font-montserrat">U N I S P H E R E</h1>
         {/* Countdown Timer */}
-        <CountdownTimer targetDate="2024-05-03" />
+        <div className='font-montserrat'>
+        <CountdownTimer targetDate="2024-05-03"/>
+        </div>
       </div>
     </div>
   );
