@@ -6,6 +6,7 @@ import SocietiesPage from './Pages/SocietiesPage';
 import UserSettingsPage from './Pages/UserSettingsPage';
 import Sidebar from './Components/Sidebar/Sidebar';
 import RegisterForm from './Components/Forms/RegisterForm';
+import SplashPage from './Pages/SplashPage';
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
@@ -24,7 +25,7 @@ const App = () => {
     <Router basename='/UniSphere'>
       <Routes>
         {/* The login form is separate and does not include the sidebar */}
-        <Route path="/" element={<LoginForm />} />
+        <Route path="/" element={<SplashPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         
