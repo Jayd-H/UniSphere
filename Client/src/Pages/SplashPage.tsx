@@ -1,9 +1,23 @@
-const HomePage = () => {
-    return (
-      <div>
-        <h1>splash page</h1>
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { motion } from 'framer-motion';
+
+const SplashPage = () => {
+  return (
+    <div className="flex h-screen items-center justify-center bg-luni-light-blue">
+      <div className="text-center">
+        <motion.div
+          className="logo-container mb-4"
+          whileHover={{ rotate: 360, scale: 1.1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlobeAltIcon className="w-16 h-16 mx-auto text-luni-black" />
+        </motion.div>
+        <h1 className="text-4xl font-bold text-luni-black mb-2">UniSphere</h1>
+        <p className="text-xl text-luni-dark-blue">Coming Soon</p>
+        {/* Countdown Timer */}
       </div>
-    );
-  };
-  
-  export default HomePage;
+    </div>
+  );
+};
+
+export default SplashPage;
