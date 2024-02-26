@@ -1,47 +1,45 @@
 const mysql = require('mysql2/promise'); // Use promise-based API for cleaner code
-const net = require('net');
-
-// the login for connecting to the database
-
-const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    database: 'world',
-    port: 3306,
-    password: 'Stanleypug2004#'
-};
+import net from 'net';
 
 
-async function main() {
-    console.log('whois program');
-    try {
 
 
-        // Create a connection pool for efficiency
-        const connection = mysql.createPool(dbConfig);
 
-        // Test the connection before proceeding
-        try {
-            await connection.getConnection();
-            console.log('Connected to database');
-        } catch (error) {
-            console.error('Database connection error:', error);
-            process.exit(1); // Terminate if connection fails
-        }
 
-        // Check for commands or server mode
-        if (process.argv.length === 2) {
-            console.log('Starting server');
-            await runServer();
-        } else {
-            for (const arg of process.argv.slice(2)) {
-                await ProcessCommand(arg); // Function not shown, provide implementation
-            }
-        }
-    } catch (error) {
-        console.error('Unhandled error:', error);
-        process.exit(1); // Terminate on unhandled errors
+
+import { createPool, Pool as ConnectionPool } from 'mysql2/promise'; // Import for connection pool
+
+const connStr = "mysql://root:Stanleypug2004@localhost:3306/usersdb";
+
+async function main(args: string[]): Promise<void> {
+  try {
+    console.log("UniSphere Backend");
+
+    // Create a connection pool
+    const pool: ConnectionPool = createPool(connStr);
+
+    // Get a connection from the pool
+    const conn = await pool.getConnection();
+
+    console.log("Connecting to MySQL--- world database");
+
+    // Release the connection back to the pool
+    await conn.release();
+
+    // Close the connection pool (recommended upon program termination)
+    await pool.end();
+
+    if (args.length === 0) {
+      console.log("Starting Server");
+      await runServer();
+    } else {
+      for (const arg of args) {
+        await ProcessCommand(arg);
+      }
     }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 
@@ -49,7 +47,7 @@ async function main() {
 async function runServer() {
     const server = net.createServer();
 
-    server.on('connection', async (socket: net.socket) => {
+    server.on('connection', async (socket: net.Socket) => {
         try {
             console.log('Client connected');
             // Add client request handling logic here (using `doRequest` or whatever you choose)
@@ -88,7 +86,7 @@ async function Retrieve() {
 
 }
 
-main();
+main([]);
 
 
 
