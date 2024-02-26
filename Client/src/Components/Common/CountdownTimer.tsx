@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface TimeLeft {
   days: number;
@@ -46,20 +46,18 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   // Formatting the time left into MM:SS or HH:MM:SS etc.
   const formatTimeLeft = () => {
     const { days, hours, minutes, seconds } = timeLeft;
-    const paddedHours = `${hours}`.padStart(2, '0');
-    const paddedMinutes = `${minutes}`.padStart(2, '0');
-    const paddedSeconds = `${seconds}`.padStart(2, '0');
-    return `${days ? `${days}:` : ''}${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+    const paddedHours = `${hours}`.padStart(2, "0");
+    const paddedMinutes = `${minutes}`.padStart(2, "0");
+    const paddedSeconds = `${seconds}`.padStart(2, "0");
+    return `${
+      days ? `${days}:` : ""
+    }${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
   };
 
   return (
     <div className="text-center">
-      <div className="text-lg">
-        {new Date(targetDate).toLocaleDateString()}
-      </div>
-      <div className="text-2xl font-semibold mt-8">
-        {formatTimeLeft()}
-      </div>
+      <div className="text-lg">{new Date(targetDate).toLocaleDateString()}</div>
+      <div className="text-2xl font-semibold mt-8">{formatTimeLeft()}</div>
     </div>
   );
 };
