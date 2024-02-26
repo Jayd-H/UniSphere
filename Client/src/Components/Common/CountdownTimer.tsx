@@ -55,7 +55,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center text-luni-black">
       <div className="text-lg">{new Date(targetDate).toLocaleDateString()}</div>
       <div className="text-2xl font-semibold mt-8">{formatTimeLeft()}</div>
     </div>
