@@ -16,7 +16,7 @@ import SplashPage from "./Pages/SplashPage";
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
   return (
-    <div className="flex h-screen bg-luni-light-blue">
+    <div className="flex h-screen glowing-background">
       <Sidebar />
       <div className="flex-grow p-4 overflow-auto">
         <Outlet /> {/* This will render the content of the routed pages */}
