@@ -1,12 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import net from 'net';
 const https = require('https');
-
-
-
-
-
-
 import { createPool, Pool as ConnectionPool } from 'mysql2/promise'; // Import for connection pool
 
 const connStr = "mysql://root:Stanleypug2004@localhost:3306/world";
@@ -93,28 +87,26 @@ async function doRequest(request: string, socket: net.Socket): Promise<void> {
 }
 
 //mostly for command line testing 
+//function that takes an incoming request, processes it, send out a reply
 async function ProcessCommand() {
 
 }
-//function that takes an incoming request, processes it, send out a reply
-
-
 
 //Function that adds data to the database
 async function Add() {
 
 }
+
 //function that updates existing data in the database
 async function Update() {
 
 }
+
 //Function that deletes data in the database
 async function Delete() {
 
 }
 //function that gets data from the database
-
-
 
 async function Retrieve(): Promise<any | null> {
     try {
