@@ -10,6 +10,7 @@ import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import Reply from "./Reply";
 import { timeSince } from "./TimeUtils";
+import ReplyBox from "./ReplyBox";
 
 export interface ReplyProps {
   displayName: string;
@@ -28,6 +29,18 @@ export interface PostProps {
   likesCount: number;
   replies: Array<ReplyProps>;
 }
+
+const handleReplySubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const replyContent = (
+    event.currentTarget.elements.namedItem("replyContent") as HTMLInputElement
+  ).value;
+  // TODO Implement functionality to handle the reply submission
+  console.log("Reply submitted: ", replyContent);
+  (
+    event.currentTarget.elements.namedItem("replyContent") as HTMLInputElement
+  ).value = "";
+};
 
 const Post: React.FC<PostProps> = ({
   displayName,
@@ -64,7 +77,7 @@ const Post: React.FC<PostProps> = ({
       height: "auto",
       transition: {
         opacity: { duration: 0.2 },
-        height: { duration: 0.5, delay: 0.05 } 
+        height: { duration: 0.5, delay: 0.05 },
       },
     },
   };
@@ -128,12 +141,13 @@ const Post: React.FC<PostProps> = ({
       <AnimatePresence>
         {areRepliesVisible && (
           <motion.div
-            className="overflow-hidden" // Use overflow-hidden to ensure smooth height animation
+            className="overflow-hidden"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            exit="hidden" // Defines the animation state when the component exits
+            exit="hidden"
           >
+            <ReplyBox onSubmit={handleReplySubmit} />
             {replies.map((reply, index) => (
               <Reply key={index} {...reply} index={index} />
             ))}
