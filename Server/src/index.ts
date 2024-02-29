@@ -5,6 +5,7 @@ import { createPool, Pool as ConnectionPool } from 'mysql2/promise'; // Import f
 
 const connStr = "mysql://root:Stanleypug2004@localhost:3306/world";
 
+// Main function to start the server
 async function main(args: string[]): Promise<void> {
   try {
     console.log("UniSphere Backend");
@@ -47,6 +48,7 @@ async function main(args: string[]): Promise<void> {
   }
 }
 
+// Function to handle incoming requests
 async function doRequest(request: string, socket: net.Socket): Promise<void> {
   try {
     const lines = request.split("\n");
@@ -108,6 +110,7 @@ async function Delete() {
 }
 //function that gets data from the database
 
+// Function to retrieve data from the database
 async function Retrieve(): Promise<any | null> {
     try {
       // Create a connection from the pool
@@ -143,7 +146,7 @@ async function Retrieve(): Promise<any | null> {
  finally{console.log('finished')}
 }
 
-
+// Function to hash and store a password
 async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
   try {
     // Generate a salt (randomly generated string used for hashing)
@@ -179,6 +182,7 @@ async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
   }
 }
 
+// Function to compare a plain text password with a stored hash
 async function comparePassword(
   connPool: ConnectionPool,
   username: string,
