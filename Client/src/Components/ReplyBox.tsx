@@ -4,10 +4,13 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 interface ReplyBoxProps {
   onSubmit: (content: string) => void;
-  displayName: string;
+  loggedInDisplayName: string;
 }
 
-const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, displayName }) => {
+const ReplyBox: React.FC<ReplyBoxProps> = ({
+  onSubmit,
+  loggedInDisplayName,
+}) => {
   const [replyContent, setReplyContent] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +33,7 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, displayName }) => {
     >
       <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
       <div className="mb-1">
-        <span className="font-semibold text-md">{displayName}</span>
+        <span className="font-semibold text-md">{loggedInDisplayName}</span>
       </div>
       <form onSubmit={handleSubmit} className="relative">
         <input

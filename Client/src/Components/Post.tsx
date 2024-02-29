@@ -35,6 +35,8 @@ const handleReplySubmit = (content: string) => {
   console.log(content);
 };
 
+const loggedInDisplayName = "John Doe"; // TODO Replace with the logged in user's display name
+
 const Post: React.FC<PostProps> = ({
   displayName,
   societyName,
@@ -141,7 +143,10 @@ const Post: React.FC<PostProps> = ({
             exit="hidden"
           >
             {/* Reply box always visible when there are no replies */}
-            <ReplyBox onSubmit={handleReplySubmit} displayName={displayName} />
+            <ReplyBox
+              onSubmit={handleReplySubmit}
+              loggedInDisplayName={loggedInDisplayName}
+            />
             {replies.map((reply, index) => (
               <Reply key={index} {...reply} index={index} />
             ))}
