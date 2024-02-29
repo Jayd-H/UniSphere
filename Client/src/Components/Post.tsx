@@ -147,7 +147,9 @@ const Post: React.FC<PostProps> = ({
             animate="visible"
             exit="hidden"
           >
-            <ReplyBox onSubmit={handleReplySubmit} />
+            {/* Reply box */}
+            {/* TODO Replace "Username" with the actual display name */}
+            <ReplyBox onSubmit={handleReplySubmit} displayName="Username" />
             {replies.map((reply, index) => (
               <Reply key={index} {...reply} index={index} />
             ))}
