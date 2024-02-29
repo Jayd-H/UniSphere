@@ -142,6 +142,8 @@ async function Retrieve(): Promise<any | null> {
   }
  finally{console.log('finished')}
 }
+
+
 async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
   try {
     // Generate a salt (randomly generated string used for hashing)
@@ -176,36 +178,29 @@ async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
     console.error("Error hashing password:", error);
   }
 }
+
 async function comparePassword(
   connPool: ConnectionPool,
   username: string,
-  hashedPassword: string,
-  user: string,
+  hashedPassword: string
 ): Promise<boolean> {
   try {
     const sql = `SELECT hash FROM passwords WHERE username = ?`;
-    const [rows, fields] = await connPool.query(sql, [username]);
-    user = fields.toString()
+    const [rows] = await connPool.query(sql, [username]);
     
-    if (user != username) {
-      console.error("User not found");
+    if (Array.isArray(rows) && rows.length > 0 && 'hash' in rows[0]) {
+      const storedHash = rows[0].hash;
+      const isMatch = await bcrypt.compare(hashedPassword, storedHash);
+      return isMatch;
+    } else {
+      console.error("User not found or no hash stored for user.");
       return false;
     }
-    
-    const storedHash = rows[1].toString(); 
-    if (!storedHash) {
-      console.error("Error retrieving hash from database");
-      return false;
-    }
-
-    const isMatch = await bcrypt.compare(hashedPassword, storedHash);
-
-    return isMatch;
-
   } catch (error) {
     console.error("Error verifying password:", error);
-    return false; // Or throw an appropriate error
+    return false;
   }
 }
+
 
 main([]);
