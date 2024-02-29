@@ -10,6 +10,7 @@ import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import Reply from "./Reply";
 import { timeSince } from "./TimeUtils";
+import ReplyBox from "./ReplyBox";
 
 export interface ReplyProps {
   displayName: string;
@@ -28,6 +29,13 @@ export interface PostProps {
   likesCount: number;
   replies: Array<ReplyProps>;
 }
+
+const handleReplySubmit = (content: string) => {
+  // TODO Implement your logic to handle the reply content
+  console.log(content);
+};
+
+const loggedInDisplayName = "John Doe"; // TODO Replace with the logged in user's display name
 
 const Post: React.FC<PostProps> = ({
   displayName,
@@ -64,7 +72,7 @@ const Post: React.FC<PostProps> = ({
       height: "auto",
       transition: {
         opacity: { duration: 0.2 },
-        height: { duration: 0.5, delay: 0.05 } 
+        height: { duration: 0.5, delay: 0.05 },
       },
     },
   };
@@ -124,21 +132,26 @@ const Post: React.FC<PostProps> = ({
           <span className="ml-1">{likesCount + (isLiked ? 1 : 0)}</span>
         </div>
       </div>
-      {/* Replies */}
+      {/* Replies and ReplyBox */}
       <AnimatePresence>
-        {areRepliesVisible && (
+        {areRepliesVisible || repliesCount === 0 ? (
           <motion.div
-            className="overflow-hidden" // Use overflow-hidden to ensure smooth height animation
+            className="overflow-hidden"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            exit="hidden" // Defines the animation state when the component exits
+            exit="hidden"
           >
+            {/* Reply box always visible when there are no replies */}
+            <ReplyBox
+              onSubmit={handleReplySubmit}
+              loggedInDisplayName={loggedInDisplayName}
+            />
             {replies.map((reply, index) => (
               <Reply key={index} {...reply} index={index} />
             ))}
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
