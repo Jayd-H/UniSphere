@@ -30,16 +30,9 @@ export interface PostProps {
   replies: Array<ReplyProps>;
 }
 
-const handleReplySubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const replyContent = (
-    event.currentTarget.elements.namedItem("replyContent") as HTMLInputElement
-  ).value;
-  // TODO Implement functionality to handle the reply submission
-  console.log("Reply submitted: ", replyContent);
-  (
-    event.currentTarget.elements.namedItem("replyContent") as HTMLInputElement
-  ).value = "";
+const handleReplySubmit = (content: string) => {
+  // TODO Implement your logic to handle the reply content
+  console.log(content);
 };
 
 const Post: React.FC<PostProps> = ({
@@ -137,9 +130,9 @@ const Post: React.FC<PostProps> = ({
           <span className="ml-1">{likesCount + (isLiked ? 1 : 0)}</span>
         </div>
       </div>
-      {/* Replies */}
+      {/* Replies and ReplyBox */}
       <AnimatePresence>
-        {areRepliesVisible && (
+        {areRepliesVisible || repliesCount === 0 ? (
           <motion.div
             className="overflow-hidden"
             variants={containerVariants}
@@ -147,14 +140,13 @@ const Post: React.FC<PostProps> = ({
             animate="visible"
             exit="hidden"
           >
-            {/* Reply box */}
-            {/* TODO Replace "Username" with the actual display name */}
-            <ReplyBox onSubmit={handleReplySubmit} displayName="Username" />
+            {/* Reply box always visible when there are no replies */}
+            <ReplyBox onSubmit={handleReplySubmit} displayName={displayName} />
             {replies.map((reply, index) => (
               <Reply key={index} {...reply} index={index} />
             ))}
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
