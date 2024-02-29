@@ -48,14 +48,14 @@ const LoginForm = () => {
   return (
     <FormContainer>
       <div className="flex flex-col items-center p-8">
-      <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
-            <motion.div
-              whileHover={{ rotate: 180, scale: 1.1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <GlobeAltIcon className="w-8 h-8" />
-            </motion.div>
-          </div>
+        <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
+          <motion.div
+            whileHover={{ rotate: 180, scale: 1.1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <GlobeAltIcon className="w-8 h-8" />
+          </motion.div>
+        </div>
         <span className="text-sm font-semibold">UniSphere</span>
         <h1 className="text-2xl font-semibold mt-6">Welcome back</h1>
         <h1 className="text-lg font-semibold -mt-1">Login to your account</h1>
@@ -75,11 +75,11 @@ const LoginForm = () => {
             value={formData.password}
             onChange={(e) => handleInputChange(e, "password")}
             placeholder="Password..."
-            inputKey="password" 
+            inputKey="password"
             isValid={passwordChecks.lengthCheck}
           />
           <div className="pt-6">
-          <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
+            <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
           </div>
         </form>
         <div className="flex items-center justify-center mt-8 -mb-8">
