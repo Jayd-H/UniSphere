@@ -208,14 +208,4 @@ async function comparePassword(
   }
 }
 
-
-
 main([]);
-
-
-
-
-
-
-
-
