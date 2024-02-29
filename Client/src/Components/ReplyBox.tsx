@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
-// Define the type for the props
 interface ReplyBoxProps {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (content: string) => void;
   displayName: string;
 }
 
 const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, displayName }) => {
+  const [replyContent, setReplyContent] = useState("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (replyContent.trim()) {
+      onSubmit(replyContent);
+      setReplyContent("");
+    }
+  };
+
   return (
     <motion.div
       className="pl-4 py-2 bg-luni-lighter-grey my-2"
@@ -18,28 +28,28 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, displayName }) => {
         transition: { ease: "easeOut", duration: 0.4 },
       }}
     >
-      {/* Adding a header similar to a reply */}
       <hr className="border-luni-lighter-grey w-3/4 mx-auto -mt-2 pt-2" />
       <div className="mb-1">
         <span className="font-semibold text-md">{displayName}</span>
-        {/* Optionally, you can add a static or dynamically generated timestamp here */}
-        <span className="text-xs text-luni-grey ml-2">
-          {/* Dynamic or static timestamp if needed */}
-        </span>
       </div>
-      <form onSubmit={onSubmit} className="flex justify-between">
+      <form onSubmit={handleSubmit} className="relative">
         <input
           type="text"
           placeholder="Write a reply..."
-          className="text-sm text-luni-black flex-grow mr-4 p-2 bg-white rounded-md border border-luni-light-grey focus:outline-none focus:border-luni-grey"
+          className="w-full p-2 text-sm text-luni-black bg-luni-dark-grey rounded-md focus:outline-none focus:bg-white"
           name="replyContent"
+          value={replyContent}
+          onChange={(e) => setReplyContent(e.target.value)}
         />
-        <button
-          type="submit"
-          className="flex-shrink-0 ml-4 self-end bg-luni-blue text-white rounded-md px-4 py-2 hover:bg-luni-dark-blue focus:outline-none"
-        >
-          Reply
-        </button>
+        {replyContent && (
+          <button
+            type="submit"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-luni-blue"
+            aria-label="Send reply"
+          >
+            <PaperAirplaneIcon className="w-5 h-5 rotate-90" />
+          </button>
+        )}
       </form>
     </motion.div>
   );
