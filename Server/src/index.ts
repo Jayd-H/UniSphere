@@ -72,7 +72,7 @@ async function doRequest(request: string, socket: net.Socket): Promise<void> {
 
     switch (method) {
       case "GET":
-        await Retrieve(); // Pass socket to Retrieve for response
+        await ProcessCommand(); // Pass socket to Retrieve for response
         break;
       // Other methods (placeholders for now)
       case "POST":
@@ -184,8 +184,40 @@ async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
     console.error("Error hashing password:", error);
   }
 }
-//const plainTextPassword = "your_password_here";
-//hashAndStorePassword(plainTextPassword);
+async function comparePassword(
+  connPool: ConnectionPool,
+  username: string,
+  hashedPassword: string,
+  user: string,
+): Promise<boolean> {
+  try {
+    const sql = `SELECT hash FROM passwords WHERE username = ?`;
+    const [rows, fields] = await connPool.query(sql, [username]);
+    user = fields.toString()
+    
+    if (user != username) {
+      console.error("User not found");
+      return false;
+    }
+    
+    const storedHash = rows[1].toString(); 
+    if (!storedHash) {
+      console.error("Error retrieving hash from database");
+      return false;
+    }
+
+    const isMatch = await bcrypt.compare(hashedPassword, storedHash);
+
+    return isMatch;
+
+  } catch (error) {
+    console.error("Error verifying password:", error);
+    return false; // Or throw an appropriate error
+  }
+}
+
+
+
 main([]);
 
 
