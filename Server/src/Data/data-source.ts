@@ -3,6 +3,7 @@ import { DataSource } from "typeorm"
 
 import { User } from './User'
 import { Posts } from './Posts'
+import { Replies } from './Replies'
 
 export const Database = new DataSource({
     type: "mysql",
@@ -13,6 +14,7 @@ export const Database = new DataSource({
     database: process.env.DB_NAME,
     entities: [
         User,
-        Posts
+        Posts,
+        Replies
     ]
 })
