@@ -30,3 +30,22 @@ export const login = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const register = async (req: Request, res: Response) => {
+  const { username, password, displayName } = req.body;
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    
+    const sql = `INSERT INTO users (username, hash, displayName) VALUES (?, ?, ?)`;
+    await pool.query(sql, [username, hash, displayName]);
+    
+    res.json({ success: true, message: "User registered successfully." });
+  } catch (error: any) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      res.status(409).json({ success: false, message: "Username is already taken." });
+    } else {
+      console.error("Error registering user:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  }
+};
