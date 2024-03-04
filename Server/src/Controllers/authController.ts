@@ -38,9 +38,12 @@ export const register = async (req: Request, res: Response) => {
   const { username, password, displayName } = req.body;
   try {
     const hash = await bcrypt.hash(password, 10);
-    
-    const sql = `INSERT INTO users (username, hash, displayName) VALUES (?, ?, ?)`;
-    await pool.query(sql, [username, hash, displayName]);
+
+    const user = new User();
+    user.username = username;
+    user.password = hash;
+    user.DisplayName = displayName;
+    await user.save();
     
     res.json({ success: true, message: "User registered successfully." });
   } catch (error: any) {
