@@ -14,7 +14,7 @@ Database.initialize()
         console.log("The database has been initialized!")
     })
     .catch((err: any) => {
-        console.error("Error during database initialization", err)
+        console.error("Error during database initialization.", err)
     })
 
 app.use(cors());
