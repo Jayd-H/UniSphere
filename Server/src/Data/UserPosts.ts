@@ -2,7 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from
 import { Posts } from './Posts'
 import { User } from './User'
 
-@Entity({database: "unisphere",name:"posts"})
+@Entity({database: "unisphere",name:"userposts"})
 export class UserPosts extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number

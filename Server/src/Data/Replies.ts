@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity({database: "unisphere",name:"posts"})
+@Entity({database: "unisphere",name:"replies"})
 export class Replies extends BaseEntity {
     @PrimaryGeneratedColumn()
     idreplies: number

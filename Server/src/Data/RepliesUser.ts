@@ -3,7 +3,7 @@ import { Replies } from './Replies'
 import { Posts } from './Posts'
 import { User } from './User'
 
-@Entity({database: "unisphere",name:"posts"})
+@Entity({database: "unisphere",name:"repliesuser"})
 export class RepliesUser extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
