@@ -1,9 +1,15 @@
 import * as bcrypt from 'bcrypt';
 import net from 'net';
+import express from 'express';
 const https = require('https');
-import { createPool, Pool as ConnectionPool } from 'mysql2/promise'; // Import for connection pool
+import { createPool, Pool as ConnectionPool } from 'mysql2/promise';
+import { RowDataPacket } from 'mysql2';
 
+ // Import for connection pool
+const app = express();
+const port = 3000;
 const connStr = "mysql://root:Stanleypug2004@localhost:3306/world";
+const pool = createPool(connStr);
 
 // Main function to start the server
 async function main(args: string[]): Promise<void> {
@@ -87,6 +93,40 @@ async function doRequest(request: string, socket: net.Socket): Promise<void> {
     console.error("Error handling request:", error);
   }
 }
+
+app.use(express.json());
+
+interface UserPasswordRow extends RowDataPacket {
+  hash: string;
+}
+
+app.post('/login', async (req: express.Request, res: express.Response) => {
+  const { username, password } = req.body;
+  try {
+    const sql = `SELECT hash FROM passwords WHERE username = ?`;
+    const [rows] = await pool.query<RowDataPacket[]>(sql, [username]);
+    const userRows = rows as UserPasswordRow[];
+
+    if (userRows.length > 0) {
+      const storedHash = userRows[0].hash;
+      const isMatch = await bcrypt.compare(password, storedHash);
+      if (isMatch) {
+        res.json({ success: true, message: "Login successful" });
+      } else {
+        res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error verifying password:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
 
 //mostly for command line testing 
 //function that takes an incoming request, processes it, send out a reply
