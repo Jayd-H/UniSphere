@@ -38,10 +38,33 @@ const LoginForm = () => {
     );
   };
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!shouldDisableForm()) {
       // Proceed with login
+
+      try {
+        const response = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password,
+          }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          // Handle login success (e.g., redirect to dashboard)
+          console.log("Login successful:", data.message);
+        } else {
+          // Handle login failure (e.g., show error message)
+          console.error("Login failed:", data.message);
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+      }
     }
   };
 
