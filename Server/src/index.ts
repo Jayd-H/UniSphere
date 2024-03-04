@@ -1,16 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import net from 'net';
 const https = require('https');
-
-
-
-
-
-
 import { createPool, Pool as ConnectionPool } from 'mysql2/promise'; // Import for connection pool
 
 const connStr = "mysql://root:Stanleypug2004@localhost:3306/world";
 
+// Main function to start the server
 async function main(args: string[]): Promise<void> {
   try {
     console.log("UniSphere Backend");
@@ -53,6 +48,7 @@ async function main(args: string[]): Promise<void> {
   }
 }
 
+// Function to handle incoming requests
 async function doRequest(request: string, socket: net.Socket): Promise<void> {
   try {
     const lines = request.split("\n");
@@ -93,29 +89,28 @@ async function doRequest(request: string, socket: net.Socket): Promise<void> {
 }
 
 //mostly for command line testing 
+//function that takes an incoming request, processes it, send out a reply
 async function ProcessCommand() {
 
 }
-//function that takes an incoming request, processes it, send out a reply
-
-
 
 //Function that adds data to the database
 async function Add() {
 
 }
+
 //function that updates existing data in the database
 async function Update() {
 
 }
+
 //Function that deletes data in the database
 async function Delete() {
 
 }
 //function that gets data from the database
 
-
-
+// Function to retrieve data from the database
 async function Retrieve(): Promise<any | null> {
     try {
       // Create a connection from the pool
@@ -150,6 +145,8 @@ async function Retrieve(): Promise<any | null> {
   }
  finally{console.log('finished')}
 }
+
+// Function to hash and store a password
 async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
   try {
     // Generate a salt (randomly generated string used for hashing)
@@ -184,46 +181,30 @@ async function hashAndStorePassword(plainTextPassword: string): Promise<void> {
     console.error("Error hashing password:", error);
   }
 }
+
+// Function to compare a plain text password with a stored hash
 async function comparePassword(
   connPool: ConnectionPool,
   username: string,
-  hashedPassword: string,
-  user: string,
+  hashedPassword: string
 ): Promise<boolean> {
   try {
     const sql = `SELECT hash FROM passwords WHERE username = ?`;
-    const [rows, fields] = await connPool.query(sql, [username]);
-    user = fields.toString()
+    const [rows] = await connPool.query(sql, [username]);
     
-    if (user != username) {
-      console.error("User not found");
+    if (Array.isArray(rows) && rows.length > 0 && 'hash' in rows[0]) {
+      const storedHash = rows[0].hash;
+      const isMatch = await bcrypt.compare(hashedPassword, storedHash);
+      return isMatch;
+    } else {
+      console.error("User not found or no hash stored for user.");
       return false;
     }
-    
-    const storedHash = rows[1].toString(); 
-    if (!storedHash) {
-      console.error("Error retrieving hash from database");
-      return false;
-    }
-
-    const isMatch = await bcrypt.compare(hashedPassword, storedHash);
-
-    return isMatch;
-
   } catch (error) {
     console.error("Error verifying password:", error);
-    return false; // Or throw an appropriate error
+    return false;
   }
 }
 
 
-
 main([]);
-
-
-
-
-
-
-
-
