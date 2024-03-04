@@ -5,6 +5,7 @@ import { User } from './User'
 import { Posts } from './Posts'
 import { Replies } from './Replies'
 import { RepliesUser } from './RepliesUser'
+import { UserPosts } from "./UserPosts"
 
 export const Database = new DataSource({
     type: "mysql",
@@ -17,6 +18,7 @@ export const Database = new DataSource({
         User,
         Posts,
         Replies,
-        RepliesUser
+        RepliesUser,
+        UserPosts
     ]
 })
