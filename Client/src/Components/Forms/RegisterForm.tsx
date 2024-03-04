@@ -42,10 +42,38 @@ const RegisterForm = () => {
     !passwordChecks.lengthCheck ||
     !displayNameChecks.lengthCheck;
 
-  const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRegisterSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     if (!shouldDisableForm()) {
-      // Proceed with registration
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/auth/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              password: formData.password,
+              displayName: formData.displayName,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (data.success) {
+          // Handle success
+        } else {
+          // Handle failure
+          console.error(data.message);
+        }
+      } catch (error) {
+        // Handle network errors
+        console.error("Network error:", error);
+      }
     }
   };
 
