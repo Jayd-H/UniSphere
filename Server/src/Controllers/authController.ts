@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { pool } from '../Services/databaseService';
 import { RowDataPacket } from 'mysql2';
 
 import { User } from '../Data/User';
