@@ -11,6 +11,7 @@ const LoginForm = () => {
     username: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
   const usernameChecks = {
     lengthCheck:
@@ -40,9 +41,8 @@ const LoginForm = () => {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
     if (!shouldDisableForm()) {
-      // Proceed with login
-
       try {
         const response = await fetch("http://localhost:3000/login", {
           method: "POST",
@@ -61,9 +61,11 @@ const LoginForm = () => {
         } else {
           // Handle login failure (e.g., show error message)
           console.error("Login failed:", data.message);
+          setError(data.message);
         }
       } catch (error) {
         console.error("Login error:", error);
+        setError("An error occurred while logging in.");
       }
     }
   };
@@ -101,6 +103,13 @@ const LoginForm = () => {
             inputKey="password"
             isValid={passwordChecks.lengthCheck}
           />
+          <div>
+            <form onSubmit={handleLogin} className="space-y-8 mt-10">
+              {error && (
+                <div className="text-red-500 text-sm mt-2">{error}</div>
+              )}
+            </form>
+          </div>
           <div className="pt-6">
             <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
           </div>
