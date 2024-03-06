@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import dotenv from 'dotenv'
 import { DataSource } from "typeorm"
+import fs from "fs"
 
 import { User } from './User'
 import { Posts } from './Posts'
@@ -23,5 +24,8 @@ export const Database = new DataSource({
         Replies,
         RepliesUser,
         UserPosts
-    ]
+    ],
+    ssl: {
+        ca: fs.readFileSync("./ca.pem"),
+    }
 })
