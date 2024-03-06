@@ -40,6 +40,7 @@ const Sidebar = () => {
       <div className="flex flex-col">
         <GlobeAltIcon className="h-10 w-10 mx-auto my-4" />
         <SidebarSeparator />
+        {/* SidebarLink components */}
         <SidebarLink
           to="/home"
           icon={<HomeIcon />}
