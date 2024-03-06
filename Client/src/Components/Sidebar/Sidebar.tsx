@@ -35,7 +35,7 @@ const Sidebar = () => {
     <motion.div
       className={`fixed top-0 left-0 h-screen bg-gray-100 text-gray-600 shadow-lg z-10 ${
         isMobile ? "w-20" : "w-52"
-      } flex flex-col justify-between font-montserrat`} // Adjusted width and font-family
+      } flex flex-col justify-between font-montserrat`}
       initial={false}
       animate={isOpen || !isMobile ? "open" : "closed"}
       variants={sidebarVariants}
@@ -51,7 +51,7 @@ const Sidebar = () => {
             <span className="text-xl font-semibold">UniSphere</span>
           )}
         </div>
-        {!isMobile && <SidebarSeparator />}
+        <SidebarSeparator />
         {/* SidebarLink components */}
         <SidebarLink
           to="/home"
