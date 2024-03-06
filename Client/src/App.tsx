@@ -12,6 +12,7 @@ import UserSettingsPage from "./Pages/UserSettingsPage";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import RegisterForm from "./Components/Forms/RegisterForm";
 import SplashPage from "./Pages/SplashPage";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/" element={<SplashPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+        <Route path="*" element={<NotFoundPage />} />
 
         {/* Nested routes for the main layout with the sidebar */}
         <Route element={<LayoutWithSidebar />}>
