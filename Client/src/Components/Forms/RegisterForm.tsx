@@ -5,8 +5,11 @@ import FormInput from "../Inputs/FormInput";
 import SubmitButton from "../Forms/SubmitButton";
 import ValidationChecklist from "../Forms/ValidationChecklist";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -66,6 +69,7 @@ const RegisterForm = () => {
         const data = await response.json();
         if (data.success) {
           // Handle success
+          navigate("/login");
         } else {
           // Handle failure
           console.error(data.message);
