@@ -72,7 +72,7 @@ const Sidebar = () => {
           isMobile={isMobile}
         />
       </div>
-      <div className="mb-2">
+      <div className="mb-3">
         <SidebarLink
           to="/settings"
           icon={<CogIcon />}
