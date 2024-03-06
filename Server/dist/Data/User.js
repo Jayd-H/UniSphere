@@ -11,7 +11,7 @@ const typeorm_1 = require("typeorm");
 let User = class User extends typeorm_1.BaseEntity {
     static passwordByUsername(username) {
         return this.find({
-            select: { password: true },
+            select: { hash: true },
             where: { username: username }
         });
     }
@@ -21,13 +21,13 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
 ], User.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 16 })
+    (0, typeorm_1.Column)("varchar", { length: 32 })
 ], User.prototype, "username", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
-], User.prototype, "password", void 0);
+    (0, typeorm_1.Column)("varchar", { length: 72 })
+], User.prototype, "hash", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 255 })
+    (0, typeorm_1.Column)("varchar", { length: 64 })
 ], User.prototype, "DisplayName", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "user" })
