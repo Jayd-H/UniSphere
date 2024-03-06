@@ -11,7 +11,6 @@ import {
 import SidebarLink from "./SidebarLink";
 import SidebarSeparator from "./SidebarSeparator";
 
-// Sidebar component
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
@@ -35,15 +34,24 @@ const Sidebar = () => {
   return (
     <motion.div
       className={`fixed top-0 left-0 h-screen bg-gray-100 text-gray-600 shadow-lg z-10 ${
-        isMobile ? "w-20" : "w-64"
-      } flex flex-col justify-between`}
+        isMobile ? "w-20" : "w-52"
+      } flex flex-col justify-between font-montserrat`} // Adjusted width and font-family
       initial={false}
       animate={isOpen || !isMobile ? "open" : "closed"}
       variants={sidebarVariants}
     >
-      <div className="flex flex-col">
-        <GlobeAltIcon className="h-10 w-10 mx-auto my-4 mb-2" />
-        <SidebarSeparator />
+      <div className="flex-1 flex flex-col">
+        <div className={`${isMobile ? "" : "flex items-center"}`}>
+          <GlobeAltIcon
+            className={`h-10 w-10 ${
+              isMobile ? "mx-auto my-4 mb-2" : "ml-4 mr-2 my-4"
+            }`}
+          />
+          {!isMobile && (
+            <span className="text-xl font-semibold">UniSphere</span>
+          )}
+        </div>
+        {!isMobile && <SidebarSeparator />}
         {/* SidebarLink components */}
         <SidebarLink
           to="/home"

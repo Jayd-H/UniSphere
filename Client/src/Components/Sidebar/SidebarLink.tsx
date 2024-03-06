@@ -27,10 +27,12 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({
       <div
         className={`flex ${
           isMobile ? "flex-col items-center" : "items-center"
-        }`}
+        } text-base`}
       >
         <div className={`${iconClasses} ${isMobile ? "" : "mr-2"}`}>{icon}</div>
-        <span className={`${isMobile ? "mt-1" : ""}`}>{label}</span>
+        <span className={`${isMobile ? "mt-1" : "text-base"}`}>
+          {label}
+        </span>{" "}
       </div>
     </NavLink>
   );
