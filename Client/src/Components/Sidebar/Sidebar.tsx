@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   HomeIcon,
@@ -12,78 +12,87 @@ import SidebarLink from "./SidebarLink";
 import SidebarSeparator from "./SidebarSeparator";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  // Update isMobile state when window is resized
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Toggle sidebar open/closed
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const linkBaseClasses =
-    "flex flex-col items-center justify-center py-2 transition-all duration-300 group";
-  const activeLinkClasses = "text-blue-600";
-  const inactiveLinkClasses = "text-gray-600 hover:text-luni-blue";
-  const iconClasses = "h-8 w-8";
-
-  const getNavLinkClasses = (isActive: boolean) =>
-    `${linkBaseClasses} ${isActive ? activeLinkClasses : inactiveLinkClasses}`;
-
+  // Sidebar open/closed variants
   const sidebarVariants = {
-    open: { x: 0, width: "5rem", transition: { stiffness: 100 } },
-    closed: { x: "-100%", transition: { stiffness: 100 } },
-  };
-
-  const notchVariants = {
-    hover: {
-      scale: 1.5,
-      transition: { duration: 0.2, transformOrigin: "center" },
-    },
+    open: { x: 0 },
+    closed: { x: "-100%" },
   };
 
   return (
     <motion.div
-      className="fixed top-0 left-0 h-screen bg-gray-100 text-gray-600 shadow-lg flex flex-col justify-between z-10"
-      initial="open"
-      animate={isOpen ? "open" : "closed"}
+      className={`fixed top-0 left-0 h-screen bg-gray-100 text-gray-600 shadow-lg z-10 ${
+        isMobile ? "w-20" : "w-52"
+      } flex flex-col justify-between font-montserrat`}
+      initial={false}
+      animate={isOpen || !isMobile ? "open" : "closed"}
       variants={sidebarVariants}
     >
-      <div className="flex flex-col items-center flex-1">
-        <GlobeAltIcon className="h-10 w-10 text-gray-600 mt-6 mb-2" />
+      <div className="flex-1 flex flex-col">
+        <div className={`${isMobile ? "" : "flex items-center"}`}>
+          <GlobeAltIcon
+            className={`h-10 w-10 ${
+              isMobile ? "mx-auto my-4 mb-2" : "ml-4 mr-2 my-4"
+            }`}
+          />
+          {!isMobile && (
+            <span className="text-xl font-semibold">UniSphere</span>
+          )}
+        </div>
         <SidebarSeparator />
+        {/* SidebarLink components */}
         <SidebarLink
           to="/home"
-          icon={<HomeIcon className={iconClasses} />}
+          icon={<HomeIcon />}
           label="Home"
-          getNavLinkClasses={getNavLinkClasses}
+          isMobile={isMobile}
         />
         <SidebarLink
           to="/societies"
-          icon={<UserGroupIcon className={iconClasses} />}
+          icon={<UserGroupIcon />}
           label="Societies"
-          getNavLinkClasses={getNavLinkClasses}
+          isMobile={isMobile}
         />
         <SidebarLink
           to="/events"
-          icon={<CalendarIcon className={iconClasses} />}
+          icon={<CalendarIcon />}
           label="Events"
-          getNavLinkClasses={getNavLinkClasses}
+          isMobile={isMobile}
         />
       </div>
-      <SidebarLink
-        to="/settings"
-        icon={<CogIcon className={iconClasses} />}
-        label="Settings"
-        getNavLinkClasses={getNavLinkClasses}
-      />
-      <motion.button
-        className="absolute top-1/2 right-0 -mr-2 transform -translate-y-1/2 bg-gray-100 p-2 rounded-l-full shadow-lg focus:outline-none"
-        onClick={toggleSidebar}
-        variants={notchVariants}
-        initial={false}
-        whileHover={isOpen ? undefined : "hover"}
-      >
-        <ChevronRightIcon
-          className={`h-5 w-5 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+      <div className="mb-3">
+        <SidebarLink
+          to="/settings"
+          icon={<CogIcon />}
+          label="Settings"
+          isMobile={isMobile}
         />
-      </motion.button>
+      </div>
+      {isMobile && (
+        <motion.button
+          className="absolute top-1/2 right-0 -mr-2 transform -translate-y-1/2 bg-gray-100 p-2 rounded-l-full shadow-lg focus:outline-none"
+          onClick={toggleSidebar}
+          whileHover={{ scale: 1.5 }}
+        >
+          <ChevronRightIcon
+            className={`h-5 w-5 transition-transform ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </motion.button>
+      )}
     </motion.div>
   );
 };
