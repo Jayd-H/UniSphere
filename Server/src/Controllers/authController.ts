@@ -40,7 +40,7 @@ export const register = async (req: Request, res: Response) => {
 
     const user = new User();
     user.username = username;
-    user.password = hash;
+    user.hash = hash;
     user.DisplayName = displayName;
     await user.save();
     
