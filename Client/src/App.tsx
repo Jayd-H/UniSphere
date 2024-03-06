@@ -34,6 +34,7 @@ const App = () => {
         <Route path="/" element={<SplashPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+        <Route path="*" element={<NotFoundPage />} />
 
         {/* Nested routes for the main layout with the sidebar */}
         <Route element={<LayoutWithSidebar />}>
@@ -41,7 +42,6 @@ const App = () => {
           <Route path="/societies" element={<SocietiesPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/settings" element={<UserSettingsPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>
