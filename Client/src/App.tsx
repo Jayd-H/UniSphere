@@ -12,7 +12,7 @@ import UserSettingsPage from "./Pages/UserSettingsPage";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import RegisterForm from "./Components/Forms/RegisterForm";
 import SplashPage from "./Pages/SplashPage";
-import NotFoundPage from "./Components/NotFoundPage";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
