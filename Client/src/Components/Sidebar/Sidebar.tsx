@@ -38,7 +38,7 @@ const Sidebar = () => {
       variants={sidebarVariants}
     >
       <div className="flex flex-col">
-        <GlobeAltIcon className="h-10 w-10 mx-auto my-4" />
+        <GlobeAltIcon className="h-10 w-10 mx-auto my-4 mb-2" />
         <SidebarSeparator />
         {/* SidebarLink components */}
         <SidebarLink
