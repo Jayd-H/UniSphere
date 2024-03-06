@@ -14,8 +14,7 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({
   label,
   isMobile,
 }) => {
-  const linkBaseClasses =
-    "flex items-center py-2 transition-all duration-300 group";
+  const linkBaseClasses = "group py-2 transition-all duration-300";
   const activeLinkClasses = "text-blue-600";
   const inactiveLinkClasses = "text-gray-600 hover:text-blue-500";
   const iconClasses = "h-8 w-8";
@@ -25,10 +24,14 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({
 
   return (
     <NavLink to={to} className={({ isActive }) => getNavLinkClasses(isActive)}>
-      <div className={`${iconClasses} ${isMobile ? "mx-auto" : ""}`}>
-        {icon}
+      <div
+        className={`flex ${
+          isMobile ? "flex-col items-center" : "items-center"
+        }`}
+      >
+        <div className={`${iconClasses} ${isMobile ? "" : "mr-2"}`}>{icon}</div>
+        <span className={`${isMobile ? "mt-1" : ""}`}>{label}</span>
       </div>
-      {!isMobile && <span className="ml-2">{label}</span>}
     </NavLink>
   );
 };
