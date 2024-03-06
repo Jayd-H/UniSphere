@@ -11,18 +11,22 @@ import {
 import SidebarLink from "./SidebarLink";
 import SidebarSeparator from "./SidebarSeparator";
 
+// Sidebar component
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
+  // Update isMobile state when window is resized
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Toggle sidebar open/closed
   const toggleSidebar = () => setIsOpen(!isOpen);
 
+  // Sidebar open/closed variants
   const sidebarVariants = {
     open: { x: 0 },
     closed: { x: "-100%" },
@@ -59,6 +63,8 @@ const Sidebar = () => {
           label="Events"
           isMobile={isMobile}
         />
+      </div>
+      <div className="mb-2">
         <SidebarLink
           to="/settings"
           icon={<CogIcon />}
