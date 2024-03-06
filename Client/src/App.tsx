@@ -12,6 +12,7 @@ import UserSettingsPage from "./Pages/UserSettingsPage";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import RegisterForm from "./Components/Forms/RegisterForm";
 import SplashPage from "./Pages/SplashPage";
+import NotFoundPage from "./Components/NotFoundPage";
 
 // Define a layout component that includes the sidebar
 const LayoutWithSidebar = () => {
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/societies" element={<SocietiesPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/settings" element={<UserSettingsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>
