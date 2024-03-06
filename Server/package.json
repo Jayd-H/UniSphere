@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node dist/index.js",
     "dev": "npx ts-node src/index.ts",
-    "test": "exit 0"
+    "test": "exit 0",
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
