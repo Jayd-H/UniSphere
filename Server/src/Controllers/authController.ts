@@ -19,7 +19,7 @@ export const login = async (req: Request, res: Response) => {
       const isMatch = await bcrypt.compare(password, storedHash);
 
       if (isMatch) {
-        res.json({ success: true, message: "Login successful" });
+        res.status(200).json({ success: true, message: "Login successful" });
       } else {
         res.status(401).json({ success: false, message: "Invalid credentials" });
       }
@@ -44,7 +44,7 @@ export const register = async (req: Request, res: Response) => {
     user.DisplayName = displayName;
     await user.save();
     
-    res.json({ success: true, message: "User registered successfully." });
+    res.status(200).json({ success: true, message: "User registered successfully." });
   } catch (error: any) {
     if (error.code === 'ER_DUP_ENTRY') {
       res.status(409).json({ success: false, message: "Username is already taken." });
