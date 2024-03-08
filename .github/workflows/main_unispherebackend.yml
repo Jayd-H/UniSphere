@@ -29,14 +29,16 @@ jobs:
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: |
+          zip -r ../release.zip . -x '*.git*' '*node_modules*' '*test*' '*tests*' '*.md' 'Dockerfile' '*.dockerignore' '*.gitignore' -x '*/\.*'
+          zip -g ../release.zip ca.pem # explicitly add ca.pem file
         working-directory: ./Server
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: ./Server/release.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
