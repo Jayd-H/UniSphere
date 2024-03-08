@@ -1,7 +1,6 @@
 import "reflect-metadata"
 import dotenv from 'dotenv'
 import { DataSource } from "typeorm"
-import fs from "fs"
 
 import { User } from './User'
 import { Posts } from './Posts'
