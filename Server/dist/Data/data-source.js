@@ -7,7 +7,6 @@ exports.Database = void 0;
 require("reflect-metadata");
 const dotenv_1 = __importDefault(require("dotenv"));
 const typeorm_1 = require("typeorm");
-const fs_1 = __importDefault(require("fs"));
 const User_1 = require("./User");
 const Posts_1 = require("./Posts");
 const Replies_1 = require("./Replies");
@@ -28,7 +27,4 @@ exports.Database = new typeorm_1.DataSource({
         RepliesUser_1.RepliesUser,
         UserPosts_1.UserPosts
     ],
-    ssl: {
-        ca: fs_1.default.readFileSync("./ca.pem"),
-    }
 });

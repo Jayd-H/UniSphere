@@ -15,7 +15,7 @@ const login = async (req, res) => {
             const storedHash = userRows[0].hash;
             const isMatch = await bcrypt_1.default.compare(password, storedHash);
             if (isMatch) {
-                res.json({ success: true, message: "Login successful" });
+                res.status(200).json({ success: true, message: "Login successful" });
             }
             else {
                 res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -40,7 +40,7 @@ const register = async (req, res) => {
         user.hash = hash;
         user.DisplayName = displayName;
         await user.save();
-        res.json({ success: true, message: "User registered successfully." });
+        res.status(200).json({ success: true, message: "User registered successfully." });
     }
     catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
