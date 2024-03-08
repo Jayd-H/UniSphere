@@ -44,16 +44,19 @@ const LoginForm = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch("http://localhost:3000/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        });
+        const response = await fetch(
+          "http://unispherebackend.azurewebsites.net:3000/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              password: formData.password,
+            }),
+          }
+        );
         const data = await response.json();
         if (data.success) {
           // Handle login success (e.g., redirect to dashboard)
