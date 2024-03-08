@@ -25,7 +25,4 @@ export const Database = new DataSource({
         RepliesUser,
         UserPosts
     ],
-    ssl: {
-        ca: fs.readFileSync("./ca.pem"),
-    }
 })
