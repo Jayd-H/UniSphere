@@ -24,4 +24,5 @@ export const Database = new DataSource({
         RepliesUser,
         UserPosts
     ],
+    ssl: false
 })
