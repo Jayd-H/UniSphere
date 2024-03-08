@@ -31,7 +31,6 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           zip -r ../release.zip . -x '*.git*' '*node_modules*' '*test*' '*tests*' '*.md' 'Dockerfile' '*.dockerignore' '*.gitignore' -x '*/\.*'
-          zip -g ../release.zip ca.pem # explicitly add ca.pem file
         working-directory: ./Server
 
       - name: Upload artifact for deployment job
