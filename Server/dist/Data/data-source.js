@@ -27,4 +27,5 @@ exports.Database = new typeorm_1.DataSource({
         RepliesUser_1.RepliesUser,
         UserPosts_1.UserPosts
     ],
+    ssl: false
 });
