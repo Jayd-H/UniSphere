@@ -45,7 +45,7 @@ const LoginForm = () => {
     if (!shouldDisableForm()) {
       try {
         const response = await fetch(
-          "http://unispherebackend.azurewebsites.net:3000/login",
+          "https://unispherebackend.azurewebsites.net:3000/login",
           {
             method: "POST",
             headers: {
