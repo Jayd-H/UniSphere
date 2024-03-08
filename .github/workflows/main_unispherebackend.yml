@@ -53,7 +53,13 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip release.zip -d app
+
+      - name: Install npm dependencies
+        run: |
+          cd app
+          npm install
+        working-directory: .
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -62,4 +68,4 @@ jobs:
           app-name: 'unispherebackend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6912D07E4F7740098E0184ABDB340761 }}
-          package: .
+          package: app
