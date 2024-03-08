@@ -7,6 +7,7 @@ import { Posts } from './Posts'
 import { Replies } from './Replies'
 import { RepliesUser } from './RepliesUser'
 import { UserPosts } from "./UserPosts"
+import { Societies } from "./Societies"
 
 dotenv.config()
 
@@ -22,7 +23,8 @@ export const Database = new DataSource({
         Posts,
         Replies,
         RepliesUser,
-        UserPosts
+        UserPosts,
+        Societies
     ],
     ssl: false
 })
