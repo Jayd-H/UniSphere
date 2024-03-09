@@ -12,17 +12,17 @@ interface UserPasswordRow extends RowDataPacket {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    const user = await Database.getRepository(User).findOne({
+    const existingUser = await Database.getRepository(User).findOne({
       where: { username }
     });
 
     // Check if the user exists before trying to compare passwords
-    if (!user) {
+    if (!existingUser) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
     
     // Now we're sure 'user' is not undefined, we can safely read 'user.hash'
-    const isMatch = await bcrypt.compare(password, user.hash);
+    const isMatch = await bcrypt.compare(password, existingUser.hash);
 
     if (isMatch) {
       res.status(200).json({ success: true, message: "Login successful" });
