@@ -24,7 +24,4 @@ app.use('/api/auth', authRoutes_1.default);
 app.get("/", (req, res) => {
     res.send("Express server is up and running!");
 });
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
 exports.default = app;
