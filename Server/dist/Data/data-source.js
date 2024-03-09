@@ -12,6 +12,8 @@ const Posts_1 = require("./Posts");
 const Replies_1 = require("./Replies");
 const RepliesUser_1 = require("./RepliesUser");
 const UserPosts_1 = require("./UserPosts");
+const Societies_1 = require("./Societies");
+const UserSocieties_1 = require("./UserSocieties");
 dotenv_1.default.config();
 exports.Database = new typeorm_1.DataSource({
     type: "mysql",
@@ -25,7 +27,9 @@ exports.Database = new typeorm_1.DataSource({
         Posts_1.Posts,
         Replies_1.Replies,
         RepliesUser_1.RepliesUser,
-        UserPosts_1.UserPosts
+        UserPosts_1.UserPosts,
+        Societies_1.Societies,
+        UserSocieties_1.UserSocieties
     ],
     ssl: false
 });
