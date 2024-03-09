@@ -11,19 +11,16 @@ interface UserPasswordRow extends RowDataPacket {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    const [rows] = await User.passwordByUsername(username) as RowDataPacket[];
-    const userRows = rows as UserPasswordRow[];
-
-    if (userRows.length > 0) {
-      const storedHash = userRows[0].hash;
-      const isMatch = await bcrypt.compare(password, storedHash);
+    const user = await User.findOne({ where: { username } });
+    
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.hash);
 
       if (isMatch) {
         res.status(200).json({ success: true, message: "Login successful" });
       } else {
         res.status(401).json({ success: false, message: "Invalid credentials" });
       }
-
     } else {
       res.status(404).json({ success: false, message: "User not found" });
     }
