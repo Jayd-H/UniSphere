@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToMany, JoinColumn } from 'typeorm'
 import { Societies } from './Societies'
-import { User } from './User'
+import { User } from './Users'
 
 @Entity({database: "unisphere",name:"usersocieties"})
 export class UserSocieties extends BaseEntity {

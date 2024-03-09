@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from 'typeorm'
-import { User } from './User'
+import { User } from './Users'
 import {Posts} from './Posts'
 
 @Entity({database: "unisphere",name:"replies"})
