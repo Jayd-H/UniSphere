@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import FormContainer from "../Common/FormContainer";
 import FormInput from "../Inputs/FormInput";
 import SubmitButton from "../Forms/SubmitButton";
@@ -7,6 +7,9 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 
 const LoginForm = () => {
+  const location = useLocation();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -73,9 +76,29 @@ const LoginForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (location.state?.registered) {
+      setShowSuccessMessage(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
   return (
     <FormContainer>
       <div className="flex flex-col items-center p-8">
+        {/* Show the success message if registered is true */}
+        {showSuccessMessage && (
+          <div
+            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <strong className="font-bold">Registered successfully!</strong>
+            <span className="block sm:inline">
+              {" "}
+              Please log in with your new credentials.
+            </span>
+          </div>
+        )}
         <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
           <motion.div
             whileHover={{ rotate: 180, scale: 1.1 }}

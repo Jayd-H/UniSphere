@@ -35,22 +35,26 @@ export const login = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
   const { username, password, displayName } = req.body;
-  try {
-    const hash = await bcrypt.hash(password, 10);
 
+  try {
+    // Check if username already exists
+    const existingUser = await User.findOne({ where: { username } });
+    
+    if (existingUser) {
+      return res.status(409).json({ success: false, message: "Username is already taken." });
+    }
+
+    // If username doesn't exist, proceed with creating the new user
+    const hash = await bcrypt.hash(password, 10);
     const user = new User();
     user.username = username;
     user.hash = hash;
     user.displayName = displayName;
     await user.save();
     
-    res.status(200).json({ success: true, message: "User registered successfully." });
+    return res.status(200).json({ success: true, message: "User registered successfully." });
   } catch (error: any) {
-    if (error.code === 'ER_DUP_ENTRY') {
-      res.status(409).json({ success: false, message: "Username is already taken." });
-    } else {
-      console.error("Error registering user:", error);
-      res.status(500).json({ success: false, message: "Server error" });
-    }
+    console.error("Error registering user:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
