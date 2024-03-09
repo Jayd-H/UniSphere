@@ -5,8 +5,6 @@ import { DataSource } from "typeorm"
 import { User } from './User'
 import { Posts } from './Posts'
 import { Replies } from './Replies'
-import { RepliesUser } from './RepliesUser'
-import { UserPosts } from "./UserPosts"
 import { Societies } from "./Societies"
 import { UserSocieties } from "./UserSocieties"
 
@@ -23,8 +21,6 @@ export const Database = new DataSource({
         User,
         Posts,
         Replies,
-        RepliesUser,
-        UserPosts,
         Societies,
         UserSocieties
     ],
