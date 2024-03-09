@@ -52,7 +52,7 @@ const RegisterForm = () => {
     if (!shouldDisableForm()) {
       try {
         const response = await fetch(
-          "https://unispherebackend.azurewebsites.net:8080/api/auth/register",
+          "https://unispherebackend.vercel.app/api/auth/register",
           {
             method: "POST",
             headers: {

@@ -45,7 +45,7 @@ const LoginForm = () => {
     if (!shouldDisableForm()) {
       try {
         const response = await fetch(
-          "https://unispherebackend.azurewebsites.net:8080/login",
+          "https://unispherebackend.vercel.app/api/auth/login",
           {
             method: "POST",
             headers: {
