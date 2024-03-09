@@ -84,72 +84,74 @@ const LoginForm = () => {
   }, [location]);
 
   return (
-    <FormContainer>
-      <div className="flex flex-col items-center p-8">
-        {/* Show the success message if registered is true */}
-        {showSuccessMessage && (
-          <div
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <strong className="font-bold">Registered successfully!</strong>
-            <span className="block sm:inline">
-              {" "}
-              Please log in with your new credentials.
-            </span>
-          </div>
-        )}
-        <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
-          <motion.div
-            whileHover={{ rotate: 180, scale: 1.1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <GlobeAltIcon className="w-8 h-8" />
-          </motion.div>
+    <>
+      {/* Show the success message if registered is true */}
+      {showSuccessMessage && (
+        <div
+          className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <strong className="font-bold">Registered successfully!</strong>
+          <span className="block sm:inline">
+            {" "}
+            Please log in with your new credentials.
+          </span>
         </div>
-        <span className="text-sm font-semibold">UniSphere</span>
-        <h1 className="text-2xl font-semibold mt-6">Welcome back</h1>
-        <h1 className="text-lg font-semibold -mt-1">Login to your account</h1>
-        <form onSubmit={handleLogin} className="space-y-8 mt-10">
-          <FormInput
-            id="username"
-            type="text"
-            value={formData.username}
-            onChange={(e) => handleInputChange(e, "username")}
-            placeholder="Username..."
-            inputKey="username"
-            isValid={usernameChecks.lengthCheck && usernameChecks.spaceCheck}
-          />
-          <FormInput
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={(e) => handleInputChange(e, "password")}
-            placeholder="Password..."
-            inputKey="password"
-            isValid={passwordChecks.lengthCheck}
-          />
-          <div>
-            <form onSubmit={handleLogin} className="space-y-8 mt-10">
-              {error && (
-                <div className="text-red-500 text-sm mt-2">{error}</div>
-              )}
-            </form>
+      )}
+      <FormContainer>
+        <div className="flex flex-col items-center p-8">
+          <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
+            <motion.div
+              whileHover={{ rotate: 180, scale: 1.1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <GlobeAltIcon className="w-8 h-8" />
+            </motion.div>
           </div>
-          <div className="pt-6">
-            <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
+          <span className="text-sm font-semibold">UniSphere</span>
+          <h1 className="text-2xl font-semibold mt-6">Welcome back</h1>
+          <h1 className="text-lg font-semibold -mt-1">Login to your account</h1>
+          <form onSubmit={handleLogin} className="space-y-8 mt-10">
+            <FormInput
+              id="username"
+              type="text"
+              value={formData.username}
+              onChange={(e) => handleInputChange(e, "username")}
+              placeholder="Username..."
+              inputKey="username"
+              isValid={usernameChecks.lengthCheck && usernameChecks.spaceCheck}
+            />
+            <FormInput
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange(e, "password")}
+              placeholder="Password..."
+              inputKey="password"
+              isValid={passwordChecks.lengthCheck}
+            />
+            <div>
+              <form onSubmit={handleLogin} className="space-y-8 mt-10">
+                {error && (
+                  <div className="text-red-500 text-sm mt-2">{error}</div>
+                )}
+              </form>
+            </div>
+            <div className="pt-6">
+              <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
+            </div>
+          </form>
+          <div className="flex items-center justify-center mt-8 -mb-8">
+            <Link
+              to="/register"
+              className="hover:text-luni-dark-blue text-luni-blue font-bold text-sm"
+            >
+              Sign up
+            </Link>
           </div>
-        </form>
-        <div className="flex items-center justify-center mt-8 -mb-8">
-          <Link
-            to="/register"
-            className="hover:text-luni-dark-blue text-luni-blue font-bold text-sm"
-          >
-            Sign up
-          </Link>
         </div>
-      </div>
-    </FormContainer>
+      </FormContainer>
+    </>
   );
 };
 
