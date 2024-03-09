@@ -132,10 +132,11 @@ const LoginForm = () => {
                 isValid={passwordChecks.lengthCheck}
               />
               <div>
-                <form onSubmit={handleLogin} className="space-y-8 mt-10">
-                  {error && (
-                    <div className="text-red-500 text-sm mt-2">{error}</div>
-                  )}
+                <form
+                  onSubmit={handleLogin}
+                  className="space-y-8 mt-4 justify-center items-center w-full text-center"
+                >
+                  {error && <div className="text-red-500 text-md">{error}</div>}
                 </form>
               </div>
               <div className="pt-6">
