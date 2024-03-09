@@ -10,21 +10,29 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-Database.initialize()
-    .then(() => {
-        console.log("The database has been initialized!");
-    })
-    .catch((err: any) => {
-        console.error("Error during database initialization.", err);
+// The main function to start the server only after database initialization
+async function startServer() {
+  try {
+    await Database.initialize();
+    console.log("The database has been initialized!");
+
+    app.use(cors());
+    app.use(express.json());
+
+    app.use('/api/auth', authRoutes);
+
+    app.get("/", (req, res) => {
+      res.send("Express server is up and running!");
     });
 
-app.use(cors());
-app.use(express.json());
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  } catch (err) {
+    console.error("Error during database initialization.", err);
+  }
+}
 
-app.use('/api/auth', authRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Express server is up and running!");
-});
+startServer();
 
 export default app;
