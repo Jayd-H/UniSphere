@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { RowDataPacket } from 'mysql2';
 
-import { User } from '../Data/Users';
+import { User } from '../Data/User';
 
 interface UserPasswordRow extends RowDataPacket {
   hash: string;

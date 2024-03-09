@@ -2,7 +2,7 @@ import "reflect-metadata"
 import dotenv from 'dotenv'
 import { DataSource } from "typeorm"
 
-import { User } from './Users'
+import { User } from './User'
 import { Posts } from './Posts'
 import { Replies } from './Replies'
 import { Societies } from "./Societies"
