@@ -7,10 +7,11 @@ export class Societies extends BaseEntity
     id: number
 
     @Column("varchar", { length: 32 })
-        societiesName: string
+    societyName: string
 
     @Column("varchar", {length: 256})
-        Description: string
+    description: string
+
     @Column("mediumblob")
-        BannerImg: Blob
+    bannerImg: Blob
 }

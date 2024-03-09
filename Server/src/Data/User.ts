@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity({database: "unisphere",name:"user"})
+@Entity({database: "unisphere",name:"users"})
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn("increment")
     id: number
@@ -12,7 +12,7 @@ export class User extends BaseEntity {
     hash: string
 
     @Column("varchar", { length: 64 })
-    DisplayName: string
+    displayName: string
 
     static passwordByUsername(username: string) {
         return this.find({

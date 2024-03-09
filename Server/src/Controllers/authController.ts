@@ -41,7 +41,7 @@ export const register = async (req: Request, res: Response) => {
     const user = new User();
     user.username = username;
     user.hash = hash;
-    user.DisplayName = displayName;
+    user.displayName = displayName;
     await user.save();
     
     res.status(200).json({ success: true, message: "User registered successfully." });

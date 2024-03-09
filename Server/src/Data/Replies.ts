@@ -4,14 +4,14 @@ import {Posts} from './Posts'
 
 @Entity({database: "unisphere",name:"replies"})
 export class Replies extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    idreplies: number
+    @PrimaryGeneratedColumn("increment")
+    id: number
 
     @Column("varchar", { length: 512 })
-    replies: string
+    content: string
 
     @Column("varchar", { length: 32 })
-        timestamp: string
+    timestamp: string
 
     @ManyToOne(() => User, {cascade: true})
     @JoinColumn({name: "id"})

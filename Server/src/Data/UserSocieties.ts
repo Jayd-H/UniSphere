@@ -2,17 +2,16 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToMany, JoinColumn } fr
 import { Societies } from './Societies'
 import { User } from './User'
 
-
 @Entity({database: "unisphere",name:"usersocieties"})
 export class UserSocieties extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     id: number
-
-    @ManyToMany(() => Societies, { cascade: true })
-    @JoinColumn({ name: "id" })
-    PostsID: number
 
     @ManyToMany(() => User, { cascade: true })
     @JoinColumn({ name: "id" })
-    UsersID: number
+    userId: number
+
+    @ManyToMany(() => Societies, { cascade: true })
+    @JoinColumn({ name: "id" })
+    postId: number
 }
