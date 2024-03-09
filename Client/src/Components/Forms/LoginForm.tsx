@@ -85,7 +85,7 @@ const LoginForm = () => {
 
   return (
     <div className="flex justify-center items-center h-screen glowing-background font-arimo">
-      <div className="w-full max-w-xs mx-auto">
+      <div>
         {/* Show the success message if registered is true */}
         {showSuccessMessage && (
           <div
