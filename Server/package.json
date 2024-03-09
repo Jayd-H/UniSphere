@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "engines":{
+    "node": "18.x"
+  },
   "scripts": {
     "clean": "rm -rf dist/*",
     "start": "node dist/index.js",
