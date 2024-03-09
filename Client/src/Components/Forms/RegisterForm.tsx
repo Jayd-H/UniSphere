@@ -75,8 +75,11 @@ const RegisterForm = () => {
           console.error(data.message);
         }
       } catch (error) {
-        // Handle network errors
-        console.error("Network error:", error);
+        if (error instanceof Error) {
+          console.error("Register error:", error.message);
+        } else {
+          console.error("Register error:", error);
+        }
       }
     }
   };

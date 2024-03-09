@@ -62,16 +62,21 @@ const LoginForm = () => {
         );
         const data = await response.json();
         if (data.success) {
-          // Handle login success (e.g., redirect to dashboard)
+          // Handle login success
           console.log("Login successful:", data.message);
         } else {
-          // Handle login failure (e.g., show error message)
+          // Handle login failure
           console.error("Login failed:", data.message);
           setError(data.message);
         }
       } catch (error) {
-        console.error("Login error:", error);
-        setError("An error occurred while logging in.");
+        if (error instanceof Error) {
+          console.error("Login error:", error.message);
+          setError("An error occurred while logging in: " + error.message);
+        } else {
+          console.error("Login error:", error);
+          setError("An unknown error occurred while logging in.");
+        }
       }
     }
   };
