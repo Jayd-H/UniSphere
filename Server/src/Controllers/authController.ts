@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { RowDataPacket } from 'mysql2';
+import { Database } from '../Data/data-source';
 
 import { User } from '../Data/User';
 
@@ -11,7 +12,7 @@ interface UserPasswordRow extends RowDataPacket {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    const user = await User.findOne({ where: { username } });
+    const user = await User.passwordByUsername(Database, username);
     
     if (user) {
       const isMatch = await bcrypt.compare(password, user.hash);
@@ -34,8 +35,9 @@ export const register = async (req: Request, res: Response) => {
   const { username, password, displayName } = req.body;
 
   try {
-    // Check if username already exists
-    const existingUser = await User.findOne({ where: { username } });
+    const existingUser = await Database.getRepository(User).findOne({
+      where: { username }
+    });
     
     if (existingUser) {
       return res.status(409).json({ success: false, message: "Username is already taken." });
