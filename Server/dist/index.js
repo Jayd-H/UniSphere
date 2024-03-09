@@ -21,6 +21,10 @@ data_source_1.Database.initialize()
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use('/api/auth', authRoutes_1.default);
+app.get("/", (req, res) => {
+    res.send("Express server is up and running!");
+});
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+exports.default = app;
