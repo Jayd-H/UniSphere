@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     username: "",
@@ -49,6 +50,7 @@ const RegisterForm = () => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+    setError("");
     if (!shouldDisableForm()) {
       try {
         const response = await fetch(
@@ -73,6 +75,7 @@ const RegisterForm = () => {
         } else {
           // Handle failure
           console.error(data.message);
+          setError(data.message);
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -142,6 +145,7 @@ const RegisterForm = () => {
             />
             <SubmitButton isDisabled={shouldDisableForm()} text="Register" />
           </form>
+          {error && <div className="text-red-500 text-md mb-4">{error}</div>}
           <ValidationChecklist checks={validationItems} />
           <div className="flex items-center justify-center -mb-6 text-luni-grey">
             <Link
