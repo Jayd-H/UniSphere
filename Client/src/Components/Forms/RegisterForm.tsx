@@ -101,54 +101,56 @@ const RegisterForm = () => {
   ];
 
   return (
-    <FormContainer>
-      <div className="flex flex-col items-center p-8 w-full">
-        <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
-          <GlobeAltIcon className="w-8 h-8" />
+    <div className="flex justify-center items-center h-screen glowing-background font-arimo">
+      <FormContainer>
+        <div className="flex flex-col items-center p-8 w-full">
+          <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
+            <GlobeAltIcon className="w-8 h-8" />
+          </div>
+          <span className="text-sm font-semibold">UniSphere</span>
+          <h1 className="text-xl font-semibold mt-4 mb-8">Create Account</h1>
+          <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
+            <FormInput
+              id="username"
+              type="text"
+              value={formData.username}
+              onChange={(e) => handleInputChange(e, "username")}
+              placeholder="Username..."
+              inputKey="username"
+              isValid={usernameChecks.lengthCheck && usernameChecks.spaceCheck}
+            />
+            <FormInput
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange(e, "password")}
+              placeholder="Password..."
+              inputKey="password"
+              isValid={passwordChecks.lengthCheck}
+            />
+            <FormInput
+              id="displayName"
+              type="text"
+              value={formData.displayName}
+              onChange={(e) => handleInputChange(e, "displayName")}
+              placeholder="Display Name..."
+              inputKey="displayName"
+              isValid={displayNameChecks.lengthCheck}
+            />
+            <SubmitButton isDisabled={shouldDisableForm()} text="Register" />
+          </form>
+          <ValidationChecklist checks={validationItems} />
+          <div className="flex items-center justify-center -mb-6 text-luni-grey">
+            <Link
+              to="/login"
+              className="hover:text-luni-dark-blue text-luni-blue font-bold"
+            >
+              Already have an account?
+            </Link>
+          </div>
         </div>
-        <span className="text-sm font-semibold">UniSphere</span>
-        <h1 className="text-xl font-semibold mt-4 mb-8">Create Account</h1>
-        <form onSubmit={handleRegisterSubmit} className="space-y-8 w-full">
-          <FormInput
-            id="username"
-            type="text"
-            value={formData.username}
-            onChange={(e) => handleInputChange(e, "username")}
-            placeholder="Username..."
-            inputKey="username"
-            isValid={usernameChecks.lengthCheck && usernameChecks.spaceCheck}
-          />
-          <FormInput
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={(e) => handleInputChange(e, "password")}
-            placeholder="Password..."
-            inputKey="password"
-            isValid={passwordChecks.lengthCheck}
-          />
-          <FormInput
-            id="displayName"
-            type="text"
-            value={formData.displayName}
-            onChange={(e) => handleInputChange(e, "displayName")}
-            placeholder="Display Name..."
-            inputKey="displayName"
-            isValid={displayNameChecks.lengthCheck}
-          />
-          <SubmitButton isDisabled={shouldDisableForm()} text="Register" />
-        </form>
-        <ValidationChecklist checks={validationItems} />
-        <div className="flex items-center justify-center -mb-6 text-luni-grey">
-          <Link
-            to="/login"
-            className="hover:text-luni-dark-blue text-luni-blue font-bold"
-          >
-            Already have an account?
-          </Link>
-        </div>
-      </div>
-    </FormContainer>
+      </FormContainer>
+    </div>
   );
 };
 

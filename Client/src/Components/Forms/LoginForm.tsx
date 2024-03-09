@@ -85,18 +85,14 @@ const LoginForm = () => {
 
   return (
     <div className="flex justify-center items-center h-screen glowing-background font-arimo">
-      <div className="pt-8">
+      <div>
         {/* Show the success message if registered is true */}
         {showSuccessMessage && (
           <div
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-2 justify-center text-center"
             role="alert"
           >
             <strong className="font-bold">Registered successfully!</strong>
-            <span className="block sm:inline">
-              {" "}
-              Please log in with your new credentials.
-            </span>
           </div>
         )}
         <FormContainer>
