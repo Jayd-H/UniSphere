@@ -145,7 +145,9 @@ const RegisterForm = () => {
             />
             <SubmitButton isDisabled={shouldDisableForm()} text="Register" />
           </form>
-          {error && <div className="text-red-500 text-md mb-4">{error}</div>}
+          {error && (
+            <div className="text-red-500 text-md mb-2 mt-4">{error}</div>
+          )}
           <ValidationChecklist checks={validationItems} />
           <div className="flex items-center justify-center -mb-6 text-luni-grey">
             <Link
