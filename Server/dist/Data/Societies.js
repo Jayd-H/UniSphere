@@ -16,13 +16,13 @@ __decorate([
 ], Societies.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
-], Societies.prototype, "societiesName", void 0);
+], Societies.prototype, "societyName", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 256 })
-], Societies.prototype, "Description", void 0);
+], Societies.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)("mediumblob")
-], Societies.prototype, "BannerImg", void 0);
+], Societies.prototype, "bannerImg", void 0);
 exports.Societies = Societies = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "societies" })
 ], Societies);

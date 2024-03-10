@@ -8,13 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
-let User = class User extends typeorm_1.BaseEntity {
-    static passwordByUsername(username) {
-        return this.find({
-            select: { hash: true },
-            where: { username: username }
-        });
-    }
+const typeorm_2 = require("typeorm");
+let User = class User extends typeorm_2.BaseEntity {
 };
 exports.User = User;
 __decorate([
@@ -28,7 +23,7 @@ __decorate([
 ], User.prototype, "hash", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 64 })
-], User.prototype, "DisplayName", void 0);
+], User.prototype, "displayName", void 0);
 exports.User = User = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "user" })
+    (0, typeorm_1.Entity)({ name: "user" })
 ], User);

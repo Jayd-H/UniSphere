@@ -8,15 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Posts = void 0;
 const typeorm_1 = require("typeorm");
+const User_1 = require("./User");
+const Societies_1 = require("./Societies");
 let Posts = class Posts extends typeorm_1.BaseEntity {
 };
 exports.Posts = Posts;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
-], Posts.prototype, "idposts", void 0);
+], Posts.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 256 })
-], Posts.prototype, "posts", void 0);
+    (0, typeorm_1.Column)("varchar", { length: 512 })
+], Posts.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)("varchar", { length: 32 })
+], Posts.prototype, "timestamp", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Societies_1.Societies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], Posts.prototype, "societyId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => User_1.User, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], Posts.prototype, "userId", void 0);
 exports.Posts = Posts = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "posts" })
 ], Posts);

@@ -11,17 +11,24 @@ const data_source_1 = require("./Data/data-source");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
-data_source_1.Database.initialize()
-    .then(() => {
-    console.log("The database has been initialized!");
-})
-    .catch((err) => {
-    console.error("Error during database initialization.", err);
-});
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.use('/api/auth', authRoutes_1.default);
-app.get("/", (req, res) => {
-    res.send("Express server is up and running!");
-});
+// The main function to start the server only after database initialization
+async function startServer() {
+    try {
+        await data_source_1.Database.initialize();
+        console.log("The database has been initialized!");
+        app.use((0, cors_1.default)());
+        app.use(express_1.default.json());
+        app.use('/api/auth', authRoutes_1.default);
+        app.get("/", (req, res) => {
+            res.send("Express server is up and running!");
+        });
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    }
+    catch (err) {
+        console.error("Error during database initialization.", err);
+    }
+}
+startServer();
 exports.default = app;

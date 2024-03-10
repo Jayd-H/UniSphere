@@ -14,16 +14,16 @@ let UserSocieties = class UserSocieties extends typeorm_1.BaseEntity {
 };
 exports.UserSocieties = UserSocieties;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)()
+    (0, typeorm_1.PrimaryGeneratedColumn)("increment")
 ], UserSocieties.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => Societies_1.Societies, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], UserSocieties.prototype, "PostsID", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => User_1.User, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
-], UserSocieties.prototype, "UsersID", void 0);
+], UserSocieties.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Societies_1.Societies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], UserSocieties.prototype, "postId", void 0);
 exports.UserSocieties = UserSocieties = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "usersocieties" })
 ], UserSocieties);

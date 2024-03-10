@@ -8,15 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Replies = void 0;
 const typeorm_1 = require("typeorm");
+const User_1 = require("./User");
+const Posts_1 = require("./Posts");
 let Replies = class Replies extends typeorm_1.BaseEntity {
 };
 exports.Replies = Replies;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)()
-], Replies.prototype, "idreplies", void 0);
+    (0, typeorm_1.PrimaryGeneratedColumn)("increment")
+], Replies.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 256 })
-], Replies.prototype, "replies", void 0);
+    (0, typeorm_1.Column)("varchar", { length: 512 })
+], Replies.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)("varchar", { length: 32 })
+], Replies.prototype, "timestamp", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => User_1.User, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], Replies.prototype, "UserID", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Posts_1.Posts, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], Replies.prototype, "PostID", void 0);
 exports.Replies = Replies = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "replies" })
 ], Replies);
