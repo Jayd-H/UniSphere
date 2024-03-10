@@ -1,7 +1,7 @@
 import { DataSource, Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { BaseEntity } from 'typeorm'
 
-@Entity({database: "unisphere", name: "user"})
+@Entity({name: "user"})
 export class User extends BaseEntity{
     @PrimaryGeneratedColumn("increment")
     id: number;
@@ -14,11 +14,4 @@ export class User extends BaseEntity{
 
     @Column("varchar", { length: 64 })
     displayName: string;
-
-    static async passwordByUsername(dataSource: DataSource, username: string) {
-        return dataSource.getRepository(User).findOne({
-            select: { hash: true },
-            where: { username: username }
-        });
-    }
 }
