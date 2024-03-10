@@ -12,9 +12,9 @@ interface UserPasswordRow extends RowDataPacket {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    const trimmedUsername = req.body.username.trim();
+    
     const existingUser = await Database.getRepository(User).findOne({
-      where: { username: trimmedUsername }
+      where: { username: username }
     });
 
     
