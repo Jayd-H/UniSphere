@@ -1,24 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `unisphere`;
+CREATE DATABASE  IF NOT EXISTS `unisphere`;
 USE `unisphere`;
-
---
--- Table structure for table `posts`
---
-
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE `posts` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` varchar(512) NOT NULL,
-  `timestamp` varchar(32) NOT NULL,
-  `societyId` int NOT NULL,
-  `userId` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idposts_UNIQUE` (`id`),
-  KEY `societies_idx` (`societyId`),
-  KEY `user_idx` (`userId`),
-  CONSTRAINT `societyid` FOREIGN KEY (`societyId`) REFERENCES `societies` (`id`),
-  CONSTRAINT `userid` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Table structure for table `eventposts`
@@ -39,6 +20,25 @@ CREATE TABLE `eventposts` (
   KEY `societiesid_idx` (`societyid`),
   CONSTRAINT `societyid3` FOREIGN KEY (`societyid`) REFERENCES `societies` (`id`),
   CONSTRAINT `usersid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+CREATE TABLE `posts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` varchar(512) NOT NULL,
+  `timestamp` varchar(32) NOT NULL,
+  `societyId` int NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idposts_UNIQUE` (`id`),
+  KEY `socioties_idx` (`societyId`),
+  KEY `user_idx` (`userId`),
+  CONSTRAINT `societyid` FOREIGN KEY (`societyId`) REFERENCES `societies` (`id`),
+  CONSTRAINT `userid` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
