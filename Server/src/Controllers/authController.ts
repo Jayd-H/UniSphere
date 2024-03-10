@@ -17,19 +17,21 @@ export const login = async (req: Request, res: Response) => {
       where: { username: trimmedUsername }
     });
 
-    // Check if the user exists before trying to compare passwords
-    if (!existingUser) {
+    
+    if (existingUser) {
+          const isMatch = await bcrypt.compare(password, existingUser.hash);
+      
+          if (isMatch) {
+            res.status(200).json({ success: true, message: "Login successful" });
+          } else {
+            res.status(401).json({ success: false, message: "Invalid credentials" });
+          }
+    }
+    else{
       return res.status(404).json({ success: false, message: "User not found" });
     }
     
-    // Now we're sure 'user' is not undefined, we can safely read 'user.hash'
-    const isMatch = await bcrypt.compare(password, existingUser.hash);
 
-    if (isMatch) {
-      res.status(200).json({ success: true, message: "Login successful" });
-    } else {
-      res.status(401).json({ success: false, message: "Invalid credentials" });
-    }
   } catch (error) {
     console.error("Error verifying password:", error);
     res.status(500).json({ success: false, message: "Server error" });
