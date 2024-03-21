@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { RowDataPacket } from 'mysql2';
 import { Database } from '../Data/data-source';
-
+import jwt from 'jsonwebtoken';
 import { User } from '../Data/User';
 
 interface UserPasswordRow extends RowDataPacket {
@@ -28,8 +28,20 @@ export const login = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, existingUser.hash);
 
     if (isMatch) {
+      // User authenticated, create JWT
+      const userPayload = { id: existingUser.id, username: existingUser.username };
+
+      // Assert ACCESS_TOKEN_SECRET is not undefined
+      const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET!;
+      if (!accessTokenSecret) {
+        console.error('ACCESS_TOKEN_SECRET is not defined.');
+        return res.status(500).json({ success: false, message: "Server configuration error" });
+      }
+
+      const accessToken = jwt.sign(userPayload, accessTokenSecret, { expiresIn: '1h' });
+
       console.log(`User '${username}' logged in successfully.`);
-      res.status(200).json({ success: true, message: "Login successful" });
+      res.status(200).json({ success: true, message: "Login successful", accessToken });
     } else {
       console.error(`Login error: Invalid credentials for user '${username}'.`);
       res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -42,6 +54,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 
 

@@ -5,9 +5,11 @@ import FormInput from "../Inputs/FormInput";
 import SubmitButton from "../Forms/SubmitButton";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -61,9 +63,10 @@ const LoginForm = () => {
           }
         );
         const data = await response.json();
-        if (data.success) {
-          // Handle login success
+        if (data.success && data.accessToken) {
+          localStorage.setItem("token", data.accessToken);
           console.log("Login successful:", data.message);
+          navigate("/home");
         } else {
           // Handle login failure
           console.error("Login failed:", data.message);
