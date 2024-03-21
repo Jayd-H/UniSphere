@@ -15,10 +15,10 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
 ], Societies.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
+    (0, typeorm_1.Column)("varchar", { length: 96 })
 ], Societies.prototype, "societyName", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 256 })
+    (0, typeorm_1.Column)("varchar", { length: 512 })
 ], Societies.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)("mediumblob")
