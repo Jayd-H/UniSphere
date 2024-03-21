@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './Routes/authRoutes';
+import societyRoutes from './Routes/societyRoutes';
 import { Database } from './Data/data-source';
 
 dotenv.config();
@@ -20,6 +21,7 @@ async function startServer() {
     app.use(express.json());
 
     app.use('/api/auth', authRoutes);
+    app.use('/api/societies', societyRoutes);
 
     app.get("/", (req, res) => {
       res.send("Express server is up and running!");

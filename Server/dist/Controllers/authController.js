@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = exports.login = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const data_source_1 = require("../Data/data-source");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../Data/User");
 const login = async (req, res) => {
     const { username, password } = req.body;
@@ -22,8 +23,17 @@ const login = async (req, res) => {
         }
         const isMatch = await bcrypt_1.default.compare(password, existingUser.hash);
         if (isMatch) {
+            // User authenticated, create JWT
+            const userPayload = { id: existingUser.id, username: existingUser.username };
+            // Assert ACCESS_TOKEN_SECRET is not undefined
+            const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+            if (!accessTokenSecret) {
+                console.error('ACCESS_TOKEN_SECRET is not defined.');
+                return res.status(500).json({ success: false, message: "Server configuration error" });
+            }
+            const accessToken = jsonwebtoken_1.default.sign(userPayload, accessTokenSecret, { expiresIn: '1h' });
             console.log(`User '${username}' logged in successfully.`);
-            res.status(200).json({ success: true, message: "Login successful" });
+            res.status(200).json({ success: true, message: "Login successful", accessToken });
         }
         else {
             console.error(`Login error: Invalid credentials for user '${username}'.`);

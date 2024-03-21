@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "engines":{
+  "engines": {
     "node": "20.x"
   },
   "scripts": {
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/mysql": "^2.15.25",
     "@types/node": "^20.11.24",
     "nodemon": "^3.1.0",
@@ -31,6 +32,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.1",
     "net": "^1.0.2",
     "reflect-metadata": "^0.2.1",

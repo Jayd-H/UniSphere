@@ -6,10 +6,10 @@ export class Societies extends BaseEntity
     @PrimaryGeneratedColumn("increment")
     id: number
 
-    @Column("varchar", { length: 32 })
+    @Column("varchar", { length: 96 })
     societyName: string
 
-    @Column("varchar", {length: 256})
+    @Column("varchar", {length: 512})
     description: string
 
     @Column("mediumblob")
