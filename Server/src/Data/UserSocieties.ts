@@ -14,4 +14,5 @@ export class UserSocieties extends BaseEntity {
     @ManyToMany(() => Societies, { cascade: true })
     @JoinColumn({ name: "id" })
     postId: number
+    societyId: number
 }
