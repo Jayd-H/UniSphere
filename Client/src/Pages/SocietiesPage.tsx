@@ -5,6 +5,7 @@ interface SocietyData {
   id: number;
   name: string;
   description: string;
+  imageUrl: string;
 }
 
 const SocietiesPage: React.FC = () => {
@@ -31,16 +32,21 @@ const SocietiesPage: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Societies</h1>
-      <div>
-        {societies.map((society) => (
-          <Society
-            key={society.id}
-            name={society.name}
-            description={society.description}
-          />
-        ))}
+    <div className="px-4 pt-4">
+      <h1 className="text-3xl font-bold underline text-center my-8">
+        Societies
+      </h1>
+      <div className="max-w-screen-lg mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {societies.map((society) => (
+            <Society
+              key={society.id}
+              name={society.name}
+              description={society.description}
+              imageUrl={society.imageUrl}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
