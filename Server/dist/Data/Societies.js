@@ -21,8 +21,8 @@ __decorate([
     (0, typeorm_1.Column)("varchar", { length: 512 })
 ], Societies.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)("mediumblob")
-], Societies.prototype, "bannerImg", void 0);
+    (0, typeorm_1.Column)("varchar", { length: 255 })
+], Societies.prototype, "imageURL", void 0);
 exports.Societies = Societies = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "societies" })
 ], Societies);

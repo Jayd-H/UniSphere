@@ -12,6 +12,6 @@ export class Societies extends BaseEntity
     @Column("varchar", {length: 512})
     description: string
 
-    @Column("mediumblob")
-    bannerImg: Blob
+    @Column("varchar", {length: 255})
+    imageURL: string
 }
