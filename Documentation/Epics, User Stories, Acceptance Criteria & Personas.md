@@ -1,8 +1,8 @@
-Epics, User Stories, Acceptance Criteria & Personas.  
+# Epics, User Stories, Acceptance Criteria & Personas.  
 
-Tutorial  
+## Tutorial  
 
-User Stories  
+## User Stories  
 
 A user story is a snippet of what the user wants or how the solution might impact them that is captured to form a requirement. Basically, they detail the features of the solution and they are based on the personas of the users.  
 
@@ -16,7 +16,7 @@ So that *I can solve this problem/fulfil this motivation/gain this benefit*
 
   
 
-Stories are:  
+## Stories are:  
 
 Written from the user’s perspective (and for the benefit of the user)  
 
@@ -32,7 +32,7 @@ Abstract (nothing concrete)
 
   
 
-Acceptance Criteria  
+## Acceptance Criteria  
 
 This defines the scope of the story and when it has been finished.  
 
@@ -52,7 +52,7 @@ They should only focus on behaviour.
 
   
 
-NFRs  
+## NFRs  
 
 Acceptance criteria can also be captured through questions that can be asked by the user and are specific. Use of any quantitative measures are good (e.g. can support 1000 users, page loads in 2 seconds). Avoid any words too vague.  
 
@@ -90,7 +90,7 @@ Any other information you should need on this (including how to break down stori
 
   
 
-GitHub  
+## GitHub  
 
 Don’t commit directly to the main branch. Every commit to the main branch should be done through a pull request from a branch or a fork.  
 
@@ -100,15 +100,15 @@ PRs should be checked by someone other than you before merge
 
   
 
-Alex's Narrative 
+## Alex's Narrative 
 
 Alex is a first-year student ready to explore and be active in multiple societies, looking for a streamlined, convenient way to stay informed about events and activities, as well as browse potential societies he might be interested in. The problem is, Alex is pretty tech-illiterate and has trouble keeping up to date with university ongoings. Using UniSphere, Alex has all his society related needs easily condensed in a digestible format.  
 
   
 
-Epic 1: Engagement and Discovery 
+## Epic 1: Engagement and Discovery 
 
-User Story 1: Staying Informed About Society Events 
+## User Story 1: Staying Informed About Society Events 
 
 As Alex, 
 
@@ -116,7 +116,7 @@ I want to stay informed about events happening in societies I'm a part of,
 
 So that I can participate in the events I'm interested in. 
 
-Acceptance Criteria 	 
+## Acceptance Criteria 	 
 
 Given: Alex is a member of a society, 
 
@@ -124,7 +124,7 @@ When: Alex navigates to the events page,
 
 Then: Alex sees information about upcoming events from the society. 
 
-NFRs 
+## NFRs 
 
 Availability: Can Alex view event details even after the event has occurred? 
 
@@ -132,7 +132,7 @@ Accessibility: Can Alex access event information without advanced technical know
 
 Portability: Can Alex access event information on his phone? 
 
-User Story 2: Discovering New Societies 
+## User Story 2: Discovering New Societies 
 
 As Alex, 
 
@@ -140,7 +140,7 @@ I want to be able to find and explore new societies,
 
 So that I can join societies that match my interests. 
 
-Acceptance Criteria 
+## Acceptance Criteria 
 
 Given: Alex has created an account on UniSphere, 
 
@@ -150,19 +150,19 @@ Then: Alex is presented with a list of societies to explore and potentially join
 
   
 
-NFRs 
+## NFRs 
 
 Accessibility: Can Alex browse through society information before deciding to join? 
 
 Availability: Can Alex explore other societies even if he is already a member of one?Top of Form 
 
-Sam's Narrative  
+## Sam's Narrative  
 
 Sam is a second-year student with a interest in developing leadership skills and making contributions to university societies. Despite having a vision for enhancing society activities and fostering a vibrant community, Sam often finds it challenging to identify and take leadership opportunities within these groups. The current systems in place are fragmented and do not provide a centralized platform for managing or applying for roles that match his skills. With UniSphere, Sam envisions a sleek way to connect with societies seeking leaders, apply for positions, and manage his involvement in various activities. The platform's user-friendly interface and comprehensive features would empower him to easily explore opportunities, engage with society members, and contribute to the society life.  
 
-Epic 1: Account and Access Management  
+## Epic 1: Account and Access Management  
 
-User Story: Basic Account Creation  
+## User Story: Basic Account Creation  
 
 As a new user,  
 
@@ -170,7 +170,7 @@ I want to easily create an account on UniSphere,
 
 So that I can join and interact with societies.  
 
-Acceptance Criteria  
+## Acceptance Criteria  
 
 Given: A user is on the UniSphere homepage,  
 
@@ -178,13 +178,13 @@ When: The user clicks on "Sign Up" and completes the registration form,
 
 Then: The user's account is created, and they are logged into UniSphere.  
 
-NFRs  
+## NFRs  
 
 Usability: Is the sign-up process intuitive and straightforward?  
 
 Performance: Does the account creation process complete within 5 seconds?  
 
-User Story: Secure Login Mechanism  
+## User Story: Secure Login Mechanism  
 
 As a registered user,  
 
@@ -192,7 +192,7 @@ I want to securely log in to my UniSphere account,
 
 So that I can access my profile and society information.  
 
-Acceptance Criteria  
+## Acceptance Criteria  
 
 Given: A user has a registered account,  
 
@@ -200,7 +200,7 @@ When: The user enters their credentials on the login page,
 
 Then: The user is granted access to their UniSphere account if the credentials are correct.  
 
-NFRs  
+## NFRs  
 
 Security: Is the login process secure against common cyber threats?  
 
@@ -208,9 +208,9 @@ Reliability: Can users consistently log in without encountering errors?
 
   
 
-Epic 2: User Experience Fundamentals  
+## Epic 2: User Experience Fundamentals  
 
-User Story: User Profile Customization  
+## User Story: User Profile Customization  
 
 As Sam,  
 
@@ -218,7 +218,7 @@ I want to customize my profile,
 
 So that I can express my personality and interests to the community.  
 
-Acceptance Criteria  
+## Acceptance Criteria  
 
 Given: Alex is logged in,  
 
@@ -226,13 +226,13 @@ When: Alex navigates to his profile settings to add a profile picture and person
 
 Then: His profile is updated with the new information.  
 
-NFRs  
+## NFRs  
 
 Usability: Can users easily find and use the profile customization options?  
 
 Performance: Do changes to the profile update in real-time?  
 
-User Story: Responsive Design for Mobile Users  
+## User Story: Responsive Design for Mobile Users  
 
 As Sam,  
 
@@ -240,7 +240,7 @@ I want to use UniSphere on my smartphone without issues,
 
 So that I can manage my society's activities on-the-go.  
 
-Acceptance Criteria  
+## Acceptance Criteria  
 
 Given: Jackie accesses UniSphere on her smartphone,  
 
@@ -248,12 +248,86 @@ When: She navigates through different sections of the app,
 
 Then: The app provides a seamless experience, adapting to her device's screen size.  
 
-NFRs  
+## NFRs  
 
 Portability: Does the app provide a consistent experience across different devices?  
 
 Usability: Are the app's features easily accessible on a smaller screen?  
 
+## Mia's Narrative
+Mia, a sophomore, is deeply involved in campus life and is always on the lookout for opportunities to connect with like-minded students and participate in meaningful activities. With a busy academic schedule, she appreciates a platform that is straightforward and helps her stay organized and informed about university societies and events. UniSphere, with its user-friendly interface and comprehensive features, seems like the perfect solution for her needs.
+
+## Epic 3: Efficient Platform Navigation
+## User Story 4.1: Home Page Engagement
+As Mia,
+
+I want to quickly grasp highlights and updates on the UniSphere home page,
+
+So that I can stay informed about recent and upcoming society activities.
+
+## Acceptance Criteria
+
+Given: Mia logs into UniSphere,
+When: She views the home page,
+Then: Mia sees a curated feed including society highlights, upcoming events, and new society suggestions.
+
+## NFRs
+
+Usability: Is the home page welcoming and easy for Mia to navigate?
+Performance: Does the home page content load promptly for Mia?
+User Story 4.2: User Settings Customization
+
+As Mia,
+
+I want to adjust my personal, privacy, and notification settings easily,
+
+So that I can control my UniSphere experience according to my preferences.
+
+## Acceptance Criteria
+
+Given: Mia decides to update her settings,
+When: She navigates to the settings page,
+Then: Mia can modify her profile, privacy preferences, and how she receives notifications.
+## NFRs
+
+Privacy: Do changes Mia makes to her privacy settings take effect immediately and are they clearly understandable?
+Usability: Is it straightforward for Mia to find and adjust her settings?
+User Story 4.3: Discovering Events
+
+As Mia,
+
+I want to explore and find events that interest me,
+
+So that I can plan my participation in society activities efficiently.
+
+## Acceptance Criteria
+
+Given: Mia is looking for events to attend,
+When: She uses the search and filter options in the events section,
+Then: Mia is presented with events that align with her interests.
+
+## NFRs
+
+Functionality: Are the search and filtering tools effective in helping Mia find relevant events?
+Usability: Can Mia easily use these tools without confusion?
+User Story 4.4: Browsing Societies
+
+As Mia,
+
+I want to browse through and learn about different societies,
+
+So that I can identify which communities I'd like to be a part of.
+
+## Acceptance Criteria
+
+Given: Mia is interested in joining new societies,
+When: She looks through the societies section,
+Then: Mia can view detailed information about each society, including their events, and decide on her involvement.
+
+## NFRs
+
+Accessibility: Can Mia, with varying levels of technical expertise, navigate and understand the information on societies?
+Performance: Is the society browsing experience smooth and quick for Mia, even with extensive content?
   
 
   
