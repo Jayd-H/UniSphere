@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UserSocieties } from '../Data/UserSocieties';
 import { Societies } from '../Data/Societies';
-import {User} from '../Data/User';
+import { Database } from '../Data/data-source';
 
 export const getAllSocieties = async (req: Request, res: Response) => {
   try {
@@ -38,6 +38,28 @@ export const getUserSocieties = async (req: Request, res: Response) => {
     return societies;
   } catch (error) {
     console.error("Error fetching user societies:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+export const getSpecificSociety = async (req: Request, res: Response) => {
+  try {
+    // Extract societyId (adjust for GET request if needed)
+    const societyId = req.body?.societyId || req.query?.societyId;
+
+    
+
+    // Find society
+    const society = await Database.getRepository(Societies).findOne({ where: { id: societyId } });
+
+    // Handle non-existent society
+    if (!society) {
+      return res.status(404).json({ success: false, message: "Society not found" });
+    }
+
+    // Return retrieved society
+    res.status(200).json({ success: true, data: society });
+  } catch (error) {
+    console.error("Error fetching society:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

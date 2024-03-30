@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserSocieties = exports.getAllSocieties = void 0;
+exports.getSpecificSociety = exports.getUserSocieties = exports.getAllSocieties = void 0;
 const UserSocieties_1 = require("../Data/UserSocieties");
 const Societies_1 = require("../Data/Societies");
+const data_source_1 = require("../Data/data-source");
 const getAllSocieties = async (req, res) => {
     try {
         const societies = await Societies_1.Societies.find();
@@ -40,3 +41,23 @@ const getUserSocieties = async (req, res) => {
     }
 };
 exports.getUserSocieties = getUserSocieties;
+const getSpecificSociety = async (req, res) => {
+    var _a, _b;
+    try {
+        // Extract societyId (adjust for GET request if needed)
+        const societyId = ((_a = req.body) === null || _a === void 0 ? void 0 : _a.societyId) || ((_b = req.query) === null || _b === void 0 ? void 0 : _b.societyId);
+        // Find society
+        const society = await data_source_1.Database.getRepository(Societies_1.Societies).findOne({ where: { id: societyId } });
+        // Handle non-existent society
+        if (!society) {
+            return res.status(404).json({ success: false, message: "Society not found" });
+        }
+        // Return retrieved society
+        res.status(200).json({ success: true, data: society });
+    }
+    catch (error) {
+        console.error("Error fetching society:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getSpecificSociety = getSpecificSociety;
