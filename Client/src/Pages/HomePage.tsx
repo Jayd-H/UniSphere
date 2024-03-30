@@ -1,13 +1,13 @@
-import React from 'react';
-import Feed from '../Components/Feed';
-import PostBox from '../Components/PostBox';
+import React from "react";
+import Feed from "../Components/Home/Feed/Feed";
+import PostBox from "../Components/Home/PostBox/PostBox";
 
 const HomePage: React.FC = () => {
   return (
     <>
       <PostBox />
       <div>
-        <br/>
+        <br />
       </div>
       <Feed />
     </>
