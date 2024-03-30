@@ -23,6 +23,9 @@ __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
 ], Replies.prototype, "timestamp", void 0);
 __decorate([
+    (0, typeorm_1.Column)("int")
+], Replies.prototype, "likesNum", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
 ], Replies.prototype, "UserID", void 0);

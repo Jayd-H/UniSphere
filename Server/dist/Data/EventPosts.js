@@ -27,7 +27,13 @@ __decorate([
 ], Posts.prototype, "timestamp", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
+], Posts.prototype, "eventTime", void 0);
+__decorate([
+    (0, typeorm_1.Column)("varchar", { length: 32 })
 ], Posts.prototype, "eventtype", void 0);
+__decorate([
+    (0, typeorm_1.Column)("int")
+], Posts.prototype, "likesNum", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Societies_1.Societies, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })

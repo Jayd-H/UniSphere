@@ -13,6 +13,9 @@ export class Replies extends BaseEntity {
     @Column("varchar", { length: 32 })
     timestamp: string
 
+    @Column("int")
+    likesNum: number
+
     @ManyToOne(() => User, {cascade: true})
     @JoinColumn({name: "id"})
     UserID: number

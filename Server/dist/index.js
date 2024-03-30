@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const authRoutes_1 = __importDefault(require("./Routes/authRoutes"));
 const societyRoutes_1 = __importDefault(require("./Routes/societyRoutes"));
 const data_source_1 = require("./Data/data-source");
+const postRoutes_1 = __importDefault(require("./Routes/postRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ async function startServer() {
         app.use(express_1.default.json());
         app.use('/api/auth', authRoutes_1.default);
         app.use('/api/societies', societyRoutes_1.default);
+        app.use('/api/posts', postRoutes_1.default);
         app.get("/", (req, res) => {
             res.send("Express server is up and running!");
         });

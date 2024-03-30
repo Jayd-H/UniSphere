@@ -4,7 +4,7 @@ import cors from 'cors';
 import authRoutes from './Routes/authRoutes';
 import societyRoutes from './Routes/societyRoutes';
 import { Database } from './Data/data-source';
-
+import postRoutes from './Routes/postRoutes';
 dotenv.config();
 
 const app = express();
@@ -22,7 +22,7 @@ async function startServer() {
 
     app.use('/api/auth', authRoutes);
     app.use('/api/societies', societyRoutes);
-
+    app.use('/api/posts', postRoutes);
     app.get("/", (req, res) => {
       res.send("Express server is up and running!");
     });

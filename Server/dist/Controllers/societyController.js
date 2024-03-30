@@ -17,15 +17,22 @@ exports.getAllSocieties = getAllSocieties;
 const getUserSocieties = async (req, res) => {
     try {
         const userSocieties = await UserSocieties_1.UserSocieties.find({ where: { userId: req.user.id } });
-        const societyIds = userSocieties.map(us => us.societyId);
+        if (!userSocieties || userSocieties.length === 0) {
+            return res.status(200).json({ success: true, data: [] });
+        }
+        const societyIds = userSocieties.map((us) => us.societyId);
         const societies = [];
         for (const societyId of societyIds) {
             const society = await Societies_1.Societies.findOne({ where: { id: societyId } });
             if (society) {
                 societies.push(society);
             }
+            else {
+                console.warn(`Society with id ${societyId} not found`);
+            }
         }
         res.status(200).json({ success: true, data: societies });
+        return societies;
     }
     catch (error) {
         console.error("Error fetching user societies:", error);

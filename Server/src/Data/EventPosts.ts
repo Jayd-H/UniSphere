@@ -17,7 +17,13 @@ export class Posts extends BaseEntity {
     timestamp: string
 
     @Column("varchar", { length: 32 })
+    eventTime: string
+
+    @Column("varchar", { length: 32 })
     eventtype: string
+
+    @Column("int")
+    likesNum: number
 
     @ManyToOne(() => Societies, {cascade: true})
     @JoinColumn({name: "id"})
