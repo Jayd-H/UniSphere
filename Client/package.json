@@ -13,15 +13,20 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
+    "autosize": "^6.0.1",
     "ci": "^2.3.0",
     "framer-motion": "^11.0.5",
     "react": "^18.2.0",
+    "react-custom-scrollbars-2": "^4.5.0",
+    "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
     "react-swipeable": "^7.0.1"
   },
   "devDependencies": {
+    "@types/autosize": "^4.0.3",
     "@types/react": "^18.2.43",
+    "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",

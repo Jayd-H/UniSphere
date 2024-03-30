@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import FormContainer from "../Common/FormContainer";
-import FormInput from "../Inputs/FormInput";
-import SubmitButton from "../Forms/SubmitButton";
+import FormContainer from "../Components/LoginRegister/FormContainer";
+import FormInput from "../Components/LoginRegister/FormInput";
+import SubmitButton from "../Components/LoginRegister/SubmitButton";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import AlertMessage from "../Components/Common/AlertMessage";
 
-const LoginForm = () => {
+const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [_error, setError] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+
+  const showAlert = (message: string, type: "success" | "error") => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setTimeout(() => {
+      setAlertMessage("");
+    }, 3000);
+  };
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const [error, setError] = useState("");
 
   const usernameChecks = {
     lengthCheck:
@@ -70,6 +80,7 @@ const LoginForm = () => {
         } else {
           // Handle login failure
           console.error("Login failed:", data.message);
+          showAlert(data.message, "error");
           setError(data.message);
         }
       } catch (error) {
@@ -80,32 +91,52 @@ const LoginForm = () => {
           console.error("Login error:", error);
           setError("An unknown error occurred while logging in.");
         }
+        showAlert("An error occurred during login.", "error");
       }
     }
   };
 
   useEffect(() => {
     if (location.state?.registered) {
-      setShowSuccessMessage(true);
+      showAlert("Registered successfully!", "success");
       window.history.replaceState({}, document.title);
     }
-  }, [location]);
+  }, [location.state?.registered]);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.5,
+        staggerChildren: 0.2,
+        delayChildren: 0.9,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   return (
-    <div className="flex justify-center items-center h-screen glowing-background font-arimo">
-      <div>
-        {/* Show the success message if registered is true */}
-        {showSuccessMessage && (
-          <div
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-2 justify-center text-center"
-            role="alert"
-          >
-            <strong className="font-bold">Registered successfully!</strong>
-          </div>
-        )}
+    <div className="flex justify-center items-center h-screen bg-background-gradient">
+      <div className="relative">
+        <AlertMessage
+          message={alertMessage}
+          isVisible={alertMessage !== ""}
+          isSuccess={alertType === "success"}
+        />
         <FormContainer>
-          <div className="flex flex-col items-center p-8">
-            <div className="logo-container transition-transform text-luni-black mb-1 -mt-4">
+          <motion.div
+            className="flex flex-col items-center p-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="logo-container transition-transform text-black mb-1 -mt-4">
               <motion.div
                 whileHover={{ rotate: 180, scale: 1.1 }}
                 transition={{ duration: 0.5 }}
@@ -113,12 +144,20 @@ const LoginForm = () => {
                 <GlobeAltIcon className="w-8 h-8" />
               </motion.div>
             </div>
-            <span className="text-sm font-semibold">UniSphere</span>
-            <h1 className="text-2xl font-semibold mt-6">Welcome back</h1>
-            <h1 className="text-lg font-semibold -mt-1">
+            <span className="text-sm font-semibold font-montserrat-alt">
+              UNISPHERE
+            </span>
+            <h1 className="text-xl font-semibold mt-4 font-montserrat-alt">
+              Welcome back
+            </h1>
+            <h1 className="text-md -mt-1 italic font-montserrat-alt">
               Login to your account
             </h1>
-            <form onSubmit={handleLogin} className="space-y-8 mt-10">
+            <motion.form
+              onSubmit={handleLogin}
+              className="space-y-8 mt-10"
+              variants={childVariants}
+            >
               <FormInput
                 id="username"
                 type="text"
@@ -143,27 +182,28 @@ const LoginForm = () => {
                 <form
                   onSubmit={handleLogin}
                   className="space-y-8 mt-4 justify-center items-center w-full text-center"
-                >
-                  {error && <div className="text-red-500 text-md">{error}</div>}
-                </form>
+                ></form>
               </div>
-              <div className="pt-6">
+              <motion.div className="pt-6" variants={childVariants}>
                 <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
-              </div>
-            </form>
-            <div className="flex items-center justify-center mt-8 -mb-8">
+              </motion.div>
+            </motion.form>
+            <motion.div
+              className="flex items-center justify-center mt-8 -mb-8"
+              variants={childVariants}
+            >
               <Link
                 to="/register"
-                className="hover:text-luni-dark-blue text-luni-blue font-bold text-sm"
+                className="hover:underline decoration-wavy text-dark-blue font-bold text-sm"
               >
                 Sign up
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </FormContainer>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default LoginPage;

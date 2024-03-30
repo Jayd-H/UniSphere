@@ -1,5 +1,6 @@
 import React from "react";
-import Post from "./Post";
+import Post from "./Post/Post";
+import { motion } from "framer-motion";
 
 const mockPosts = [
   {
@@ -73,23 +74,44 @@ const mockPosts = [
   },
 ];
 
+const postVariants = {
+  initial: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 20 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.6 + index * 0.2,
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  }),
+};
+
 const Feed: React.FC = () => {
   return (
     <div>
       {mockPosts.map((post, index) => (
-        <Post
+        <motion.div
           key={index}
-          displayName={post.displayName}
-          societyName={post.societyName}
-          timestamp={post.timestamp}
-          content={post.content}
-          likesCount={post.likesCount}
-          replies={post.replies.map((reply, replyIndex) => ({
-            ...reply,
-            index: replyIndex,
-          }))}
-          repliesCount={post.replies.length}
-        />
+          variants={postVariants}
+          initial="initial"
+          animate="visible"
+          custom={index}
+        >
+          <Post
+            displayName={post.displayName}
+            societyName={post.societyName}
+            timestamp={post.timestamp}
+            content={post.content}
+            likesCount={post.likesCount}
+            replies={post.replies.map((reply, replyIndex) => ({
+              ...reply,
+              index: replyIndex,
+            }))}
+            repliesCount={post.replies.length}
+          />
+        </motion.div>
       ))}
     </div>
   );

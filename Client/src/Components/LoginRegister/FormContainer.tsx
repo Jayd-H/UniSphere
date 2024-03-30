@@ -8,10 +8,10 @@ interface FormContainerProps {
 const FormContainer: React.FC<FormContainerProps> = ({ children }) => {
   return (
     <motion.div
-      className="frosted-glass w-full max-w-xs p-4 shadow-lg relative rounded-lg"
-      initial={{ opacity: 0, y: 25 }}
+      className="bg-form-gradient border-2 border-black border-dotted shadow-lg w-full max-w-xs p-4 relative rounded-lg"
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 120, damping: 35 }}
+      transition={{ ease: "easeInOut", duration: 0.6 }}
     >
       {children}
     </motion.div>
