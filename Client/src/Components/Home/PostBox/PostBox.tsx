@@ -4,25 +4,40 @@ import GreetingHeader from "./GreetingHeader";
 import SocietyDropdown from "./SocietyDropdown";
 import PostTextArea from "./PostTextArea";
 import AlertMessage from "../../Common/AlertMessage";
+import { createPost } from "../../../api/postsApi";
+import { User } from "../../../types/User";
+import { Society } from "../../../types/Society";
 
-const PostBox: React.FC = () => {
+interface PostBoxProps {
+  user: User;
+  societies: Society[];
+}
+
+const PostBox: React.FC<PostBoxProps> = ({ user, societies }) => {
   const [postContent, setPostContent] = useState("");
-  const [selectedSociety, setSelectedSociety] = useState("");
+  const [selectedSociety, setSelectedSociety] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const displayName = "Jayden Holdsworth"; // TODO Get user's display name from auth context
-  const societies = ["Robotics Club", "Chess Club", "Literature Society"];
+
   const maxCharacters = 512;
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     if (selectedSociety) {
-      // TODO Backend logic to handle post submission
-      // Prevent SQL injection by sanitizing the input
-      const sanitizedContent = postContent.replace(/['"]/g, "");
-      console.log("Post content:", sanitizedContent);
-      console.log("Selected society:", selectedSociety);
-
-      setPostContent("");
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const sanitizedContent: string = postContent.replace(/['"\\]/g, "");
+          await createPost(sanitizedContent, selectedSociety, token);
+          setPostContent("");
+          // Show success message or handle successful post creation
+        } else {
+          // Handle case when token is not available
+          console.error("Authentication token not found");
+        }
+      } catch (error) {
+        console.error("Failed to create post:", error);
+        // Show error message or handle post creation failure
+      }
     } else {
       setShowAlert(true);
     }
@@ -59,7 +74,6 @@ const PostBox: React.FC = () => {
       const timer = setTimeout(() => {
         setShowAlert(false);
       }, 3000);
-
       return () => {
         clearTimeout(timer);
       };
@@ -78,7 +92,7 @@ const PostBox: React.FC = () => {
         message="Please select a society before making a post"
         isVisible={showAlert}
       />
-      <GreetingHeader displayName={displayName} />
+      <GreetingHeader displayName={user.displayName} />
       <motion.div
         className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
         variants={itemVariants}
