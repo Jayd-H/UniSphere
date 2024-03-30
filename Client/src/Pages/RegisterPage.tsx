@@ -8,7 +8,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
 import { motion } from "framer-motion";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { registerUser } from "../api/authApi";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -69,19 +69,11 @@ const RegisterPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(backendUrl + "/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-            displayName: formData.displayName,
-          }),
-        });
-
-        const data = await response.json();
+        const data = await registerUser(
+          formData.username,
+          formData.password,
+          formData.displayName
+        );
         if (data.success) {
           showAlert("Registration successful!", "success");
           setTimeout(() => {
@@ -90,12 +82,9 @@ const RegisterPage = () => {
         } else {
           showAlert(data.message, "error");
         }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Register error:", error.message);
-        } else {
-          console.error("Register error:", error);
-        }
+      } catch (error: any) {
+        console.error("Register error:", error.message);
+        showAlert(error.message, "error");
       }
     }
   };
