@@ -1,12 +1,13 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { Society } from "../../../types/Society";
 
 interface SocietyDropdownProps {
-  selectedSociety: string;
-  societies: string[];
+  selectedSociety: number | null;
+  societies: Society[];
   isOpen: boolean;
-  setSelectedSociety: (society: string) => void;
+  setSelectedSociety: (societyId: number) => void;
   setIsOpen: (isOpen: boolean) => void;
 }
 
@@ -54,6 +55,9 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
     closed: { opacity: 0, y: 20, transition: { duration: 0.2 } },
   };
 
+  const selectedSocietyName =
+    societies.find((society) => society.id === selectedSociety)?.name || "";
+
   return (
     <motion.div className="relative">
       <motion.button
@@ -61,7 +65,7 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedSociety || "Select Society"}
+        {selectedSocietyName || "Select Society"}
         <motion.div
           className="ml-1"
           variants={chevronVariants}
@@ -82,19 +86,19 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
             animate="open"
             exit="closed"
           >
-            {societies.map((society, idx) => (
+            {societies.map((society) => (
               <motion.li
-                key={idx}
+                key={society.id}
                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
-                  setSelectedSociety(society);
+                  setSelectedSociety(society.id);
                   setIsOpen(false);
                 }}
                 variants={itemVariants}
               >
-                {society}
+                {society.name}
               </motion.li>
             ))}
           </motion.ul>
