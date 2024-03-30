@@ -7,7 +7,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { loginUser } from "../api/authApi";
 
 const LoginPage = () => {
   const location = useLocation();
@@ -60,36 +60,20 @@ const LoginPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(backendUrl + "/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        });
-        const data = await response.json();
+        const data = await loginUser(formData.username, formData.password);
         if (data.success && data.accessToken) {
           localStorage.setItem("token", data.accessToken);
           console.log("Login successful:", data.message);
           navigate("/home");
         } else {
-          // Handle login failure
           console.error("Login failed:", data.message);
           showAlert(data.message, "error");
           setError(data.message);
         }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Login error:", error.message);
-          setError("An error occurred while logging in: " + error.message);
-        } else {
-          console.error("Login error:", error);
-          setError("An unknown error occurred while logging in.");
-        }
-        showAlert("An error occurred during login.", "error");
+      } catch (error: any) {
+        console.error("Login error:", error.message);
+        setError(error.message);
+        showAlert(error.message, "error");
       }
     }
   };
