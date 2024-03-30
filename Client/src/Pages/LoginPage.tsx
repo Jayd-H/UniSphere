@@ -11,7 +11,7 @@ import AlertMessage from "../Components/Common/AlertMessage";
 const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [_error, setError] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<"success" | "error">("success");
 

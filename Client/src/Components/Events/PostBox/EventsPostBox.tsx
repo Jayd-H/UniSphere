@@ -14,7 +14,8 @@ const EventsPostBox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const displayName = "Jayden Holdsworth"; // TODO Get user's display name from auth context
+  // TODO Get user's display name from auth context
+
   const societies = ["Robotics Club", "Chess Club", "Literature Society"];
   const maxCharacters = {
     content: 512,

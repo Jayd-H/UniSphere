@@ -3,7 +3,6 @@ import { AnimatePresence, motion, spring } from "framer-motion";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import SocietyCard from "../Components/Societies/SocietyCard";
 import AlertMessage from "../Components/Common/AlertMessage";
-import { useNavigate } from "react-router-dom";
 import { mockUser } from "../Components/UserSettings/MockData";
 import Popup from "../Components/Common/Popup";
 import ExpandedSocietyCard from "../Components/Societies/ExpandedSocietyCard";
@@ -18,13 +17,12 @@ interface SocietyData {
 }
 
 const UserSettingsPage: React.FC = () => {
-  const [user, setUser] = useState(mockUser);
+  const [user, _setUser] = useState(mockUser);
   const [societies, setSocieties] = useState<SocietyData[]>([]);
   const [popupType, setPopupType] = useState<string | null>(null);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [isAlertSuccess, setIsAlertSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const [expandedSociety, setExpandedSociety] = useState<SocietyData | null>(
     null
@@ -61,7 +59,7 @@ const UserSettingsPage: React.FC = () => {
     fetchSocieties();
   }, [user.societies]);
 
-  const handleConfirm = (data: any) => {
+  const handleConfirm = (_data: any) => {
     // TODO: Implement confirm logic based on popupType
     setPopupType(null);
     showAlert("Changes saved successfully", true);
