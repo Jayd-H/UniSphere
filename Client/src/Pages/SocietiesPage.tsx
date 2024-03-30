@@ -4,6 +4,7 @@ import SocietyCard from "../Components/Societies/SocietyCard";
 import ExpandedSocietyCard from "../Components/Societies/ExpandedSocietyCard";
 import LoadingIcon from "../Components/Common/LoadingIcon";
 import SearchBar from "../Components/Common/SearchBar";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface SocietyData {
   id: number;
@@ -40,9 +41,7 @@ const SocietiesPage: React.FC = () => {
   useEffect(() => {
     const fetchSocieties = async () => {
       try {
-        const response = await fetch(
-          "https://unispherebackend.vercel.app/api/societies/all"
-        );
+        const response = await fetch(backendUrl + "/api/societies/all");
         const data = await response.json();
         if (data.success) {
           setSocieties(data.data);
@@ -59,7 +58,7 @@ const SocietiesPage: React.FC = () => {
 
     const timer = setTimeout(() => {
       setShowLoadingIcon(true);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);

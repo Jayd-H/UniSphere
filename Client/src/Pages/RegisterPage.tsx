@@ -8,6 +8,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
 import { motion } from "framer-motion";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -68,20 +69,17 @@ const RegisterPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(
-          "https://unispherebackend.vercel.app/api/auth/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: formData.username,
-              password: formData.password,
-              displayName: formData.displayName,
-            }),
-          }
-        );
+        const response = await fetch(backendUrl + "/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password,
+            displayName: formData.displayName,
+          }),
+        });
 
         const data = await response.json();
         if (data.success) {

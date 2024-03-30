@@ -7,6 +7,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const LoginPage = () => {
   const location = useLocation();
@@ -59,19 +60,16 @@ const LoginPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(
-          "https://unispherebackend.vercel.app/api/auth/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: formData.username,
-              password: formData.password,
-            }),
-          }
-        );
+        const response = await fetch(backendUrl + "/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password,
+          }),
+        });
         const data = await response.json();
         if (data.success && data.accessToken) {
           localStorage.setItem("token", data.accessToken);
