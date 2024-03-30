@@ -1,5 +1,4 @@
 import apiClient from './apiClient';
-import { Society } from '../types/Society';
 import { User } from '../types/User';
 
 export const getSocietyMembers = async (societyId: number): Promise<User[]> => {
