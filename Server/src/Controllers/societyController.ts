@@ -40,3 +40,25 @@ export const getUserSocieties = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+export const getSpecificSociety = async (req: Request, res: Response) => {
+  try {
+    // Extract societyId (adjust for GET request if needed)
+    const societyId = req.body?.societyId || req.query?.societyId;
+
+    
+
+    // Find society
+    const society = await Database.getRepository(Societies).findOne({ where: { id: societyId } });
+
+    // Handle non-existent society
+    if (!society) {
+      return res.status(404).json({ success: false, message: "Society not found" });
+    }
+
+    // Return retrieved society
+    res.status(200).json({ success: true, data: society });
+  } catch (error) {
+    console.error("Error fetching society:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
