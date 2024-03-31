@@ -2,25 +2,36 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import autosize from "autosize";
+import { createReply } from "../../../../../api/repliesAPI";
+import { useUserContext } from "../../../../../UserContext";
 
 interface ReplyBoxProps {
+  postId: number;
   onSubmit: (content: string) => void;
-  loggedInDisplayName: string;
   maxCharacters: number;
 }
 
 const ReplyBox: React.FC<ReplyBoxProps> = ({
+  postId,
   onSubmit,
-  loggedInDisplayName,
   maxCharacters,
 }) => {
   const [replyContent, setReplyContent] = useState("");
+  const { user } = useUserContext();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (replyContent.trim()) {
-      onSubmit(replyContent);
-      setReplyContent("");
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          await createReply(postId, replyContent, token);
+          onSubmit(replyContent);
+          setReplyContent("");
+        }
+      } catch (error) {
+        console.error("Error creating reply:", error);
+      }
     }
   };
 
@@ -45,7 +56,7 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({
     >
       <div>
         <span className="font-semibold font-montserrat text-md">
-          {loggedInDisplayName}
+          {user?.displayName || ""}
         </span>
       </div>
       <form onSubmit={handleSubmit} className="relative">
