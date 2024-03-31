@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserSocieties } from '../Data/UserSocieties';
 import { Societies } from '../Data/Societies';
 import { Database } from '../Data/data-source';
+import { Users } from '../Data/Users';
 
 export const getAllSocieties = async (req: Request, res: Response) => {
   try {
@@ -15,16 +16,14 @@ export const getAllSocieties = async (req: Request, res: Response) => {
 
 export const getUserSocieties = async (req: Request, res: Response) => {
   try {
-    
     const userSocieties = await UserSocieties.find({ where: { userId: req.user.id } });
-
     if (!userSocieties || userSocieties.length === 0) {
-      return res.status(200).json({ success: true, data: [] }); 
+      return res.status(200).json({ success: true, data: [] });
     }
 
     const societyIds = userSocieties.map((us) => us.societyId);
-
     const societies = [];
+
     for (const societyId of societyIds) {
       const society = await Societies.findOne({ where: { id: societyId } });
       if (society) {
@@ -41,12 +40,10 @@ export const getUserSocieties = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 export const getSpecificSociety = async (req: Request, res: Response) => {
   try {
-    // Extract societyId (adjust for GET request if needed)
     const societyId = req.body?.societyId || req.query?.societyId;
-
-    
 
     // Find society
     const society = await Database.getRepository(Societies).findOne({ where: { id: societyId } });
