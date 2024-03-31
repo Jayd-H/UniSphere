@@ -10,6 +10,7 @@ exports.Posts = void 0;
 const typeorm_1 = require("typeorm");
 const Users_1 = require("./Users");
 const Societies_1 = require("./Societies");
+const Replies_1 = require("./Replies");
 let Posts = class Posts extends typeorm_1.BaseEntity {
 };
 exports.Posts = Posts;
@@ -20,16 +21,19 @@ __decorate([
     (0, typeorm_1.Column)("varchar", { length: 512 })
 ], Posts.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
+    (0, typeorm_1.Column)("timestamp", { default: () => "CURRENT_TIMESTAMP" })
 ], Posts.prototype, "timestamp", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Societies_1.Societies, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "societyId", void 0);
+    (0, typeorm_1.JoinColumn)({ name: "societyId" })
+], Posts.prototype, "society", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "userId", void 0);
+    (0, typeorm_1.JoinColumn)({ name: "userId" })
+], Posts.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Replies_1.Replies, reply => reply.post)
+], Posts.prototype, "replies", void 0);
 exports.Posts = Posts = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "posts" })
 ], Posts);

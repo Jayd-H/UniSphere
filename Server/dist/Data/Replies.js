@@ -20,16 +20,16 @@ __decorate([
     (0, typeorm_1.Column)("varchar", { length: 512 })
 ], Replies.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
+    (0, typeorm_1.Column)("timestamp", { default: () => "CURRENT_TIMESTAMP" })
 ], Replies.prototype, "timestamp", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], Replies.prototype, "userId", void 0);
+    (0, typeorm_1.ManyToOne)(() => Users_1.Users, user => user.replies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "userId" })
+], Replies.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Posts_1.Posts, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], Replies.prototype, "postId", void 0);
+    (0, typeorm_1.ManyToOne)(() => Posts_1.Posts, post => post.replies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "postId" })
+], Replies.prototype, "post", void 0);
 exports.Replies = Replies = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "replies" })
 ], Replies);

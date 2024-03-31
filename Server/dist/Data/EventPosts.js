@@ -23,7 +23,7 @@ __decorate([
     (0, typeorm_1.Column)("varchar", { length: 64 })
 ], EventPosts.prototype, "location", void 0);
 __decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
+    (0, typeorm_1.Column)("timestamp", { default: () => "CURRENT_TIMESTAMP" })
 ], EventPosts.prototype, "timestamp", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })

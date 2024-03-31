@@ -44,7 +44,6 @@ exports.getUserSocieties = getUserSocieties;
 const getSpecificSociety = async (req, res) => {
     var _a, _b;
     try {
-        // Extract societyId (adjust for GET request if needed)
         const societyId = ((_a = req.body) === null || _a === void 0 ? void 0 : _a.societyId) || ((_b = req.query) === null || _b === void 0 ? void 0 : _b.societyId);
         // Find society
         const society = await data_source_1.Database.getRepository(Societies_1.Societies).findOne({ where: { id: societyId } });
