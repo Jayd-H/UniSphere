@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
   ChatBubbleLeftRightIcon,
@@ -12,6 +12,16 @@ import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import Reply from "../../Home/Feed/Post/Reply/Reply";
 import { timeSince } from "../../Common/TimeUtils";
 import ReplyBox from "../../Home/Feed/Post/Reply/ReplyBox";
+import { useUserContext } from "../../../UserContext";
+import {
+  likeEventPost,
+  unlikeEventPost,
+  fetchEventPostLikes,
+} from "../../../api/eventsPostsAPI";
+import { fetchEventPostReplies } from "../../../api/eventsPostsRepliesAPI";
+import { fetchUserDisplayName } from "../../../api/userAPI";
+import { EventsPost as EventsPostType } from "../../../types/eventsPost";
+import { Reply as ReplyType } from "../../../types/reply";
 
 export interface ReplyProps {
   displayName: string;
@@ -33,13 +43,6 @@ export interface EventsPostProps {
   repliesCount: number;
   replies: Array<ReplyProps>;
 }
-
-const handleReplySubmit = (content: string) => {
-  // TODO Implement your logic to handle the reply content
-  console.log(content);
-};
-
-const loggedInDisplayName = "John Doe"; // TODO Replace with the logged in user's display name
 
 const postVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
@@ -80,28 +83,78 @@ const heartVariants: Variants = {
   },
 };
 
-const EventsPost: React.FC<EventsPostProps> = ({
-  displayName,
-  societyName,
+const EventsPost: React.FC<EventsPostType> = ({
+  id,
+  userId,
+  societyId,
   timestamp,
   content,
-  likesCount,
   eventType,
   eventLocation,
   eventTime,
-  repliesCount,
-  replies,
 }) => {
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [replies, setReplies] = useState<ReplyType[]>([]);
+  const [displayName, setDisplayName] = useState("");
+  const [likesCount, setLikesCount] = useState(0);
+  const [societyName, setSocietyName] = useState("");
+  const { user, societies } = useUserContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userDisplayName = await fetchUserDisplayName(userId);
+        setDisplayName(userDisplayName);
+
+        const eventPostLikes = await fetchEventPostLikes(id);
+        setLikesCount(eventPostLikes.length);
+
+        if (user) {
+          setIsLiked(eventPostLikes.includes(user.id));
+        }
+
+        const repliesData = await fetchEventPostReplies(id);
+        setReplies(repliesData);
+
+        const society = societies.find((society) => society.id === societyId);
+        if (society) {
+          setSocietyName(society.societyName);
+        }
+      } catch (error) {
+        console.error("Error fetching event post data:", error);
+      }
+    };
+    fetchData();
+  }, [id, userId, user, societies]);
 
   const toggleRepliesVisibility = () =>
     setAreRepliesVisible(!areRepliesVisible);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    // TODO: Send a request to the backend to update the like count
+  const handleLike = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        if (isLiked) {
+          await unlikeEventPost(id, token);
+          setLikesCount(likesCount - 1);
+        } else {
+          await likeEventPost(id, token);
+          setLikesCount(likesCount + 1);
+        }
+        setIsLiked(!isLiked);
+      }
+    } catch (error) {
+      console.error("Error liking/unliking event post:", error);
+    }
   };
+
+  const handleReplySubmit = (content: string) => {
+    // TODO: Implement the logic to create a new reply
+    console.log(content);
+  };
+
+  const repliesCount = replies.length;
 
   return (
     <motion.div
@@ -187,7 +240,7 @@ const EventsPost: React.FC<EventsPostProps> = ({
           </motion.button>
           <span className="ml-1 text-black">
             {likesCount + (isLiked ? 1 : 0)}
-          </span>{" "}
+          </span>
           {/* TODO DELETE THIS LINE WHEN WE GET LIKES INTEGRATED */}
         </div>
       </div>
@@ -206,8 +259,8 @@ const EventsPost: React.FC<EventsPostProps> = ({
             exit={{ opacity: 0, height: 0 }}
           >
             <ReplyBox
+              postId={id}
               onSubmit={handleReplySubmit}
-              loggedInDisplayName={loggedInDisplayName}
               maxCharacters={512}
             />
             <motion.div
@@ -223,7 +276,7 @@ const EventsPost: React.FC<EventsPostProps> = ({
               exit={{ opacity: 0, y: -40 }}
             >
               {replies.map((reply, index) => (
-                <Reply key={index} {...reply} index={index} />
+                <Reply key={reply.id} {...reply} index={index} />
               ))}
             </motion.div>
           </motion.div>
