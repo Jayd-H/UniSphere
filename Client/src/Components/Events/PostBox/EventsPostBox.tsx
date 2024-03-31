@@ -4,19 +4,19 @@ import EventsPostTextArea from "./EventsPostTextArea";
 import AlertMessage from "../../Common/AlertMessage";
 import EventsGreetingHeader from "./EventsGreetingHeader";
 import SocietyDropdown from "../../Home/PostBox/SocietyDropdown";
+import { useUserContext } from "../../../UserContext";
+import { Society } from "../../../types/society";
 
 const EventsPostBox: React.FC = () => {
   const [postContent, setPostContent] = useState("");
-  const [selectedSociety, setSelectedSociety] = useState("");
+  const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
   const [eventType, setEventType] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventTime, setEventTime] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const { user, societies } = useUserContext();
 
-  // TODO Get user's display name from auth context
-
-  const societies = ["Robotics Club", "Chess Club", "Literature Society"];
   const maxCharacters = {
     content: 512,
     eventType: 32,
@@ -28,9 +28,9 @@ const EventsPostBox: React.FC = () => {
     if (selectedSociety) {
       // TODO Backend logic to handle post submission
       // Prevent SQL injection by sanitizing the input
-      const sanitizedContent = postContent.replace(/['"]/g, "");
+      const sanitizedContent = postContent.replace(/[<>"'&]/g, "");
       console.log("Post content:", sanitizedContent);
-      console.log("Selected society:", selectedSociety);
+      console.log("Selected society:", selectedSociety.societyName);
       console.log("Event Type:", eventType);
       console.log("Event Location:", eventLocation);
       console.log("Event Time:", eventTime);
@@ -92,7 +92,7 @@ const EventsPostBox: React.FC = () => {
         message="Please select a society before making a post"
         isVisible={showAlert}
       />
-      <EventsGreetingHeader />
+      {user && <EventsGreetingHeader displayName={user.displayName} />}
       <motion.div
         className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
         variants={itemVariants}
