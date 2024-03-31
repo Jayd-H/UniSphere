@@ -7,7 +7,8 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { loginUser } from "../api/authAPI";
+import axios from "axios";
 
 const LoginPage = () => {
   const location = useLocation();
@@ -60,36 +61,40 @@ const LoginPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(backendUrl + "/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        });
-        const data = await response.json();
+        const data = await loginUser(formData.username, formData.password);
         if (data.success && data.accessToken) {
           localStorage.setItem("token", data.accessToken);
           console.log("Login successful:", data.message);
           navigate("/home");
         } else {
-          // Handle login failure
           console.error("Login failed:", data.message);
           showAlert(data.message, "error");
           setError(data.message);
         }
       } catch (error) {
-        if (error instanceof Error) {
-          console.error("Login error:", error.message);
-          setError("An error occurred while logging in: " + error.message);
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error("Login error:", error.response.data.message);
+            showAlert(error.response.data.message, "error");
+            setError(error.response.data.message);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.error("Login error: No response received from the server");
+            showAlert("No response received from the server", "error");
+            setError("No response received from the server");
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error("Login error:", error.message);
+            showAlert("An error occurred while logging in", "error");
+            setError("An error occurred while logging in");
+          }
         } else {
           console.error("Login error:", error);
-          setError("An unknown error occurred while logging in.");
+          showAlert("An unknown error occurred while logging in", "error");
+          setError("An unknown error occurred while logging in");
         }
-        showAlert("An error occurred during login.", "error");
       }
     }
   };
