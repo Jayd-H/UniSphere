@@ -15,6 +15,7 @@ import Navbar from "./Components/Navbar";
 import RegisterForm from "./Pages/RegisterPage";
 import SplashPage from "./Pages/SplashPage";
 import NotFoundPage from "./Pages/NotFoundPage";
+import { UserProvider } from "./UserContext";
 
 // TODO CURRENTLY NOTHING HAPPENS ON SCROLL, NAVBAR SHOULD HIDE ON SCROLL DOWN AND SHOW ON SCROLL UP
 const LayoutWithSidebar = () => {
@@ -35,25 +36,27 @@ const LayoutWithSidebar = () => {
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* Separate routes for pages outside the main authenticated layout */}
-        <Route path="/" element={<SplashPage />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="*" element={<NotFoundPage />} />
+    <UserProvider>
+      <Router>
+        <Routes>
+          {/* Separate routes for pages outside the main authenticated layout */}
+          <Route path="/" element={<SplashPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="*" element={<NotFoundPage />} />
 
-        {/* Wrap the layout route with ProtectedRoute to protect all child routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<LayoutWithSidebar />}>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/societies" element={<SocietiesPage />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/settings" element={<UserSettingsPage />} />
+          {/* Wrap the layout route with ProtectedRoute to protect all child routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<LayoutWithSidebar />}>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/societies" element={<SocietiesPage />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/settings" element={<UserSettingsPage />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 };
 
