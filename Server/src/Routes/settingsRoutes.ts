@@ -3,6 +3,6 @@ import { Router } from 'express';
 import { changePassword } from '../Controllers/settingsController';
 
 const router = Router();
-router.post('/pc', changePassword);
+router.post('/changePassword', changePassword);
 
 export default router;
