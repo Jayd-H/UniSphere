@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { UserSocieties } from '../Data/UserSocieties';
 import { Societies } from '../Data/Societies';
-import {User} from '../Data/User';
 
 export const getAllSocieties = async (req: Request, res: Response) => {
   try {
