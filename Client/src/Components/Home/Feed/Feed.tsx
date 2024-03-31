@@ -1,78 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./Post/Post";
 import { motion } from "framer-motion";
+import { fetchPosts } from "../../../api/postsAPI";
+import { useUserContext } from "../../../UserContext";
 
-const mockPosts = [
-  {
-    displayName: "Jayd Holdsworth",
-    societyName: "Pokémon Society",
-    timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-    content:
-      "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-    likesCount: 5,
-    replies: [
-      {
-        displayName: "Ash Ketchum",
-        content: "I’ll be there with my Pikachu!",
-        timestamp: new Date("2023-01-07T15:00:00").toISOString(),
-        likesCount: 3,
-      },
-      {
-        displayName: "Misty Waterflower",
-        content:
-          "Can’t wait to meet everyone! I’ll bring some snacks and drinks for everyone.  See you all there! if you need anything else, let me know!",
-        timestamp: new Date("2023-01-07T15:15:00").toISOString(),
-        likesCount: 2,
-      },
-      {
-        displayName: "Misty Waterflower",
-        content:
-          "This is going to be so much fun! I’ll bring some snacks and drinks for everyone.  See you all there!",
-        timestamp: new Date("2023-01-07T15:15:00").toISOString(),
-        likesCount: 0,
-      },
-    ],
-  },
-  {
-    displayName: "Jayd Holdsworth",
-    societyName: "Pokémon Society",
-    timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-    content:
-      "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-    likesCount: 5,
-    replies: [
-      {
-        displayName: "Ash Ketchum",
-        content: "I’ll be there with my Pikachu!",
-        timestamp: new Date("2023-01-07T15:00:00").toISOString(),
-        likesCount: 3,
-      },
-      {
-        displayName: "Misty Waterflower",
-        content:
-          "Can’t wait to meet everyone! I’ll bring some snacks and drinks for everyone.  See you all there! if you need anything else, let me know!",
-        timestamp: new Date("2023-01-07T15:15:00").toISOString(),
-        likesCount: 2,
-      },
-      {
-        displayName: "Misty Waterflower",
-        content:
-          "This is going to be so much fun! I’ll bring some snacks and drinks for everyone.  See you all there!",
-        timestamp: new Date("2023-01-07T15:15:00").toISOString(),
-        likesCount: 0,
-      },
-    ],
-  },
-  {
-    displayName: "Jayd Holdsworth",
-    societyName: "Pokémon Society",
-    timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-    content:
-      "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-    likesCount: 5,
-    replies: [],
-  },
-];
+interface PostData {
+  postId: number;
+  displayName: string;
+  postContent: string;
+  timestamp: string;
+  societyId: number;
+  societyName: string;
+  likesCount: number;
+  isLiked: boolean;
+  replyCount: number;
+  replies: ReplyData[];
+}
+
+interface ReplyData {
+  replyId: number;
+  displayName: string;
+  replyContent: string;
+  timestamp: string;
+  likesCount: number;
+  isLiked: boolean;
+}
 
 const postVariants = {
   initial: { opacity: 0, y: 20 },
@@ -89,27 +41,46 @@ const postVariants = {
 };
 
 const Feed: React.FC = () => {
+  const [posts, setPosts] = useState<PostData[]>([]);
+  const { societies } = useUserContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token && societies) {
+          const societyIds = societies.map((society) => society.id);
+          const postsData = await fetchPosts(societyIds, token);
+          setPosts(postsData);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [societies]);
+
   return (
     <div>
-      {mockPosts.map((post, index) => (
+      {posts.map((post, index) => (
         <motion.div
-          key={index}
+          key={post.postId}
           variants={postVariants}
           initial="initial"
           animate="visible"
           custom={index}
         >
           <Post
+            postId={post.postId}
             displayName={post.displayName}
-            societyName={post.societyName}
+            postContent={post.postContent}
             timestamp={post.timestamp}
-            content={post.content}
+            societyId={post.societyId}
+            societyName={post.societyName}
             likesCount={post.likesCount}
-            replies={post.replies.map((reply, replyIndex) => ({
-              ...reply,
-              index: replyIndex,
-            }))}
-            repliesCount={post.replies.length}
+            isLiked={post.isLiked}
+            replyCount={post.replyCount}
+            replies={post.replies}
           />
         </motion.div>
       ))}
