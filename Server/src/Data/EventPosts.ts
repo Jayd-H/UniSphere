@@ -13,8 +13,8 @@ export class EventPosts extends BaseEntity {
   @Column("varchar", { length: 64 })
   location: string
 
-  @Column("varchar", { length: 32 })
-  timestamp: string
+  @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+  timestamp: Date;
 
   @Column("varchar", { length: 32 })
   eventTime: string
