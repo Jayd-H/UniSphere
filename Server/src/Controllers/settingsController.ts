@@ -38,20 +38,15 @@ export const changePassword = async (req: Request, res: Response) => {
 
   export const changeUsername = async (req: Request, res: Response) => {
     try {
-        const { currentUsername, newUsername, password } = req.body;
+        const { currentUsername, newUsername } = req.body;
 
-        if (!currentUsername || !newUsername || !password) {
+        if (!currentUsername || !newUsername) {
             return res.status(400).json({ error: "Missing required fields (currentUsername, newUsername, and password)" });
         }
 
         const user = await Users.findOne({ where: { userName: currentUsername } });
         if (!user) {
             return res.status(401).json({ error: "User with the provided current username not found" });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.hash);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: "Invalid password" });
         }
 
         const existingUser = await Users.findOne({ where: { userName: newUsername } });
@@ -65,5 +60,29 @@ export const changePassword = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("Error changing username:", error);
         res.status(500).json({ error: "An error occurred while changing username" });
+    }
+};
+
+export const changeDisplayName = async (req: Request, res: Response) => {
+    try {
+        const { userName, password, newDisplayName } = req.body;
+        if (!userName || !password || !newDisplayName) {
+            return res.status(400).json({ error: "Missing required fields (userName, password, and newDisplayName)" });
+        }
+        const user = await Users.findOne({ where: { userName } });
+        if (!user) {
+            return res.status(401).json({ error: "User not found" });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.hash);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Invalid password" });
+        }
+        user.displayName = newDisplayName;
+        await user.save();
+
+        res.status(200).json({ message: "Display name changed successfully" });
+    } catch (error) {
+        console.error("Error changing display name:", error);
+        res.status(500).json({ error: "An error occurred while changing display name" });
     }
 };
