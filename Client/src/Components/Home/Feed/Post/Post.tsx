@@ -9,31 +9,22 @@ import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import Reply from "./Reply/Reply";
 import { timeSince } from "../../../Common/TimeUtils";
 import ReplyBox from "./Reply/ReplyBox";
+import { likePost, unlikePost } from "../../../../api/postsAPI";
+import { useUserContext } from "../../../../UserContext";
+import { Reply as ReplyType } from "../../../../types/reply";
 
-export interface ReplyProps {
+interface PostProps {
+  postId: number;
   displayName: string;
-  content: string;
+  postContent: string;
   timestamp: string;
-  likesCount: number;
-  index: number;
-}
-
-export interface PostProps {
-  displayName: string;
+  societyId: number;
   societyName: string;
-  timestamp: string;
-  content: string;
-  repliesCount: number;
   likesCount: number;
-  replies: Array<ReplyProps>;
+  isLiked: boolean;
+  replyCount: number;
+  replies: ReplyType[];
 }
-
-const handleReplySubmit = (content: string) => {
-  // TODO Implement your logic to handle the reply content
-  console.log(content);
-};
-
-const loggedInDisplayName = "John Doe"; // TODO Replace with the logged in user's display name
 
 const postVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
@@ -75,23 +66,56 @@ const heartVariants: Variants = {
 };
 
 const Post: React.FC<PostProps> = ({
+  postId,
   displayName,
-  societyName,
+  postContent,
   timestamp,
-  content,
-  repliesCount,
+  societyName,
   likesCount,
+  isLiked,
+  replyCount,
   replies,
 }) => {
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
+  const [postIsLiked, setPostIsLiked] = useState(isLiked);
+  const [postLikesCount, setPostLikesCount] = useState(likesCount);
+  const { user } = useUserContext();
 
   const toggleRepliesVisibility = () =>
     setAreRepliesVisible(!areRepliesVisible);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    // TODO: Send a request to the backend to update the like count
+  const handleLike = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        if (postIsLiked) {
+          await unlikePost(postId, token);
+          setPostLikesCount(postLikesCount - 1);
+        } else {
+          await likePost(postId, token);
+          setPostLikesCount(postLikesCount + 1);
+        }
+        setPostIsLiked(!postIsLiked);
+      }
+    } catch (error) {
+      console.error("Error liking/unliking post:", error);
+    }
+  };
+
+  const handleReplySubmit = (replyContent: string) => {
+    const newReply: ReplyType = {
+      replyId: Math.random(),
+      replyContent,
+      timestamp: new Date().toISOString(),
+      userId: user?.id || 0,
+      postId: postId,
+      user: {
+        id: user?.id || 0,
+        displayName: user?.displayName || "",
+      },
+      likesCount: 0,
+    };
+    replies.push(newReply);
   };
 
   return (
@@ -118,7 +142,7 @@ const Post: React.FC<PostProps> = ({
         </motion.button>
       </div>
       <motion.p className="mb-3 mr-2 text-black" variants={contentVariants}>
-        {content}
+        {postContent}
       </motion.p>
       <div className="flex justify-between items-center text-sm text-blue">
         <motion.button
@@ -136,7 +160,7 @@ const Post: React.FC<PostProps> = ({
           >
             <ChevronUpIcon className="w-5 h-5 mr-1" />
           </motion.div>
-          <span>{repliesCount} Replies</span>
+          <span>{replyCount} Replies</span>
         </motion.button>
         <div className="flex items-center mr-0.5">
           <motion.button
@@ -153,14 +177,11 @@ const Post: React.FC<PostProps> = ({
               <HeartOutlineIcon className="w-6 h-6 text-blue" />
             )}
           </motion.button>
-          <span className="ml-1 text-black">
-            {likesCount + (isLiked ? 1 : 0)}
-          </span>{" "}
-          {/* TODO DELETE THIS LINE WHEN WE GET LIKES INTEGRATED */}
+          <span className="ml-1 text-black">{postLikesCount}</span>
         </div>
       </div>
       <AnimatePresence>
-        {(areRepliesVisible || repliesCount === 0) && (
+        {(areRepliesVisible || replyCount === 0) && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{
@@ -174,8 +195,8 @@ const Post: React.FC<PostProps> = ({
             exit={{ opacity: 0, height: 0 }}
           >
             <ReplyBox
+              postId={postId}
               onSubmit={handleReplySubmit}
-              loggedInDisplayName={loggedInDisplayName}
               maxCharacters={512}
             />
             <motion.div
@@ -191,7 +212,16 @@ const Post: React.FC<PostProps> = ({
               exit={{ opacity: 0, y: -40 }}
             >
               {replies.map((reply, index) => (
-                <Reply key={index} {...reply} index={index} />
+                <Reply
+                  key={reply.replyId}
+                  replyId={reply.replyId}
+                  displayName={reply.displayName}
+                  replyContent={reply.replyContent}
+                  timestamp={reply.timestamp}
+                  likesCount={reply.likesCount}
+                  isLiked={reply.isLiked}
+                  index={index}
+                />
               ))}
             </motion.div>
           </motion.div>
