@@ -8,3 +8,16 @@ export const fetchAllSocieties = async () => {
     throw error;
   }
 };
+
+export const fetchSocietiesByIds = async (societyIds: number[]) => {
+  try {
+    const response = await axiosInstance.get('/api/societies', {
+      params: {
+        ids: societyIds.join(','),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
