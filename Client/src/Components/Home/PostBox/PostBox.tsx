@@ -4,25 +4,33 @@ import GreetingHeader from "./GreetingHeader";
 import SocietyDropdown from "./SocietyDropdown";
 import PostTextArea from "./PostTextArea";
 import AlertMessage from "../../Common/AlertMessage";
+import { createPost } from "../../../api/postsAPI";
+import { useUserContext } from "../../../UserContext";
+import { Society } from "../../../types/society";
 
 const PostBox: React.FC = () => {
   const [postContent, setPostContent] = useState("");
-  const [selectedSociety, setSelectedSociety] = useState("");
+  const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const displayName = "Jayden Holdsworth"; // TODO Get user's display name from auth context
-  const societies = ["Robotics Club", "Chess Club", "Literature Society"];
   const maxCharacters = 512;
 
-  const handlePostSubmit = () => {
-    if (selectedSociety) {
-      // TODO Backend logic to handle post submission
-      // Prevent SQL injection by sanitizing the input
-      const sanitizedContent = postContent.replace(/['"]/g, "");
-      console.log("Post content:", sanitizedContent);
-      console.log("Selected society:", selectedSociety);
+  const { user, societies } = useUserContext();
+  let message = "Please select a society before making a post";
 
-      setPostContent("");
+  const handlePostSubmit = async () => {
+    if (selectedSociety) {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const sanitizedContent = postContent.replace(/\['"\]/g, "");
+          await createPost(sanitizedContent, selectedSociety.id, token);
+          setPostContent("");
+        }
+      } catch (error) {
+        console.error("Error creating post:", error);
+        setShowAlert(true);
+      }
     } else {
       setShowAlert(true);
     }
@@ -59,7 +67,6 @@ const PostBox: React.FC = () => {
       const timer = setTimeout(() => {
         setShowAlert(false);
       }, 3000);
-
       return () => {
         clearTimeout(timer);
       };
@@ -73,12 +80,8 @@ const PostBox: React.FC = () => {
       initial="hidden"
       animate="visible"
     >
-      <AlertMessage
-        isSuccess={false}
-        message="Please select a society before making a post"
-        isVisible={showAlert}
-      />
-      <GreetingHeader displayName={displayName} />
+      <AlertMessage isSuccess={false} message={message} isVisible={showAlert} />
+      {user && <GreetingHeader displayName={user.displayName} />}
       <motion.div
         className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
         variants={itemVariants}
@@ -102,6 +105,7 @@ const PostBox: React.FC = () => {
           postContent={postContent}
           setPostContent={setPostContent}
           handlePostSubmit={handlePostSubmit}
+          selectedSociety={selectedSociety}
           maxCharacters={maxCharacters}
         />
       </motion.div>
