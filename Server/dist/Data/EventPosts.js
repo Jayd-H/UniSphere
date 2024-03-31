@@ -6,42 +6,39 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Posts = void 0;
+exports.EventPosts = void 0;
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
+const Users_1 = require("./Users");
 const Societies_1 = require("./Societies");
-let Posts = class Posts extends typeorm_1.BaseEntity {
+let EventPosts = class EventPosts extends typeorm_1.BaseEntity {
 };
-exports.Posts = Posts;
+exports.EventPosts = EventPosts;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
-], Posts.prototype, "id", void 0);
+], EventPosts.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 512 })
-], Posts.prototype, "content", void 0);
+], EventPosts.prototype, "eventPost", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 64 })
-], Posts.prototype, "location", void 0);
+], EventPosts.prototype, "location", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
-], Posts.prototype, "timestamp", void 0);
+], EventPosts.prototype, "timestamp", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
-], Posts.prototype, "eventTime", void 0);
+], EventPosts.prototype, "eventTime", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 32 })
-], Posts.prototype, "eventtype", void 0);
-__decorate([
-    (0, typeorm_1.Column)("int")
-], Posts.prototype, "likesNum", void 0);
+], EventPosts.prototype, "eventType", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Societies_1.Societies, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "societyId", void 0);
+], EventPosts.prototype, "societyId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "userId", void 0);
-exports.Posts = Posts = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "eventposts" })
-], Posts);
+], EventPosts.prototype, "userId", void 0);
+exports.EventPosts = EventPosts = __decorate([
+    (0, typeorm_1.Entity)({ database: "unisphere", name: "event_posts" })
+], EventPosts);

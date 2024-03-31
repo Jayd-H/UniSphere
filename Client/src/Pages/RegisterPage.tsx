@@ -8,7 +8,8 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
 import { motion } from "framer-motion";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { registerUser } from "../api/authAPI";
+import axios from "axios";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -69,19 +70,11 @@ const RegisterPage = () => {
     setError("");
     if (!shouldDisableForm()) {
       try {
-        const response = await fetch(backendUrl + "/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-            displayName: formData.displayName,
-          }),
-        });
-
-        const data = await response.json();
+        const data = await registerUser(
+          formData.username,
+          formData.password,
+          formData.displayName
+        );
         if (data.success) {
           showAlert("Registration successful!", "success");
           setTimeout(() => {
@@ -89,12 +82,33 @@ const RegisterPage = () => {
           }, 2000);
         } else {
           showAlert(data.message, "error");
+          setError(data.message);
         }
       } catch (error) {
-        if (error instanceof Error) {
-          console.error("Register error:", error.message);
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error("Registration error:", error.response.data.message);
+            showAlert(error.response.data.message, "error");
+            setError(error.response.data.message);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.error(
+              "Registration error: No response received from the server"
+            );
+            showAlert("No response received from the server", "error");
+            setError("No response received from the server");
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error("Registration error:", error.message);
+            showAlert("An error occurred during registration", "error");
+            setError("An error occurred during registration");
+          }
         } else {
-          console.error("Register error:", error);
+          console.error("Registration error:", error);
+          showAlert("An unknown error occurred during registration", "error");
+          setError("An unknown error occurred during registration");
         }
       }
     }

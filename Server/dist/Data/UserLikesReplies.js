@@ -6,30 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Posts = void 0;
+exports.UserLikesReplies = void 0;
 const typeorm_1 = require("typeorm");
 const Users_1 = require("./Users");
-const Societies_1 = require("./Societies");
-let Posts = class Posts extends typeorm_1.BaseEntity {
+const Replies_1 = require("./Replies");
+let UserLikesReplies = class UserLikesReplies extends typeorm_1.BaseEntity {
 };
-exports.Posts = Posts;
+exports.UserLikesReplies = UserLikesReplies;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
-], Posts.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)("varchar", { length: 512 })
-], Posts.prototype, "content", void 0);
-__decorate([
-    (0, typeorm_1.Column)("varchar", { length: 32 })
-], Posts.prototype, "timestamp", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => Societies_1.Societies, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "societyId", void 0);
+], UserLikesReplies.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
-], Posts.prototype, "userId", void 0);
-exports.Posts = Posts = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "posts" })
-], Posts);
+], UserLikesReplies.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Replies_1.Replies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "id" })
+], UserLikesReplies.prototype, "replyId", void 0);
+exports.UserLikesReplies = UserLikesReplies = __decorate([
+    (0, typeorm_1.Entity)({ database: "unisphere", name: "user_likes_replies" })
+], UserLikesReplies);

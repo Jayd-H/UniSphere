@@ -4,7 +4,8 @@ import SocietyCard from "../Components/Societies/SocietyCard";
 import ExpandedSocietyCard from "../Components/Societies/ExpandedSocietyCard";
 import LoadingIcon from "../Components/Common/LoadingIcon";
 import SearchBar from "../Components/Common/SearchBar";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { fetchAllSocieties } from "../api/societiesAPI";
+import axios from "axios";
 
 interface SocietyData {
   id: number;
@@ -41,19 +42,34 @@ const SocietiesPage: React.FC = () => {
   useEffect(() => {
     const fetchSocieties = async () => {
       try {
-        const response = await fetch(backendUrl + "/api/societies/all");
-        const data = await response.json();
+        const data = await fetchAllSocieties();
         if (data.success) {
           setSocieties(data.data);
         } else {
           console.error("Failed to fetch societies:", data.message);
         }
       } catch (error) {
-        console.error("Error fetching societies:", error);
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.error(
+              "Error fetching societies:",
+              error.response.data.message
+            );
+          } else if (error.request) {
+            console.error(
+              "Error fetching societies: No response received from the server"
+            );
+          } else {
+            console.error("Error fetching societies:", error.message);
+          }
+        } else {
+          console.error("Error fetching societies:", error);
+        }
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchSocieties();
 
     const timer = setTimeout(() => {

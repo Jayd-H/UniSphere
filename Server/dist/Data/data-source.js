@@ -7,11 +7,15 @@ exports.Database = void 0;
 require("reflect-metadata");
 const dotenv_1 = __importDefault(require("dotenv"));
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
+const Users_1 = require("./Users");
 const Posts_1 = require("./Posts");
 const Replies_1 = require("./Replies");
 const Societies_1 = require("./Societies");
 const UserSocieties_1 = require("./UserSocieties");
+const UserLikesPosts_1 = require("./UserLikesPosts");
+const UserLikesReplies_1 = require("./UserLikesReplies");
+const UserLikesEventPosts_1 = require("./UserLikesEventPosts");
+const EventPosts_1 = require("./EventPosts");
 dotenv_1.default.config();
 exports.Database = new typeorm_1.DataSource({
     type: "mysql",
@@ -21,11 +25,15 @@ exports.Database = new typeorm_1.DataSource({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     entities: [
-        User_1.User,
+        Users_1.Users,
         Posts_1.Posts,
+        EventPosts_1.EventPosts,
         Replies_1.Replies,
         Societies_1.Societies,
-        UserSocieties_1.UserSocieties
+        UserSocieties_1.UserSocieties,
+        UserLikesPosts_1.UserLikesPosts,
+        UserLikesReplies_1.UserLikesReplies,
+        UserLikesEventPosts_1.UserLikesEventPosts
     ],
     ssl: false
 });

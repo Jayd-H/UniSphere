@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSocieties = void 0;
 const typeorm_1 = require("typeorm");
 const Societies_1 = require("./Societies");
-const User_1 = require("./User");
+const Users_1 = require("./Users");
 let UserSocieties = class UserSocieties extends typeorm_1.BaseEntity {
 };
 exports.UserSocieties = UserSocieties;
@@ -17,13 +17,13 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
 ], UserSocieties.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => User_1.User, { cascade: true }),
+    (0, typeorm_1.ManyToMany)(() => Users_1.Users, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
 ], UserSocieties.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => Societies_1.Societies, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "id" })
-], UserSocieties.prototype, "postId", void 0);
+], UserSocieties.prototype, "societyId", void 0);
 exports.UserSocieties = UserSocieties = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "usersocieties" })
+    (0, typeorm_1.Entity)({ database: "unisphere", name: "user_societies" })
 ], UserSocieties);
