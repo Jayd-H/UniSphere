@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import autosize from "autosize";
-import { createReply } from "../../../../../api/repliesAPI";
 import { useUserContext } from "../../../../../UserContext";
 
 interface ReplyBoxProps {
@@ -11,27 +10,15 @@ interface ReplyBoxProps {
   maxCharacters: number;
 }
 
-const ReplyBox: React.FC<ReplyBoxProps> = ({
-  postId,
-  onSubmit,
-  maxCharacters,
-}) => {
+const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
   const [replyContent, setReplyContent] = useState("");
   const { user } = useUserContext();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (replyContent.trim()) {
-      try {
-        const token = localStorage.getItem("token");
-        if (token) {
-          await createReply(postId, replyContent, token);
-          onSubmit(replyContent);
-          setReplyContent("");
-        }
-      } catch (error) {
-        console.error("Error creating reply:", error);
-      }
+      onSubmit(replyContent);
+      setReplyContent("");
     }
   };
 
