@@ -10,6 +10,8 @@ import { UserLikesPosts } from "./UserLikesPosts"
 import { UserLikesReplies } from "./UserLikesReplies"
 import { UserLikesEventPosts } from "./UserLikesEventPosts"
 import { EventPosts } from "./EventPosts"
+import { EventReplies } from "./EventReplies"
+import { UserLikesEventReplies } from "./UserLikesEventReplies"
 
 dotenv.config()
 
@@ -25,11 +27,13 @@ export const Database = new DataSource({
     Posts,
     EventPosts,
     Replies,
+    EventReplies,
     Societies,
     UserSocieties,
     UserLikesPosts,
     UserLikesReplies,
-    UserLikesEventPosts
+    UserLikesEventPosts,
+    UserLikesEventReplies
   ],
   ssl: false
 })

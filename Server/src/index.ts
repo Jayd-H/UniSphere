@@ -5,14 +5,16 @@ import authRoutes from './Routes/authRoutes';
 import societyRoutes from './Routes/societyRoutes';
 import { Database } from './Data/data-source';
 import postRoutes from './Routes/postRoutes';
+import userRoutes from './Routes/userRoutes';
+import settingsRoutes  from './Routes/settingsRoutes';
+import eventPostRoutes from './Routes/eventPostRoutes';
+
 dotenv.config();
 
 const app = express();
 
-const port = process.env.PORT || 3000;
-
-// The main function to start the server only after database initialization
 async function startServer() {
+  (async () => {
   try {
     await Database.initialize();
     console.log("The database has been initialized!");
@@ -22,17 +24,22 @@ async function startServer() {
 
     app.use('/api/auth', authRoutes);
     app.use('/api/societies', societyRoutes);
-    app.use('/api/posts', postRoutes);
+    app.use('/api', postRoutes);
+    app.use('/api', eventPostRoutes);
+    app.use('/api/user', userRoutes);
+    app.use('/api/settings', settingsRoutes)
     app.get("/", (req, res) => {
       res.send("Express server is up and running!");
     });
 
+    const port = process.env.PORT || 3000;
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
   } catch (err) {
     console.error("Error during database initialization.", err);
   }
+})();
 }
 
 startServer();

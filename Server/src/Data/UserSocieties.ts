@@ -1,17 +1,13 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToMany, JoinColumn } from 'typeorm'
-import { Societies } from './Societies'
-import { Users } from './Users'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity({database: "unisphere",name:"user_societies"})
+@Entity({ database: "unisphere", name: "user_societies" })
 export class UserSocieties extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
-  id: number
+  id: number;
 
-  @ManyToMany(() => Users, { cascade: true })
-  @JoinColumn({ name: "id" })
-  userId: number
+  @Column("int")
+  userId: number;
 
-  @ManyToMany(() => Societies, { cascade: true })
-  @JoinColumn({ name: "id" })
-  societyId: number
+  @Column("int")
+  societyId: number;
 }

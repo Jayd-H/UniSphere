@@ -1,12 +1,14 @@
+// SocietyDropdown.tsx
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { Society } from "../../../types/society";
 
 interface SocietyDropdownProps {
-  selectedSociety: string;
-  societies: string[];
+  selectedSociety: Society | null;
+  societies: Society[];
   isOpen: boolean;
-  setSelectedSociety: (society: string) => void;
+  setSelectedSociety: (society: Society | null) => void;
   setIsOpen: (isOpen: boolean) => void;
 }
 
@@ -61,7 +63,7 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedSociety || "Select Society"}
+        {selectedSociety ? selectedSociety.societyName : "Select Society"}
         <motion.div
           className="ml-1"
           variants={chevronVariants}
@@ -94,7 +96,7 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
                 }}
                 variants={itemVariants}
               >
-                {society}
+                {society.societyName}
               </motion.li>
             ))}
           </motion.ul>

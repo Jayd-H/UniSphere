@@ -8,8 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
 const typeorm_1 = require("typeorm");
-const typeorm_2 = require("typeorm");
-let Users = class Users extends typeorm_2.BaseEntity {
+const Societies_1 = require("./Societies");
+const Replies_1 = require("./Replies");
+const EventReplies_1 = require("./EventReplies");
+const UserSocieties_1 = require("./UserSocieties");
+let Users = class Users extends typeorm_1.BaseEntity {
 };
 exports.Users = Users;
 __decorate([
@@ -24,6 +27,23 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 64 })
 ], Users.prototype, "displayName", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Societies_1.Societies, society => society.users),
+    (0, typeorm_1.JoinTable)({
+        name: "user_societies",
+        joinColumn: { name: "userId", referencedColumnName: "id" },
+        inverseJoinColumn: { name: "societyId", referencedColumnName: "id" }
+    })
+], Users.prototype, "societies", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Replies_1.Replies, reply => reply.user)
+], Users.prototype, "replies", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => EventReplies_1.EventReplies, eventReply => eventReply.user)
+], Users.prototype, "eventReplies", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => UserSocieties_1.UserSocieties, userSociety => userSociety.userId)
+], Users.prototype, "userSocieties", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)({ name: "users" })
 ], Users);

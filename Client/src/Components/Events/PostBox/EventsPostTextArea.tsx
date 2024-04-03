@@ -4,6 +4,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import AutoResizeTextArea from "./AutoResizeTextArea";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Society } from "../../../types/society";
 
 interface EventsPostTextAreaProps {
   postContent: string;
@@ -21,7 +22,7 @@ interface EventsPostTextAreaProps {
     eventLocation: number;
     eventTime: number;
   };
-  selectedSociety: string;
+  selectedSociety: Society | null;
 }
 
 const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
@@ -104,7 +105,6 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
       className="date-time-input w-full px-4 py-2 text-md bg-white font-work-sans focus:outline-none border-b-2 focus:border-blue border-mint resize-none"
     />
   ));
-
   return (
     <motion.div
       className="relative"

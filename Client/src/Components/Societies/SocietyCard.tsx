@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import LeaveSocietyPopup from "../UserSettings/LeaveSocietyPopup";
+import { leaveSociety } from "../../api/societiesAPI";
+import { useUserContext } from "../../UserContext";
 
 interface SocietyProps {
   society: {
@@ -12,12 +13,18 @@ interface SocietyProps {
   };
   onClick: (society: SocietyProps["society"]) => void;
   bin?: boolean;
-  onLeaveSociety: (societyName: string) => void;
+  onLeaveSociety: (societyId: number) => void;
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
+};
+
+const popupVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.8 },
 };
 
 const SocietyCard: React.FC<SocietyProps> = ({
@@ -27,31 +34,19 @@ const SocietyCard: React.FC<SocietyProps> = ({
   onLeaveSociety,
 }) => {
   const [isLeaveSocietyPopupOpen, setIsLeaveSocietyPopupOpen] = useState(false);
+  const { user } = useUserContext();
 
-  const handleLeaveSociety = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    setIsLeaveSocietyPopupOpen(true);
-  };
-
-  const handleConfirmLeaveSociety = async () => {
+  const handleLeaveSociety = async () => {
     try {
-      // TODO: Call the actual backend function to leave the society
-      await leaveSocietyBackendFunction(society.id);
-      onLeaveSociety(society.societyName);
-      setIsLeaveSocietyPopupOpen(false);
+      const token = localStorage.getItem("token");
+      if (token && user) {
+        await leaveSociety(society.id, user.id, token);
+        onLeaveSociety(society.id);
+        setIsLeaveSocietyPopupOpen(false);
+      }
     } catch (error) {
       console.error("Error leaving society:", error);
     }
-  };
-
-  // Placeholder backend function
-  const leaveSocietyBackendFunction = async (societyId: number) => {
-    // TODO: Implement the actual backend logic to leave the society
-    console.log(
-      `Backend function called to leave society with ID: ${societyId}`
-    );
-    // Simulating an asynchronous operation
-    await new Promise((resolve) => setTimeout(resolve, 1000));
   };
 
   return (
@@ -82,19 +77,39 @@ const SocietyCard: React.FC<SocietyProps> = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          onClick={handleLeaveSociety}
+          onClick={() => setIsLeaveSocietyPopupOpen(true)}
         >
           <TrashIcon className="h-5 w-5 text-red" />
         </motion.div>
       )}
       {isLeaveSocietyPopupOpen && (
-        <div className="absolute inset-0 flex items-center justify-center z-50">
-          <LeaveSocietyPopup
-            societyName={society.societyName}
-            onConfirm={handleConfirmLeaveSociety}
-            onCancel={() => setIsLeaveSocietyPopupOpen(false)}
-          />
-        </div>
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center z-50"
+          variants={popupVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <div className="bg-white rounded-lg p-6 shadow-md">
+            <h4 className="text-xl font-bold mb-4">
+              Are you sure you want to leave {society.societyName}?
+            </h4>
+            <div className="flex justify-end">
+              <button
+                className="bg-blue text-white font-bold py-2 px-4 rounded-lg mr-2"
+                onClick={() => setIsLeaveSocietyPopupOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-red text-white font-bold py-2 px-4 rounded-lg"
+                onClick={handleLeaveSociety}
+              >
+                Leave
+              </button>
+            </div>
+          </div>
+        </motion.div>
       )}
     </motion.div>
   );

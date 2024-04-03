@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Societies = void 0;
 const typeorm_1 = require("typeorm");
+const Users_1 = require("./Users");
 let Societies = class Societies extends typeorm_1.BaseEntity {
 };
 exports.Societies = Societies;
@@ -23,6 +24,9 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 255 })
 ], Societies.prototype, "imageURL", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Users_1.Users, user => user.societies)
+], Societies.prototype, "users", void 0);
 exports.Societies = Societies = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "societies" })
 ], Societies);

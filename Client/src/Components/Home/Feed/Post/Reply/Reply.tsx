@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { motion, Variants } from "framer-motion";
 import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
-import { ReplyProps } from "../Post";
 import { timeSince } from "../../../../Common/TimeUtils";
+import { likeReply, unlikeReply } from "../../../../../api/repliesAPI";
+import { Reply as ReplyType } from "../../../../../types/reply";
 
 const heartVariants: Variants = {
   hover: {
@@ -16,21 +17,37 @@ const heartVariants: Variants = {
   },
 };
 
-const Reply: React.FC<ReplyProps> = ({
-  displayName,
-  content,
+const Reply: React.FC<ReplyType & { index: number }> = ({
+  replyId,
+  replyContent,
   timestamp,
-  likesCount,
   index,
+  likesCount,
+  isLiked,
+  user,
 }) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [replyIsLiked, setReplyIsLiked] = useState(isLiked);
+  const [replyLikesCount, setReplyLikesCount] = useState(likesCount);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    // implement functionality to persist like state
+  const handleLike = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        if (replyIsLiked) {
+          await unlikeReply(replyId, token);
+          setReplyLikesCount(replyLikesCount - 1);
+          setReplyIsLiked(false);
+        } else {
+          await likeReply(replyId, token);
+          setReplyLikesCount(replyLikesCount + 1);
+          setReplyIsLiked(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error liking/unliking reply:", error);
+    }
   };
 
-  // Animation variants for each reply
   const replyVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: {
@@ -39,7 +56,15 @@ const Reply: React.FC<ReplyProps> = ({
       transition: {
         ease: "easeOut",
         duration: 0.4,
-        delay: index * 0.1, // Each reply will start animating 0.1 seconds after the previous one
+        delay: index * 0.1,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        ease: "easeIn",
+        duration: 0.2,
       },
     },
   };
@@ -50,16 +75,17 @@ const Reply: React.FC<ReplyProps> = ({
       variants={replyVariants}
       initial="hidden"
       animate="visible"
+      exit="exit"
     >
       <hr className="border-t-2 border-muted-mint border-dashed w-3/4 mx-auto -mt-4 pt-2" />
       <div className="mb-1">
         <span className="font-semibold font-montserrat text-md">
-          {displayName}
+          {user.displayName}
         </span>
         <span className="text-xs text-grey ml-2">{timeSince(timestamp)}</span>
       </div>
       <div className="flex justify-between">
-        <p className="text-sm text-luni-black flex-grow">{content}</p>
+        <p className="text-sm text-luni-black flex-grow">{replyContent}</p>
         <div className="flex-shrink-0 ml-4 self-end flex items-center pr-1">
           <motion.button
             type="button"
@@ -69,15 +95,15 @@ const Reply: React.FC<ReplyProps> = ({
             whileTap="tap"
             className="focus:outline-none"
           >
-            {isLiked ? (
+            {replyIsLiked ? (
               <HeartSolidIcon className="w-5 h-5 text-red" />
             ) : (
               <HeartOutlineIcon className="w-5 h-5 text-blue" />
             )}
           </motion.button>
-          <span className="text-sm text-black ml-1">
-            {likesCount + (isLiked ? 1 : 0)}
-          </span>
+          {replyLikesCount > 0 && (
+            <span className="text-sm text-black ml-1">{replyLikesCount}</span>
+          )}
         </div>
       </div>
     </motion.div>

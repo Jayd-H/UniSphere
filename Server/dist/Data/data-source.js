@@ -16,6 +16,8 @@ const UserLikesPosts_1 = require("./UserLikesPosts");
 const UserLikesReplies_1 = require("./UserLikesReplies");
 const UserLikesEventPosts_1 = require("./UserLikesEventPosts");
 const EventPosts_1 = require("./EventPosts");
+const EventReplies_1 = require("./EventReplies");
+const UserLikesEventReplies_1 = require("./UserLikesEventReplies");
 dotenv_1.default.config();
 exports.Database = new typeorm_1.DataSource({
     type: "mysql",
@@ -29,11 +31,13 @@ exports.Database = new typeorm_1.DataSource({
         Posts_1.Posts,
         EventPosts_1.EventPosts,
         Replies_1.Replies,
+        EventReplies_1.EventReplies,
         Societies_1.Societies,
         UserSocieties_1.UserSocieties,
         UserLikesPosts_1.UserLikesPosts,
         UserLikesReplies_1.UserLikesReplies,
-        UserLikesEventPosts_1.UserLikesEventPosts
+        UserLikesEventPosts_1.UserLikesEventPosts,
+        UserLikesEventReplies_1.UserLikesEventReplies
     ],
     ssl: false
 });

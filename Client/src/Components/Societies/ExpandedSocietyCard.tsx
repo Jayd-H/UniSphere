@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import {
   XMarkIcon,
@@ -7,6 +7,12 @@ import {
 } from "@heroicons/react/24/outline";
 import SocietyFeed from "./PostRelated/SocietyFeed";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import {
+  joinSociety,
+  leaveSociety,
+  fetchSocietyMemberCount,
+} from "../../api/societiesAPI";
+import { useUserContext } from "../../UserContext";
 
 interface ExpandedSocietyCardProps {
   society: {
@@ -15,10 +21,9 @@ interface ExpandedSocietyCardProps {
     description: string;
     imageURL: string;
   };
-  userId: number;
   onClose: () => void;
+  onLeaveSociety: (societyId: number) => void;
 }
-
 const backgroundVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
@@ -68,25 +73,61 @@ const dropdownVariants: Variants = {
 
 const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
   society,
-  userId,
   onClose,
+  onLeaveSociety,
 }) => {
+  const { user, societies, setSocieties } = useUserContext();
   const [showPosts, setShowPosts] = useState(false);
-  const [hasJoined, setHasJoined] = useState(false);
+  const [hasJoined, setHasJoined] = useState(
+    societies.some((s) => s.id === society.id)
+  );
   const scrollbarRef = useRef<Scrollbars>(null);
-  const memberCount = 16; // or any other logic to get the member count
+  const [memberCount, setMemberCount] = useState(0);
 
   const togglePosts = () => {
     setShowPosts(!showPosts);
   };
 
-  const handleJoinSociety = () => {
-    // TODO: Placeholder function to send a request to join the society
-    const joinSociety = async (_userId: number, _societyId: number) => {
-      setHasJoined(true);
+  useEffect(() => {
+    const fetchMemberCount = async () => {
+      try {
+        const count = await fetchSocietyMemberCount(society.id);
+        setMemberCount(count);
+      } catch (error) {
+        console.error("Error fetching member count:", error);
+      }
     };
 
-    joinSociety(userId, society.id);
+    fetchMemberCount();
+  }, [society.id]);
+
+  const handleJoinSociety = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token && user) {
+        await joinSociety(society.id, user.id, token);
+        setHasJoined(true);
+        setSocieties([...societies, society]);
+        setMemberCount(memberCount + 1);
+      }
+    } catch (error) {
+      console.error("Error joining society:", error);
+    }
+  };
+
+  const handleLeaveSociety = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token && user) {
+        await leaveSociety(society.id, user.id, token);
+        setHasJoined(false);
+        onLeaveSociety(society.id);
+        setSocieties(societies.filter((s) => s.id !== society.id));
+        setMemberCount(memberCount - 1);
+      }
+    } catch (error) {
+      console.error("Error leaving society:", error);
+    }
   };
 
   return (
@@ -140,9 +181,9 @@ const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
-                onClick={handleJoinSociety}
+                onClick={hasJoined ? handleLeaveSociety : handleJoinSociety}
               >
-                {hasJoined ? "Joined" : "Join"}
+                {hasJoined ? "Leave" : "Join"}
               </motion.button>
             </motion.div>
             <div className="w-1/2">

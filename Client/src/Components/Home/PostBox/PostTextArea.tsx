@@ -2,11 +2,13 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import autosize from "autosize";
+import { Society } from "../../../types/society";
 
 interface PostTextAreaProps {
   postContent: string;
   setPostContent: (content: string) => void;
   handlePostSubmit: () => void;
+  selectedSociety: Society | null;
   maxCharacters: number;
 }
 
