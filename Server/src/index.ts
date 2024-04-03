@@ -6,7 +6,9 @@ import societyRoutes from './Routes/societyRoutes';
 import { Database } from './Data/data-source';
 import postRoutes from './Routes/postRoutes';
 import userRoutes from './Routes/userRoutes';
-import  settingsRoutes  from './Routes/settingsRoutes';
+import settingsRoutes  from './Routes/settingsRoutes';
+import eventPostRoutes from './Routes/eventPostRoutes';
+
 dotenv.config();
 
 const app = express();
@@ -23,6 +25,7 @@ async function startServer() {
     app.use('/api/auth', authRoutes);
     app.use('/api/societies', societyRoutes);
     app.use('/api', postRoutes);
+    app.use('/api', eventPostRoutes);
     app.use('/api/user', userRoutes);
     app.use('/api/settings', settingsRoutes)
     app.get("/", (req, res) => {
