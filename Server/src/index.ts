@@ -17,7 +17,11 @@ async function startServer() {
     await Database.initialize();
     console.log("The database has been initialized!");
 
-    app.use(cors());
+    app.use(cors({
+        origin: 'https://unispher-e.vercel.app',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization']
+      }));
     app.use(express.json());
 
     app.use('/api/auth', authRoutes);
