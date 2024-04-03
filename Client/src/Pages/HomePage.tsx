@@ -1,7 +1,6 @@
 import React from "react";
 import { useUserContext } from "../UserContext";
 import Feed from "../Components/Home/Feed/Feed";
-import PostBox from "../Components/Home/PostBox/PostBox";
 
 const HomePage: React.FC = () => {
   const { user } = useUserContext();
@@ -11,13 +10,9 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <>
-      <PostBox />
-      <div>
-        <br />
-      </div>
+    <div className="h-full">
       <Feed />
-    </>
+    </div>
   );
 };
 
