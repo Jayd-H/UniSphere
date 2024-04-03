@@ -1,10 +1,20 @@
+import { EventsReply } from './eventsReply';
+
 export interface EventsPost {
-  id: number;
-  userId: number;
-  societyId: number;
+  eventsPostId: number;
+  eventsPostContent: string;
   timestamp: string;
-  content: string;
   eventType: string;
   eventLocation: string;
   eventTime: string;
+  societyId: number;
+  societyName: string;
+  user: {
+    id: number;
+    displayName: string;
+  };
+  likesCount: number;
+  isLiked: boolean;
+  replyCount: number;
+  replies: EventsReply[];
 }
