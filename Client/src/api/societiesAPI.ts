@@ -21,3 +21,52 @@ export const fetchSocietiesByIds = async (societyIds: number[]) => {
     throw error;
   }
 };
+
+export const fetchSocietyPosts = async (societyId: number, token: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/societies/${societyId}/posts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const joinSociety = async (societyId: number, userId: number, token: string) => {
+  try {
+    const response = await axiosInstance.post(`/api/societies/${societyId}/join`, { userId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const leaveSociety = async (societyId: number, userId: number, token: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/societies/${societyId}/leave`, {
+      data: { userId },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSocietyMemberCount = async (societyId: number) => {
+  try {
+    const response = await axiosInstance.get(`/api/societies/${societyId}/members/count`);
+    return response.data.count;
+  } catch (error) {
+    throw error;
+  }
+};
