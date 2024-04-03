@@ -1,5 +1,8 @@
+import { Society } from './society';
+
 export interface User {
   id: number;
-  userName: string;
+  userName?: string;
   displayName: string;
+  societies?: Society[];
 }
