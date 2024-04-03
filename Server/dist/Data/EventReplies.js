@@ -6,34 +6,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Replies = void 0;
+exports.EventReplies = void 0;
 const typeorm_1 = require("typeorm");
 const Users_1 = require("./Users");
-const Posts_1 = require("./Posts");
-const UserLikesReplies_1 = require("./UserLikesReplies");
-let Replies = class Replies extends typeorm_1.BaseEntity {
+const EventPosts_1 = require("./EventPosts");
+const UserLikesEventReplies_1 = require("./UserLikesEventReplies");
+let EventReplies = class EventReplies extends typeorm_1.BaseEntity {
 };
-exports.Replies = Replies;
+exports.EventReplies = EventReplies;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
-], Replies.prototype, "id", void 0);
+], EventReplies.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)("varchar", { length: 512 })
-], Replies.prototype, "content", void 0);
+], EventReplies.prototype, "content", void 0);
 __decorate([
     (0, typeorm_1.Column)("timestamp", { default: () => "CURRENT_TIMESTAMP" })
-], Replies.prototype, "timestamp", void 0);
+], EventReplies.prototype, "timestamp", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Users_1.Users, user => user.replies, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(() => Users_1.Users, user => user.eventReplies, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "userId" })
-], Replies.prototype, "user", void 0);
+], EventReplies.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Posts_1.Posts, post => post.replies, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(() => EventPosts_1.EventPosts, eventPost => eventPost.eventReplies, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "postId" })
-], Replies.prototype, "post", void 0);
+], EventReplies.prototype, "eventPost", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => UserLikesReplies_1.UserLikesReplies, userLikesReplies => userLikesReplies.reply)
-], Replies.prototype, "userLikes", void 0);
-exports.Replies = Replies = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "replies" })
-], Replies);
+    (0, typeorm_1.OneToMany)(() => UserLikesEventReplies_1.UserLikesEventReplies, userLikesEventReplies => userLikesEventReplies.eventReply)
+], EventReplies.prototype, "userLikes", void 0);
+exports.EventReplies = EventReplies = __decorate([
+    (0, typeorm_1.Entity)({ database: "unisphere", name: "event_replies" })
+], EventReplies);

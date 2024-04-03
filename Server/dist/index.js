@@ -12,6 +12,7 @@ const data_source_1 = require("./Data/data-source");
 const postRoutes_1 = __importDefault(require("./Routes/postRoutes"));
 const userRoutes_1 = __importDefault(require("./Routes/userRoutes"));
 const settingsRoutes_1 = __importDefault(require("./Routes/settingsRoutes"));
+const eventPostRoutes_1 = __importDefault(require("./Routes/eventPostRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 async function startServer() {
@@ -24,6 +25,7 @@ async function startServer() {
             app.use('/api/auth', authRoutes_1.default);
             app.use('/api/societies', societyRoutes_1.default);
             app.use('/api', postRoutes_1.default);
+            app.use('/api', eventPostRoutes_1.default);
             app.use('/api/user', userRoutes_1.default);
             app.use('/api/settings', settingsRoutes_1.default);
             app.get("/", (req, res) => {

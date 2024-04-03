@@ -31,17 +31,23 @@ const getPostsInSociety = async (req, res) => {
         const societyIdsString = ((_a = req.query.societyIds) === null || _a === void 0 ? void 0 : _a.toString()) || '';
         const societyIds = societyIdsString.split(',').map(Number).filter(id => !isNaN(id));
         const userId = req.user.id;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 25;
+        const offset = (page - 1) * limit;
         const whereClause = societyIds.length > 0 ? { society: { id: (0, typeorm_1.In)(societyIds) } } : {};
-        const posts = await Posts_1.Posts.find({
+        const [posts, total] = await Posts_1.Posts.findAndCount({
             where: whereClause,
             relations: ['user', 'society', 'replies', 'replies.user'],
+            order: { timestamp: 'DESC' },
+            skip: offset,
+            take: limit,
         });
         const postsWithData = await Promise.all(posts.map(async (post) => {
-            const likesCount = await UserLikesPosts_1.UserLikesPosts.count({ where: { postId: post.id } });
-            const userLiked = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { postId: post.id, userId } });
+            const likesCount = await UserLikesPosts_1.UserLikesPosts.count({ where: { post: { id: post.id } } });
+            const userLiked = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { post: { id: post.id }, user: { id: userId } } });
             const repliesWithData = await Promise.all(post.replies.map(async (reply) => {
-                const replyLikesCount = await UserLikesReplies_1.UserLikesReplies.count({ where: { replyId: reply.id } });
-                const userLikedReply = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { replyId: reply.id, userId } });
+                const replyLikesCount = await UserLikesReplies_1.UserLikesReplies.count({ where: { reply: { id: reply.id } } });
+                const userLikedReply = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { reply: { id: reply.id }, user: { id: userId } } });
                 return {
                     replyId: reply.id,
                     replyContent: reply.content,
@@ -54,6 +60,7 @@ const getPostsInSociety = async (req, res) => {
                     isLiked: !!userLikedReply,
                 };
             }));
+            repliesWithData.sort((a, b) => b.likesCount - a.likesCount);
             return {
                 postId: post.id,
                 postContent: post.content,
@@ -70,7 +77,12 @@ const getPostsInSociety = async (req, res) => {
                 replies: repliesWithData,
             };
         }));
-        res.json(postsWithData);
+        const totalPages = Math.ceil(total / limit);
+        res.json({
+            posts: postsWithData,
+            currentPage: page,
+            totalPages: totalPages,
+        });
     }
     catch (error) {
         console.error('Error fetching posts:', error);
@@ -87,9 +99,9 @@ const createPost = async (req, res) => {
         if (!society) {
             return res.status(404).json({ message: 'Society not found' });
         }
-        const post = Posts_1.Posts.create({ content, society, user: { id: userId }, timestamp });
+        const post = Posts_1.Posts.create({ content, timestamp, society, user: { id: userId } });
         await Posts_1.Posts.save(post);
-        res.json(post);
+        res.json({ postId: post.id });
     }
     catch (error) {
         console.error('Error creating post:', error);
@@ -102,15 +114,15 @@ const likePost = async (req, res) => {
     try {
         const postId = parseInt(req.params.postId);
         const userId = req.user.id;
-        const post = await Posts_1.Posts.findOneBy({ id: postId });
+        const post = await Posts_1.Posts.findOne({ where: { id: postId }, relations: ['userLikes'] });
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
-        const like = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { postId, userId } });
-        if (like) {
+        const existingLike = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { post: { id: postId }, user: { id: userId } } });
+        if (existingLike) {
             return res.status(400).json({ message: 'Post already liked' });
         }
-        const newLike = UserLikesPosts_1.UserLikesPosts.create({ postId, userId });
+        const newLike = UserLikesPosts_1.UserLikesPosts.create({ post: { id: postId }, user: { id: userId } });
         await newLike.save();
         res.json({ message: 'Post liked successfully' });
     }
@@ -125,7 +137,7 @@ const unlikePost = async (req, res) => {
     try {
         const postId = parseInt(req.params.postId);
         const userId = req.user.id;
-        const like = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { postId, userId } });
+        const like = await UserLikesPosts_1.UserLikesPosts.findOne({ where: { post: { id: postId }, user: { id: userId } } });
         if (!like) {
             return res.status(400).json({ message: 'Post not liked' });
         }

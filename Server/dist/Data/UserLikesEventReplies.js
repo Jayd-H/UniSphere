@@ -6,24 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserLikesEventPosts = void 0;
+exports.UserLikesEventReplies = void 0;
 const typeorm_1 = require("typeorm");
 const Users_1 = require("./Users");
-const EventPosts_1 = require("./EventPosts");
-let UserLikesEventPosts = class UserLikesEventPosts extends typeorm_1.BaseEntity {
+const EventReplies_1 = require("./EventReplies");
+let UserLikesEventReplies = class UserLikesEventReplies extends typeorm_1.BaseEntity {
 };
-exports.UserLikesEventPosts = UserLikesEventPosts;
+exports.UserLikesEventReplies = UserLikesEventReplies;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("increment")
-], UserLikesEventPosts.prototype, "id", void 0);
+], UserLikesEventReplies.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "userId" })
-], UserLikesEventPosts.prototype, "user", void 0);
+], UserLikesEventReplies.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => EventPosts_1.EventPosts, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "eventPostId" })
-], UserLikesEventPosts.prototype, "eventPost", void 0);
-exports.UserLikesEventPosts = UserLikesEventPosts = __decorate([
-    (0, typeorm_1.Entity)({ database: "unisphere", name: "user_likes_event_posts" })
-], UserLikesEventPosts);
+    (0, typeorm_1.ManyToOne)(() => EventReplies_1.EventReplies, { cascade: true }),
+    (0, typeorm_1.JoinColumn)({ name: "eventReplyId" })
+], UserLikesEventReplies.prototype, "eventReply", void 0);
+exports.UserLikesEventReplies = UserLikesEventReplies = __decorate([
+    (0, typeorm_1.Entity)({ database: "unisphere", name: "user_likes_event_replies" })
+], UserLikesEventReplies);

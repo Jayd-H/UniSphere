@@ -16,7 +16,7 @@ const createReply = async (req, res) => {
         }
         const reply = Replies_1.Replies.create({ content, timestamp, post, user: { id: userId } });
         await Replies_1.Replies.save(reply);
-        res.json(reply);
+        res.json({ replyId: reply.id });
     }
     catch (error) {
         console.error('Error creating reply:', error);
@@ -29,15 +29,15 @@ const likeReply = async (req, res) => {
     try {
         const replyId = parseInt(req.params.replyId);
         const userId = req.user.id;
-        const reply = await Replies_1.Replies.findOneBy({ id: replyId });
+        const reply = await Replies_1.Replies.findOne({ where: { id: replyId }, relations: ['userLikes'] });
         if (!reply) {
             return res.status(404).json({ message: 'Reply not found' });
         }
-        const like = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { replyId, userId } });
-        if (like) {
+        const existingLike = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { reply: { id: replyId }, user: { id: userId } } });
+        if (existingLike) {
             return res.status(400).json({ message: 'Reply already liked' });
         }
-        const newLike = UserLikesReplies_1.UserLikesReplies.create({ replyId, userId });
+        const newLike = UserLikesReplies_1.UserLikesReplies.create({ reply: { id: replyId }, user: { id: userId } });
         await newLike.save();
         res.json({ message: 'Reply liked successfully' });
     }
@@ -52,7 +52,7 @@ const unlikeReply = async (req, res) => {
     try {
         const replyId = parseInt(req.params.replyId);
         const userId = req.user.id;
-        const like = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { replyId, userId } });
+        const like = await UserLikesReplies_1.UserLikesReplies.findOne({ where: { reply: { id: replyId }, user: { id: userId } } });
         if (!like) {
             return res.status(400).json({ message: 'Reply not liked' });
         }

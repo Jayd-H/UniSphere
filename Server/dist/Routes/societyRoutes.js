@@ -7,4 +7,8 @@ const router = (0, express_1.Router)();
 router.get('/all', societyController_1.getAllSocieties);
 router.get('/user', authMiddleware_1.authenticateToken, societyController_1.getUserSocieties);
 router.get('/One', societyController_1.getSpecificSociety);
+router.get('/:societyId/posts', authMiddleware_1.authenticateToken, societyController_1.getSocietyPosts);
+router.post('/:societyId/join', authMiddleware_1.authenticateToken, societyController_1.joinSociety);
+router.delete('/:societyId/leave', authMiddleware_1.authenticateToken, societyController_1.leaveSociety);
+router.get('/:societyId/members/count', societyController_1.getSocietyMemberCount);
 exports.default = router;

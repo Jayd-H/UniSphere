@@ -5,7 +5,7 @@ const authMiddleware_1 = require("../Middleware/authMiddleware");
 const postsController_1 = require("../Controllers/postsController");
 const repliesController_1 = require("../Controllers/repliesController");
 const router = (0, express_1.Router)();
-router.get('/posts', postsController_1.getPostsInSociety);
+router.get('/posts', authMiddleware_1.authenticateToken, postsController_1.getPostsInSociety);
 router.post('/posts', authMiddleware_1.authenticateToken, postsController_1.createPost);
 router.post('/posts/:postId/like', authMiddleware_1.authenticateToken, postsController_1.likePost);
 router.delete('/posts/:postId/like', authMiddleware_1.authenticateToken, postsController_1.unlikePost);

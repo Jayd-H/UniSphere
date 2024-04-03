@@ -11,6 +11,7 @@ const typeorm_1 = require("typeorm");
 const Users_1 = require("./Users");
 const Societies_1 = require("./Societies");
 const Replies_1 = require("./Replies");
+const UserLikesPosts_1 = require("./UserLikesPosts");
 let Posts = class Posts extends typeorm_1.BaseEntity {
 };
 exports.Posts = Posts;
@@ -34,6 +35,9 @@ __decorate([
 __decorate([
     (0, typeorm_1.OneToMany)(() => Replies_1.Replies, reply => reply.post)
 ], Posts.prototype, "replies", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => UserLikesPosts_1.UserLikesPosts, userLikesPosts => userLikesPosts.post)
+], Posts.prototype, "userLikes", void 0);
 exports.Posts = Posts = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "posts" })
 ], Posts);
