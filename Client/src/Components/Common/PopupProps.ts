@@ -1,10 +1,13 @@
+import { User } from "../../types/user";
+import { useState } from "react";
+
 export interface PopupProps {
   title: string;
   subheading?: string;
   inputs: {
     placeholder: string;
     type?: string;
-    value: string;
+    value: string | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     id: string;
     minLength?: number;
@@ -26,8 +29,11 @@ export const getPopupProps = (
   popupType: string | null,
   handleConfirm: (data: any) => void,
   handleCancel: () => void,
-  setPopupType: (popupType: string | null) => void
+  setPopupType: (popupType: string | null) => void,
+  user: User
 ): PopupProps => {
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+
   switch (popupType) {
     case "username":
       return {
@@ -35,8 +41,8 @@ export const getPopupProps = (
         inputs: [
           {
             placeholder: "New Username",
-            value: "",
-            onChange: () => {},
+            value: user.userName,
+            onChange: (e) => setInputValues({ ...inputValues, username: e.target.value }),
             id: "username",
             minLength: 5,
             maxLength: 20,
@@ -45,14 +51,14 @@ export const getPopupProps = (
             placeholder: "Confirm Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, password: e.target.value }),
             id: "password",
             minLength: 5,
           },
         ],
         confirmButton: {
           text: "Confirm",
-          onClick: () => handleConfirm({ username: "", password: "" }),
+          onClick: () => handleConfirm({ username: inputValues.username, password: inputValues.password }),
           disabled: false,
         },
         cancelButton: {
@@ -67,8 +73,8 @@ export const getPopupProps = (
         inputs: [
           {
             placeholder: "New Display Name",
-            value: "",
-            onChange: () => {},
+            value: user.displayName,
+            onChange: (e) => setInputValues({ ...inputValues, displayName: e.target.value }),
             id: "displayName",
             minLength: 5,
             maxLength: 20,
@@ -77,14 +83,14 @@ export const getPopupProps = (
             placeholder: "Confirm Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, password: e.target.value }),
             id: "password",
             minLength: 5,
           },
         ],
         confirmButton: {
           text: "Confirm",
-          onClick: () => handleConfirm({ displayName: "", password: "" }),
+          onClick: () => handleConfirm({ displayName: inputValues.displayName, password: inputValues.password }),
           disabled: false,
         },
         cancelButton: {
@@ -101,7 +107,7 @@ export const getPopupProps = (
             placeholder: "Current Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, currentPassword: e.target.value }),
             id: "currentPassword",
             minLength: 5,
           },
@@ -109,7 +115,7 @@ export const getPopupProps = (
             placeholder: "New Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, newPassword: e.target.value }),
             id: "newPassword",
             minLength: 5,
           },
@@ -117,7 +123,7 @@ export const getPopupProps = (
             placeholder: "Confirm New Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, confirmPassword: e.target.value }),
             id: "confirmPassword",
             minLength: 5,
           },
@@ -126,9 +132,9 @@ export const getPopupProps = (
           text: "Confirm",
           onClick: () =>
             handleConfirm({
-              currentPassword: "",
-              newPassword: "",
-              confirmPassword: "",
+              currentPassword: inputValues.currentPassword,
+              newPassword: inputValues.newPassword,
+              confirmPassword: inputValues.confirmPassword,
             }),
           disabled: false,
         },
@@ -147,14 +153,14 @@ export const getPopupProps = (
             placeholder: "Confirm Password",
             type: "password",
             value: "",
-            onChange: () => {},
+            onChange: (e) => setInputValues({ ...inputValues, password: e.target.value }),
             id: "password",
             minLength: 5,
           },
         ],
         confirmButton: {
           text: "Delete",
-          onClick: () => handleConfirm({ password: "" }),
+          onClick: () => handleConfirm({ password: inputValues.password }),
           disabled: false,
         },
         cancelButton: {

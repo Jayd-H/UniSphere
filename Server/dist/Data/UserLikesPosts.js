@@ -18,12 +18,12 @@ __decorate([
 ], UserLikesPosts.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Users_1.Users, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], UserLikesPosts.prototype, "userId", void 0);
+    (0, typeorm_1.JoinColumn)({ name: "userId" })
+], UserLikesPosts.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Posts_1.Posts, { cascade: true }),
-    (0, typeorm_1.JoinColumn)({ name: "id" })
-], UserLikesPosts.prototype, "postId", void 0);
+    (0, typeorm_1.JoinColumn)({ name: "postId" })
+], UserLikesPosts.prototype, "post", void 0);
 exports.UserLikesPosts = UserLikesPosts = __decorate([
     (0, typeorm_1.Entity)({ database: "unisphere", name: "user_likes_posts" })
 ], UserLikesPosts);

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
-import SocietyPost, { SocietyPostProps } from "./SocietyPost";
+import SocietyPost from "./SocietyPost";
+import { fetchSocietyPosts } from "../../../api/societiesAPI";
+import { Post } from "../../../types/post";
 
 interface SocietyFeedProps {
   societyId: number;
@@ -21,94 +23,49 @@ const postVariants: Variants = {
 };
 
 const SocietyFeed: React.FC<SocietyFeedProps> = ({ societyId }) => {
-  const [posts, setPosts] = useState<SocietyPostProps[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchSocietyPosts = async () => {
+    const fetchPosts = async () => {
       try {
-        // TODO: Make a GET request to the server to fetch posts for the given societyId
-        // const response = await fetch(`/api/societies/${societyId}/posts`);
-        // const data = await response.json();
-        // setPosts(data);
-
-        const mockPosts: SocietyPostProps[] = [
-          {
-            displayName: "Jayd Holdsworth",
-            timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-            content:
-              "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-            likesCount: 5,
-            replies: [],
-            repliesCount: 0,
-          },
-          {
-            displayName: "Jayd Holdsworth",
-            timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-            content:
-              "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-            likesCount: 5,
-            replies: [
-              {
-                displayName: "Jayd Holdsworth",
-                content:
-                  "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-                timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-                likesCount: 5,
-                index: 0,
-              },
-              {
-                displayName: "Jayd Holdsworth",
-                content:
-                  "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-                timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-                likesCount: 5,
-                index: 1,
-              },
-            ],
-            repliesCount: 2,
-          },
-          {
-            displayName: "Jayd Holdsworth",
-            timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-            content:
-              "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-            likesCount: 5,
-            replies: [
-              {
-                displayName: "Jayd Holdsworth",
-                content:
-                  "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-                timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-                likesCount: 5,
-                index: 0,
-              },
-            ],
-            repliesCount: 1,
-          },
-          {
-            displayName: "Jayd Holdsworth",
-            timestamp: new Date("2023-01-07T14:32:00").toISOString(),
-            content:
-              "Hey guys, super excited for the Pokémon fan meetup in the library today! My favourite Pokémon are Lopunny, Gardevoir, and Gothita. Hope everyone remembers to bring their best switch games. Can anyone confirm if snacks and drinks are available? When I win, I tend to get hungry!",
-            likesCount: 5,
-            replies: [],
-            repliesCount: 0,
-          },
-        ];
-        setPosts(mockPosts);
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await fetchSocietyPosts(societyId, token);
+          setPosts(response);
+        }
       } catch (error) {
-        console.error("Error fetching society posts:", error);
+        setError(error as Error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchSocietyPosts();
+    fetchPosts();
   }, [societyId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center font-bold font-montserrat-alt mt-20 text-xl">
+        No posts available at this time
+      </div>
+    );
+  }
 
   return (
     <div>
-      {posts.map((post, index) => (
+      {posts.map((post: Post, index: number) => (
         <motion.div
-          key={index}
+          key={post.postId}
           variants={postVariants}
           initial="initial"
           animate="visible"

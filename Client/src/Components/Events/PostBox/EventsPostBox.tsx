@@ -4,19 +4,25 @@ import EventsPostTextArea from "./EventsPostTextArea";
 import AlertMessage from "../../Common/AlertMessage";
 import EventsGreetingHeader from "./EventsGreetingHeader";
 import SocietyDropdown from "../../Home/PostBox/SocietyDropdown";
+import { useUserContext } from "../../../UserContext";
+import { Society } from "../../../types/society";
+import { EventsPost as EventsPostType } from "../../../types/eventsPost";
+import { createEventsPost } from "../../../api/eventsPostsAPI";
 
-const EventsPostBox: React.FC = () => {
+interface EventsPostBoxProps {
+  addNewEventsPost: (post: EventsPostType) => void;
+}
+
+const EventsPostBox: React.FC<EventsPostBoxProps> = ({ addNewEventsPost }) => {
   const [postContent, setPostContent] = useState("");
-  const [selectedSociety, setSelectedSociety] = useState("");
+  const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
   const [eventType, setEventType] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventTime, setEventTime] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const { user, societies } = useUserContext();
 
-  // TODO Get user's display name from auth context
-
-  const societies = ["Robotics Club", "Chess Club", "Literature Society"];
   const maxCharacters = {
     content: 512,
     eventType: 32,
@@ -24,49 +30,53 @@ const EventsPostBox: React.FC = () => {
     eventTime: 16,
   };
 
-  const handlePostSubmit = () => {
-    if (selectedSociety) {
-      // TODO Backend logic to handle post submission
-      // Prevent SQL injection by sanitizing the input
-      const sanitizedContent = postContent.replace(/['"]/g, "");
-      console.log("Post content:", sanitizedContent);
-      console.log("Selected society:", selectedSociety);
-      console.log("Event Type:", eventType);
-      console.log("Event Location:", eventLocation);
-      console.log("Event Time:", eventTime);
-      setPostContent("");
-      setEventType("");
-      setEventLocation("");
-      setEventTime("");
+  const handlePostSubmit = async () => {
+    if (selectedSociety && user) {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const sanitizedContent = postContent.replace(/\\['"]]/g, "");
+          const timestamp = new Date().toISOString();
+          const { eventsPostId } = await createEventsPost(
+            sanitizedContent,
+            selectedSociety.id,
+            eventType,
+            eventLocation,
+            eventTime,
+            token,
+            timestamp
+          );
+          const newEventsPost: EventsPostType = {
+            eventsPostId,
+            eventsPostContent: sanitizedContent,
+            timestamp,
+            eventType,
+            eventLocation,
+            eventTime,
+            societyId: selectedSociety.id,
+            societyName: selectedSociety.societyName,
+            user: {
+              id: user.id,
+              displayName: user.displayName,
+            },
+            likesCount: 0,
+            isLiked: false,
+            replyCount: 0,
+            replies: [],
+          };
+          addNewEventsPost(newEventsPost);
+          setPostContent("");
+          setEventType("");
+          setEventLocation("");
+          setEventTime("");
+        }
+      } catch (error) {
+        console.error("Error creating event post:", error);
+        setShowAlert(true);
+      }
     } else {
       setShowAlert(true);
     }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        staggerChildren: 0.2,
-        ease: "easeInOut",
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
-        ease: "easeInOut",
-      },
-    },
   };
 
   useEffect(() => {
@@ -83,24 +93,28 @@ const EventsPostBox: React.FC = () => {
   return (
     <motion.div
       className="text-black font-montserrat mt-4"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <AlertMessage
         isSuccess={false}
-        message="Please select a society before making a post"
+        message="Please select a society to create an event post"
         isVisible={showAlert}
       />
-      <EventsGreetingHeader />
+      {user && <EventsGreetingHeader />}
       <motion.div
         className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
-        variants={itemVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="flex justify-between items-center mb-4">
           <motion.h1
             className="text-lg font-montserrat underline decoration-mint"
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             What's the event?
           </motion.h1>

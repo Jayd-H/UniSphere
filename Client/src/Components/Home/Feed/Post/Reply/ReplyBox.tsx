@@ -2,21 +2,19 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import autosize from "autosize";
+import { useUserContext } from "../../../../../UserContext";
 
 interface ReplyBoxProps {
+  postId: number;
   onSubmit: (content: string) => void;
-  loggedInDisplayName: string;
   maxCharacters: number;
 }
 
-const ReplyBox: React.FC<ReplyBoxProps> = ({
-  onSubmit,
-  loggedInDisplayName,
-  maxCharacters,
-}) => {
+const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
   const [replyContent, setReplyContent] = useState("");
+  const { user } = useUserContext();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (replyContent.trim()) {
       onSubmit(replyContent);
@@ -45,7 +43,7 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({
     >
       <div>
         <span className="font-semibold font-montserrat text-md">
-          {loggedInDisplayName}
+          {user?.displayName || ""}
         </span>
       </div>
       <form onSubmit={handleSubmit} className="relative">

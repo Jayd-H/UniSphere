@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../Components/Common/AlertMessage";
 import { loginUser } from "../api/authAPI";
+import { useUserContext } from "../UserContext";
+import { fetchUserData } from "../api/userAPI";
 import axios from "axios";
 
 const LoginPage = () => {
@@ -16,6 +18,7 @@ const LoginPage = () => {
   const [_error, setError] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const { setUser, setSocieties } = useUserContext();
 
   const showAlert = (message: string, type: "success" | "error") => {
     setAlertMessage(message);
@@ -59,12 +62,25 @@ const LoginPage = () => {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+
     if (!shouldDisableForm()) {
       try {
         const data = await loginUser(formData.username, formData.password);
         if (data.success && data.accessToken) {
           localStorage.setItem("token", data.accessToken);
           console.log("Login successful:", data.message);
+
+          const token = data.accessToken;
+          const userData = await fetchUserData(token);
+
+          if (userData.user) {
+            setUser(userData.user);
+            setSocieties(userData.user.societies);
+          } else {
+            console.error("Error: User data not received from the server");
+            showAlert("Error: User data not received from the server", "error");
+          }
+
           navigate("/home");
         } else {
           console.error("Login failed:", data.message);
@@ -74,18 +90,14 @@ const LoginPage = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
             console.error("Login error:", error.response.data.message);
             showAlert(error.response.data.message, "error");
             setError(error.response.data.message);
           } else if (error.request) {
-            // The request was made but no response was received
             console.error("Login error: No response received from the server");
             showAlert("No response received from the server", "error");
             setError("No response received from the server");
           } else {
-            // Something happened in setting up the request that triggered an Error
             console.error("Login error:", error.message);
             showAlert("An error occurred while logging in", "error");
             setError("An error occurred while logging in");
@@ -181,12 +193,6 @@ const LoginPage = () => {
                 inputKey="password"
                 isValid={passwordChecks.lengthCheck}
               />
-              <div>
-                <form
-                  onSubmit={handleLogin}
-                  className="space-y-8 mt-4 justify-center items-center w-full text-center"
-                ></form>
-              </div>
               <motion.div className="pt-6" variants={childVariants}>
                 <SubmitButton isDisabled={shouldDisableForm()} text="Login" />
               </motion.div>
