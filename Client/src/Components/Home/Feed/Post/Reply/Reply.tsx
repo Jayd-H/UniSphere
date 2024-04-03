@@ -21,25 +21,27 @@ const Reply: React.FC<ReplyType & { index: number }> = ({
   replyId,
   replyContent,
   timestamp,
-  user,
   index,
   likesCount,
+  isLiked,
+  user,
 }) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [replyIsLiked, setReplyIsLiked] = useState(isLiked);
   const [replyLikesCount, setReplyLikesCount] = useState(likesCount);
 
   const handleLike = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        if (isLiked) {
+        if (replyIsLiked) {
           await unlikeReply(replyId, token);
           setReplyLikesCount(replyLikesCount - 1);
+          setReplyIsLiked(false);
         } else {
           await likeReply(replyId, token);
           setReplyLikesCount(replyLikesCount + 1);
+          setReplyIsLiked(true);
         }
-        setIsLiked(!isLiked);
       }
     } catch (error) {
       console.error("Error liking/unliking reply:", error);
@@ -57,6 +59,14 @@ const Reply: React.FC<ReplyType & { index: number }> = ({
         delay: index * 0.1,
       },
     },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        ease: "easeIn",
+        duration: 0.2,
+      },
+    },
   };
 
   return (
@@ -65,11 +75,12 @@ const Reply: React.FC<ReplyType & { index: number }> = ({
       variants={replyVariants}
       initial="hidden"
       animate="visible"
+      exit="exit"
     >
       <hr className="border-t-2 border-muted-mint border-dashed w-3/4 mx-auto -mt-4 pt-2" />
       <div className="mb-1">
         <span className="font-semibold font-montserrat text-md">
-          {user?.displayName}
+          {user.displayName}
         </span>
         <span className="text-xs text-grey ml-2">{timeSince(timestamp)}</span>
       </div>
@@ -84,13 +95,15 @@ const Reply: React.FC<ReplyType & { index: number }> = ({
             whileTap="tap"
             className="focus:outline-none"
           >
-            {isLiked ? (
+            {replyIsLiked ? (
               <HeartSolidIcon className="w-5 h-5 text-red" />
             ) : (
               <HeartOutlineIcon className="w-5 h-5 text-blue" />
             )}
           </motion.button>
-          <span className="text-sm text-black ml-1">{replyLikesCount}</span>
+          {replyLikesCount > 0 && (
+            <span className="text-sm text-black ml-1">{replyLikesCount}</span>
+          )}
         </div>
       </div>
     </motion.div>
