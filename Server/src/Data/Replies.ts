@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Users } from './Users';
 import { Posts } from './Posts';
+import { UserLikesReplies } from './UserLikesReplies';
 
 @Entity({ database: "unisphere", name: "replies" })
 export class Replies extends BaseEntity {
@@ -20,4 +21,7 @@ export class Replies extends BaseEntity {
   @ManyToOne(() => Posts, post => post.replies, { cascade: true })
   @JoinColumn({ name: "postId" })
   post: Posts;
+
+  @OneToMany(() => UserLikesReplies, userLikesReplies => userLikesReplies.reply)
+  userLikes: UserLikesReplies[];
 }

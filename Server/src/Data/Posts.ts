@@ -2,6 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColu
 import { Users } from './Users';
 import { Societies } from './Societies';
 import { Replies } from './Replies';
+import { UserLikesPosts } from './UserLikesPosts';
 
 @Entity({ database: "unisphere", name: "posts" })
 export class Posts extends BaseEntity {
@@ -24,4 +25,7 @@ export class Posts extends BaseEntity {
 
   @OneToMany(() => Replies, reply => reply.post)
   replies: Replies[];
+
+  @OneToMany(() => UserLikesPosts, userLikesPosts => userLikesPosts.post)
+  userLikes: UserLikesPosts[];
 }
