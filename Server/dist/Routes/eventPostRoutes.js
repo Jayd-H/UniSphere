@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// eventsPostRoutes.ts
 const express_1 = require("express");
 const authMiddleware_1 = require("../Middleware/authMiddleware");
 const eventPostsController_1 = require("../Controllers/eventPostsController");

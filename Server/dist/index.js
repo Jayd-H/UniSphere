@@ -16,30 +16,32 @@ const eventPostRoutes_1 = __importDefault(require("./Routes/eventPostRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 async function startServer() {
-    (async () => {
-        try {
-            await data_source_1.Database.initialize();
-            console.log("The database has been initialized!");
-            app.use((0, cors_1.default)());
-            app.use(express_1.default.json());
-            app.use('/api/auth', authRoutes_1.default);
-            app.use('/api/societies', societyRoutes_1.default);
-            app.use('/api', postRoutes_1.default);
-            app.use('/api', eventPostRoutes_1.default);
-            app.use('/api/user', userRoutes_1.default);
-            app.use('/api/settings', settingsRoutes_1.default);
-            app.get("/", (req, res) => {
-                res.send("Express server is up and running!");
-            });
-            const port = process.env.PORT || 3000;
-            app.listen(port, () => {
-                console.log(`Server is running on port ${port}`);
-            });
-        }
-        catch (err) {
-            console.error("Error during database initialization.", err);
-        }
-    })();
+    try {
+        await data_source_1.Database.initialize();
+        console.log("The database has been initialized!");
+        app.use((0, cors_1.default)({
+            origin: 'https://unispher-e.vercel.app',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization']
+        }));
+        app.use(express_1.default.json());
+        app.use('/api/auth', authRoutes_1.default);
+        app.use('/api/societies', societyRoutes_1.default);
+        app.use('/api', postRoutes_1.default);
+        app.use('/api', eventPostRoutes_1.default);
+        app.use('/api/user', userRoutes_1.default);
+        app.use('/api/settings', settingsRoutes_1.default);
+        app.get("/", (req, res) => {
+            res.send("Express server is up and running!");
+        });
+        const port = process.env.PORT || 3000;
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    }
+    catch (err) {
+        console.error("Error during database initialization.", err);
+    }
 }
 startServer();
 exports.default = app;
