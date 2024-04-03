@@ -1,8 +1,19 @@
 import { Router } from 'express';
-
-import { changePassword } from '../Controllers/settingsController';
+import { authenticateToken } from '../Middleware/authMiddleware';
+import {
+  getUserDetails,
+  changeUsername,
+  changeDisplayName,
+  changePassword,
+  deleteAccount,
+} from '../Controllers/settingsController';
 
 const router = Router();
-router.post('/changePassword', changePassword);
+
+router.get('/user', authenticateToken, getUserDetails);
+router.put('/username', authenticateToken, changeUsername);
+router.put('/displayname', authenticateToken, changeDisplayName);
+router.put('/password', authenticateToken, changePassword);
+router.delete('/account', authenticateToken, deleteAccount);
 
 export default router;
