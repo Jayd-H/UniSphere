@@ -10,7 +10,6 @@ import AlertMessage from "../Components/Common/AlertMessage";
 import { loginUser } from "../api/authAPI";
 import { useUserContext } from "../UserContext";
 import { fetchUserData } from "../api/userAPI";
-import { fetchUserJoinedSocieties } from "../api/userSocietiesAPI";
 import axios from "axios";
 
 const LoginPage = () => {
@@ -63,6 +62,7 @@ const LoginPage = () => {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+
     if (!shouldDisableForm()) {
       try {
         const data = await loginUser(formData.username, formData.password);
@@ -72,14 +72,10 @@ const LoginPage = () => {
 
           const token = data.accessToken;
           const userData = await fetchUserData(token);
-          if (userData) {
-            setUser(userData);
 
-            const userSocieties = await fetchUserJoinedSocieties(
-              userData.id,
-              token
-            );
-            setSocieties(userSocieties);
+          if (userData.user) {
+            setUser(userData.user);
+            setSocieties(userData.user.societies);
           } else {
             console.error("Error: User data not received from the server");
             showAlert("Error: User data not received from the server", "error");
