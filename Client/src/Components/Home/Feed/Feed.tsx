@@ -1,89 +1,78 @@
-import React, { useEffect, useState } from "react";
-import Post from "./Post/Post";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { fetchPosts } from "../../../api/postsAPI";
 import { useUserContext } from "../../../UserContext";
-
-interface PostData {
-  postId: number;
-  displayName: string;
-  postContent: string;
-  timestamp: string;
-  societyId: number;
-  societyName: string;
-  likesCount: number;
-  isLiked: boolean;
-  replyCount: number;
-  replies: ReplyData[];
-}
-
-interface ReplyData {
-  replyId: number;
-  displayName: string;
-  replyContent: string;
-  timestamp: string;
-  likesCount: number;
-  isLiked: boolean;
-}
-
-const postVariants = {
-  initial: { opacity: 0, y: 20 },
-  hidden: { opacity: 0, y: 20 },
-  visible: (index: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.6 + index * 0.2,
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  }),
-};
+import { Post as PostType } from "../../../types/post";
+import Post from "./Post/Post";
+import PostBox from "../PostBox/PostBox";
+import Pagination from "./Pagination";
 
 const Feed: React.FC = () => {
-  const [posts, setPosts] = useState<PostData[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState<Error | null>(null);
   const { societies } = useUserContext();
+  const feedRef = useRef<HTMLDivElement>(null);
+
+  const addNewPost = (post: PostType) => {
+    setPosts((prevPosts) => [post, ...prevPosts]);
+  };
+
+  const fetchPostsData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token && societies) {
+        const societyIds = societies.map((society) => society.id);
+        const response = await fetchPosts(societyIds, token, page);
+        const newPosts = response.posts;
+        const totalPages = response.totalPages;
+        setPosts(newPosts);
+        setTotalPages(totalPages);
+      }
+    } catch (error) {
+      setError(error as Error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token && societies) {
-          const societyIds = societies.map((society) => society.id);
-          const postsData = await fetchPosts(societyIds, token);
-          setPosts(postsData);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [societies]);
+    fetchPostsData();
+  }, [page]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    if (feedRef.current) {
+      feedRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <div>
+    <div ref={feedRef}>
+      <PostBox addNewPost={addNewPost} />
       {posts.map((post, index) => (
         <motion.div
-          key={post.postId}
-          variants={postVariants}
-          initial="initial"
-          animate="visible"
-          custom={index}
+          key={`${post.postId}-${index}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 * index, duration: 0.6, ease: "easeOut" }}
         >
-          <Post
-            postId={post.postId}
-            displayName={post.displayName}
-            postContent={post.postContent}
-            timestamp={post.timestamp}
-            societyId={post.societyId}
-            societyName={post.societyName}
-            likesCount={post.likesCount}
-            isLiked={post.isLiked}
-            replyCount={post.replyCount}
-            replies={post.replies}
-          />
+          <Post {...post} />
         </motion.div>
       ))}
+      <div className="flex justify-center mt-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 5.2, duration: 0.6, ease: "easeOut" }}
+        >
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </motion.div>
+      </div>
+      {error && <p>Error: {error.message}</p>}
     </div>
   );
 };
