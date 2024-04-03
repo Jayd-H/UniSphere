@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { User } from "./types/user";
 import { Society } from "./types/society";
 import { fetchUserData } from "./api/userAPI";
-import { fetchUserJoinedSocieties } from "./api/userSocietiesAPI";
 
 interface UserContextType {
   user: User | null;
@@ -34,11 +33,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           const userData = await fetchUserData(token);
           if (userData.user) {
             setUser(userData.user);
-            const userSocieties = await fetchUserJoinedSocieties(
-              userData.user.id,
-              token
-            );
-            setSocieties(userSocieties);
+            setSocieties(userData.user.societies);
           } else {
             console.error("Error: User data not received from the server");
           }
@@ -47,7 +42,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error fetching user data:", error);
       }
     };
-
     fetchData();
   }, []);
 
