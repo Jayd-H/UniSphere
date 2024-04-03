@@ -5,7 +5,7 @@ import { createReply, likeReply, unlikeReply } from '../Controllers/repliesContr
 
 const router = Router();
 
-router.get('/posts', getPostsInSociety);
+router.get('/posts', authenticateToken, getPostsInSociety);
 router.post('/posts', authenticateToken, createPost);
 router.post('/posts/:postId/like', authenticateToken, likePost);
 router.delete('/posts/:postId/like', authenticateToken, unlikePost);
