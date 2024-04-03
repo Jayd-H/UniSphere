@@ -9,7 +9,7 @@ export const fetchUserData = async (token: string) => {
     });
 
     if (response.data.success && response.data.user) {
-      return response.data.user;
+      return response.data;
     } else {
       throw new Error(response.data.message || 'Failed to fetch user data');
     }
