@@ -6,13 +6,7 @@ import LoadingIcon from "../Components/Common/LoadingIcon";
 import SearchBar from "../Components/Common/SearchBar";
 import { fetchAllSocieties } from "../api/societiesAPI";
 import axios from "axios";
-
-interface SocietyData {
-  id: number;
-  societyName: string;
-  description: string;
-  imageURL: string;
-}
+import { Society } from "../types/society";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,10 +25,8 @@ const headingVariants = {
 };
 
 const SocietiesPage: React.FC = () => {
-  const [societies, setSocieties] = useState<SocietyData[]>([]);
-  const [expandedSociety, setExpandedSociety] = useState<SocietyData | null>(
-    null
-  );
+  const [societies, setSocieties] = useState<Society[]>([]);
+  const [expandedSociety, setExpandedSociety] = useState<Society | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showLoadingIcon, setShowLoadingIcon] = useState(false);
@@ -79,7 +71,7 @@ const SocietiesPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleCardClick = (society: SocietyData) => {
+  const handleCardClick = (society: Society) => {
     setExpandedSociety(society);
   };
 
@@ -160,7 +152,7 @@ const SocietiesPage: React.FC = () => {
           <ExpandedSocietyCard
             society={expandedSociety}
             onClose={handleCloseExpandedCard}
-            userId={0}
+            onLeaveSociety={() => {}}
           />
         )}
       </AnimatePresence>
