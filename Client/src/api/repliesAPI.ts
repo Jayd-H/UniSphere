@@ -17,6 +17,7 @@ export const createReply = async (postId: number, content: string, token: string
     throw error;
   }
 };
+
 export const likeReply = async (replyId: number, token: string) => {
   try {
     const response = await axiosInstance.post(
