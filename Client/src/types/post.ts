@@ -1,18 +1,17 @@
-import { Society } from './society';
 import { Reply } from './reply';
 
 export interface Post {
-  id: number;
+  postId: number;
   postContent: string;
   timestamp: string;
   societyId: number;
-  userId: number;
-  society: Society;
+  societyName: string;
   user: {
     id: number;
     displayName: string;
   };
   likesCount: number;
+  isLiked: boolean;
   replyCount: number;
   replies: Reply[];
 }
