@@ -130,21 +130,33 @@ const SocietiesPage: React.FC = () => {
             </div>
           ) : null
         ) : (
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {filteredSocieties.map((society) => (
-              <SocietyCard
-                key={society.id}
-                society={society}
-                onClick={handleCardClick}
-                onLeaveSociety={() => {}}
-              />
-            ))}
-          </motion.div>
+          <>
+            {filteredSocieties.length > 0 ? (
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredSocieties.map((society) => (
+                  <SocietyCard
+                    key={society.id}
+                    society={society}
+                    onClick={handleCardClick}
+                    onLeaveSociety={() => {}}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <motion.p
+                className="text-center text-xl mt-8 font-montserrat"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                No societies match your search criteria.
+              </motion.p>
+            )}
+          </>
         )}
       </div>
       <AnimatePresence>
