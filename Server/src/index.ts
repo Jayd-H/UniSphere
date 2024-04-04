@@ -19,7 +19,7 @@ async function startServer() {
     console.log("The database has been initialized!");
 
     app.use(cors({
-      origin: 'https://unispher-e.vercel.app',
+      origin: ['https://unispher-e.vercel.app', 'http://localhost:5173'],
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization']
     }));
