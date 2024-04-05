@@ -57,7 +57,7 @@ const AccountActions: React.FC<AccountActionsProps> = ({
   };
 
   return (
-    <motion.div className="mt-8" variants={childVariants} custom={0}>
+    <motion.div className="mt-8 mb-24" variants={childVariants} custom={0}>
       <motion.button
         className="bg-red text-white px-4 py-2 rounded-md font-semibold mr-4"
         variants={buttonVariants}
