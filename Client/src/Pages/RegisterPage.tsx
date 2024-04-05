@@ -157,11 +157,12 @@ const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-background-gradient font-work-sans">
-      <div className="grid grid-cols-2 space-x-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 space-x-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          className="hidden lg:block"
         >
           <FormContainer>
             <motion.div className=" items-center p-6" variants={childVariants}>
@@ -234,6 +235,12 @@ const RegisterPage = () => {
                   inputKey="displayName"
                   isValid={displayNameChecks.lengthCheck}
                 />
+                <motion.div variants={childVariants}>
+                  <h1 className="text-center text-sm text-black font-work-sans lg:hidden">
+                    Username and password must be between 5-32 characters,
+                    display name must be between 5-64 characters.
+                  </h1>
+                </motion.div>
                 <motion.div variants={childVariants}>
                   <SubmitButton
                     isDisabled={shouldDisableForm()}
