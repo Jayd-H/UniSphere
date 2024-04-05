@@ -113,12 +113,11 @@ const SocietiesPage: React.FC = () => {
         >
           Click on a society to view more details
         </motion.h2>
-        <motion.div variants={headingVariants}>
+        <motion.div variants={headingVariants} className="lg:w-1/2 lg:mx-auto">
           <SearchBar
             placeholder="Search societies..."
             searchTerm={searchTerm}
             onSearchChange={handleSearchChange}
-            style={{ width: "calc(25% - 1rem)" }}
           />
         </motion.div>
       </motion.div>
