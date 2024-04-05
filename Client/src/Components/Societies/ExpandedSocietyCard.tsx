@@ -145,14 +145,14 @@ const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
     >
       <div className="relative flex justify-center items-center">
         <motion.div
-          className="bg-white rounded-lg p-8 w-2/3 relative flex flex-col"
+          className="bg-white rounded-lg p-4 lg:p-8 w-full lg:w-2/3 relative flex flex-col"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
         >
           <motion.button
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            className="absolute top-2 right-2 lg:top-4 lg:right-4 text-gray-500 hover:text-gray-700"
             onClick={onClose}
             variants={iconVariants}
             whileHover="hover"
@@ -160,9 +160,15 @@ const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
           >
             <XMarkIcon className="h-6 w-6" />
           </motion.button>
-          <div className="flex mb-6">
+          <motion.h2
+            className="text-2xl font-bold mb-4 text-center lg:hidden"
+            variants={textVariants}
+          >
+            {society.societyName}
+          </motion.h2>
+          <div className="lg:flex lg:mb-6">
             <motion.div
-              className="w-1/2 h-64 overflow-hidden mr-8 relative"
+              className=" xl:w-[36rem] xl:h-[18rem] h-[12rem] lg:w-[18rem] lg:h-[22rem] w-full overflow-hidden mb-4 lg:mb-0 lg:mr-8 relative"
               variants={imageVariants}
             >
               <img
@@ -191,15 +197,15 @@ const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
                 {hasJoined ? "Leave" : "Join"}
               </motion.button>
             </motion.div>
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <motion.h2
-                className="text-2xl font-bold mb-4"
+                className="text-2xl font-bold mb-4 hidden lg:block"
                 variants={textVariants}
               >
                 {society.societyName}
               </motion.h2>
               <motion.p
-                className="text-dark-grey mb-1 font-work-sans"
+                className="text-dark-grey mb-1 lg:mb-4 font-work-sans"
                 variants={textVariants}
               >
                 {society.description}

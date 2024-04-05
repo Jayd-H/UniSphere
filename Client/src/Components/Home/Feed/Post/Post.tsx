@@ -47,7 +47,7 @@ const Post: React.FC<PostType> = (post) => {
 
   return (
     <motion.div
-      className="bg-white rounded-xl p-6 shadow-sm shadow-mint max-w-2xl mx-auto my-6 font-work-sans"
+      className="bg-white rounded-xl p-6 shadow-sm shadow-mint max-w-2xl mx-auto my-4 font-work-sans"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}

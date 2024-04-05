@@ -59,6 +59,7 @@ const SocietiesList: React.FC<SocietiesListProps> = ({
       <motion.h2 className="text-2xl font-bold mb-4" variants={childVariants}>
         Societies You Are In
       </motion.h2>
+
       {societies.length === 0 ? (
         <motion.div variants={childVariants}>
           <p className="text-lg mb-4">No societies joined.</p>
@@ -71,7 +72,7 @@ const SocietiesList: React.FC<SocietiesListProps> = ({
         </motion.div>
       ) : (
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={childVariants}
         >
           {societies.map((society) => (
@@ -90,6 +91,7 @@ const SocietiesList: React.FC<SocietiesListProps> = ({
           ))}
         </motion.div>
       )}
+
       <AnimatePresence>
         {expandedSociety && (
           <ExpandedSocietyCard

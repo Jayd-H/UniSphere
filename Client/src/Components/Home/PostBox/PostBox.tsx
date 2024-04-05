@@ -89,22 +89,24 @@ const PostBox: React.FC<PostBoxProps> = ({ addNewPost }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="flex justify-between items-center mb-4">
+        <div className="md:flex md:justify-between grid-cols-1 items-center mb-4">
           <motion.h1
-            className="text-lg font-montserrat underline decoration-mint"
+            className="md:text-lg text-xl font-montserrat underline decoration-mint text-center mb-2 md:mb-0"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             What's going on?
           </motion.h1>
-          <SocietyDropdown
-            selectedSociety={selectedSociety}
-            societies={societies}
-            isOpen={isOpen}
-            setSelectedSociety={setSelectedSociety}
-            setIsOpen={setIsOpen}
-          />
+          <div className="flex justify-center mb-6">
+            <SocietyDropdown
+              selectedSociety={selectedSociety}
+              societies={societies}
+              isOpen={isOpen}
+              setSelectedSociety={setSelectedSociety}
+              setIsOpen={setIsOpen}
+            />
+          </div>
         </div>
         <PostTextArea
           postContent={postContent}
