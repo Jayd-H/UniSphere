@@ -137,7 +137,11 @@ const ExpandedSocietyCard: React.FC<ExpandedSocietyCardProps> = ({
       initial="hidden"
       animate="visible"
       exit="exit"
-      onClick={onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
       <div className="relative flex justify-center items-center">
         <motion.div
