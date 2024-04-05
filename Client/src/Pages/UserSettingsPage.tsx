@@ -78,7 +78,7 @@ const UserSettingsPage: React.FC = () => {
 
   return (
     <motion.div
-      className="container mx-auto px-72 text-black font-montserrat"
+      className="container mx-auto px-4 xl:px-72 text-black font-montserrat"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -89,19 +89,23 @@ const UserSettingsPage: React.FC = () => {
       >
         User Settings
       </motion.h1>
+
       <UserDetails
         user={user}
         userDetails={userDetails}
         showAlert={showAlert}
         setUser={setUser}
       />
+
       <SocietiesList
         societies={societies}
         setSocieties={setSocieties}
         showAlert={showAlert}
         user={user}
       />
-      <AccountActions showAlert={showAlert} setUser={setUser} />
+      <div className="">
+        <AccountActions showAlert={showAlert} setUser={setUser} />
+      </div>
       <AlertMessage
         message={alertMessage}
         isVisible={isAlertVisible}
