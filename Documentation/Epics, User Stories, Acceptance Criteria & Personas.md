@@ -328,7 +328,25 @@ Then: Mia can view detailed information about each society, including their even
 
 Accessibility: Can Mia, with varying levels of technical expertise, navigate and understand the information on societies?
 Performance: Is the society browsing experience smooth and quick for Mia, even with extensive content?
-  
+
+## Epic 5: Joining a Society
+## User Story 5.1: Joining a Society Through Browsing
+As Mia,
+
+I want to browse through the societies page to find societies that align with my interests,
+
+So that I can select and join the society that fits me best.
+
+## Acceptance Criteria
+
+Given: Mia is exploring her options for joining new societies,
+When: She navigates to the societies page and filters societies by her interests,
+Then: Mia finds a society that appeals to her and she selects the "Join" option to become a member.
+## NFRs
+
+Usability: Can Mia easily filter and search for societies based on specific criteria?
+Performance: Does the societies page load quickly, allowing for a smooth browsing experience?
+Feedback: After joining, does Mia receive a confirmation notification or email ensuring her that the process was successful?
 
   
 
