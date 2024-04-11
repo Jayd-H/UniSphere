@@ -275,7 +275,7 @@ Then: Mia sees a curated feed including society highlights, upcoming events, and
 
 Usability: Is the home page welcoming and easy for Mia to navigate?
 Performance: Does the home page content load promptly for Mia?
-User Story 4.2: User Settings Customization
+## User Story 4.2: User Settings Customization
 
 As Mia,
 
@@ -292,7 +292,7 @@ Then: Mia can modify her profile, privacy preferences, and how she receives noti
 
 Privacy: Do changes Mia makes to her privacy settings take effect immediately and are they clearly understandable?
 Usability: Is it straightforward for Mia to find and adjust her settings?
-User Story 4.3: Discovering Events
+## User Story 4.3: Discovering Events
 
 As Mia,
 
