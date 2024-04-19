@@ -14,3 +14,12 @@ export const passwordValidator = [
         .isLength({min: 5, max: 32}).withMessage("Password must be between 5 and 32 characters")
         .escape()
 ]
+
+
+export const displayNameValidator = [
+    body('displayName')
+        .notEmpty().withMessage("Display name cannot be empty")
+        .isLength({min: 5, max: 64}).withMessage("Display name must be between 5 and 64 characters")
+        .isAlphanumeric().withMessage("Display name must be alphanumeric")
+        .escape()
+]
