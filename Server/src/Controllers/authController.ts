@@ -3,13 +3,15 @@ import bcrypt from 'bcrypt';
 import { Database } from '../Data/data-source';
 import jwt from 'jsonwebtoken';
 import { Users } from '../Data/Users';
+import { validationResult } from 'express-validator';
 
 export const login = async (req: Request, res: Response) => {
-  const { userName, password } = req.body;
-
-  if (!userName || !password) {
-    return res.status(400).json({ success: false, message: "Username and password are required" });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
   }
+  
+  const { userName, password } = req.body;
 
   try {
     const existingUser = await Database.getRepository(Users).findOne({
@@ -53,6 +55,11 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+
   const { userName, password, displayName } = req.body;
 
   try {
