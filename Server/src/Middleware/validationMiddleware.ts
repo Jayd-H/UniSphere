@@ -23,3 +23,10 @@ export const displayNameValidator = [
         .isAlphanumeric().withMessage("Display name must be alphanumeric")
         .escape()
 ]
+
+export const userMessageValidation = [
+    body('content')
+        .notEmpty().withMessage("Post must contain a message")
+        .isLength({min: 1, max: 512}).withMessage("Maximum post content is 512 characters")
+        .escape()
+]
