@@ -13,7 +13,7 @@ export const createReply = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() })
     }
     
-    const { content, timestamp } = req.body;
+    const { content } = req.body;
     const postId = parseInt(req.params.postId);
     const userId = req.user.id;
 
@@ -22,7 +22,7 @@ export const createReply = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    const reply = Replies.create({ content, timestamp, post, user: { id: userId } });
+    const reply = Replies.create({ content, post, user: { id: userId } });
     await Replies.save(reply);
 
     res.json({ replyId: reply.id });

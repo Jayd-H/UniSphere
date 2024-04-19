@@ -85,7 +85,7 @@ export const createEventPost = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() })
     }
     
-    const { content, societyId, eventType, eventLocation, eventTime, timestamp } = req.body;
+    const { content, societyId, eventType, eventLocation, eventTime } = req.body;
     const userId = req.user.id;
 
     const society = await Societies.findOne({ where: { id: societyId } });
@@ -99,7 +99,6 @@ export const createEventPost = async (req: Request, res: Response) => {
       eventType,
       location: eventLocation,
       eventTime,
-      timestamp,
       society,
       user: { id: userId },
     });
