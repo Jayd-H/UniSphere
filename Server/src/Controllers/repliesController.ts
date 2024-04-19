@@ -3,10 +3,16 @@ import { Replies } from '../Data/Replies';
 import { Users } from '../Data/Users';
 import { Posts } from '../Data/Posts';
 import { UserLikesReplies } from '../Data/UserLikesReplies';
+import { validationResult } from 'express-validator';
 
 // Create a new reply
 export const createReply = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    
     const { content, timestamp } = req.body;
     const postId = parseInt(req.params.postId);
     const userId = req.user.id;

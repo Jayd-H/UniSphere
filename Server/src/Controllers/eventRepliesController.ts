@@ -3,9 +3,15 @@ import { EventReplies } from '../Data/EventReplies';
 import { Users } from '../Data/Users';
 import { EventPosts } from '../Data/EventPosts';
 import { UserLikesEventReplies } from '../Data/UserLikesEventReplies';
+import { validationResult } from 'express-validator';
 
 export const createEventReply = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    
     const { content, timestamp } = req.body;
     const eventPostId = parseInt(req.params.eventPostId);
     const userId = req.user.id;

@@ -2,12 +2,12 @@ import { Router } from 'express';
 import { authenticateToken } from '../Middleware/authMiddleware';
 import { getPostsInSociety, createPost, likePost, unlikePost, } from '../Controllers/postsController';
 import { createReply, likeReply, unlikeReply } from '../Controllers/repliesController';
-import { userMessageValidation } from '../Middleware/validationMiddleware';
+import { societyValidation, userMessageValidation } from '../Middleware/validationMiddleware';
 
 const router = Router();
 
 router.get('/posts', authenticateToken, getPostsInSociety);
-router.post('/posts', authenticateToken, userMessageValidation, createPost);
+router.post('/posts', authenticateToken, userMessageValidation, societyValidation, createPost);
 router.post('/posts/:postId/like', authenticateToken, likePost);
 router.delete('/posts/:postId/like', authenticateToken, unlikePost);
 

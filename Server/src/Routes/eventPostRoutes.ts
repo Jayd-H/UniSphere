@@ -2,12 +2,12 @@ import { Router } from 'express';
 import { authenticateToken } from '../Middleware/authMiddleware';
 import { getEventPostsInAllSocieties, createEventPost, likeEventPost, unlikeEventPost } from "../Controllers/eventPostsController";
 import { createEventReply, likeEventReply, unlikeEventReply } from "../Controllers/eventRepliesController";
-import { userMessageValidation } from '../Middleware/validationMiddleware';
+import { eventValidation, societyValidation, userMessageValidation } from '../Middleware/validationMiddleware';
 
 const router = Router();
 
 router.get('/eventsPosts', authenticateToken, getEventPostsInAllSocieties);
-router.post('/eventsPosts', authenticateToken, userMessageValidation, createEventPost);
+router.post('/eventsPosts', authenticateToken, userMessageValidation, societyValidation, eventValidation, createEventPost);
 router.post('/eventsPosts/:eventPostId/like', authenticateToken, likeEventPost);
 router.delete('/eventsPosts/:eventPostId/like', authenticateToken, unlikeEventPost);
 

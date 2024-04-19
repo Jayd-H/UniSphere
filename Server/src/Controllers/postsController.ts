@@ -5,6 +5,7 @@ import { Societies } from '../Data/Societies';
 import { UserLikesPosts } from '../Data/UserLikesPosts';
 import { UserLikesReplies } from '../Data/UserLikesReplies';
 import { LessThan } from 'typeorm';
+import { validationResult } from 'express-validator';
 
 
 export const getPostsInAllSocieties = async (req: Request, res: Response) => {
@@ -102,6 +103,11 @@ export const getPostsInSociety = async (req: Request, res: Response) => {
 // Create a new post
 export const createPost = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
     const { content, societyId, timestamp } = req.body;
     const userId = req.user.id;
 

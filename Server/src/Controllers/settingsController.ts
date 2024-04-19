@@ -6,6 +6,7 @@ import { Posts } from '../Data/Posts';
 import { EventReplies } from '../Data/EventReplies';
 import { EventPosts } from '../Data/EventPosts';
 import bcrypt from 'bcrypt';
+import { validationResult } from 'express-validator';
 
 export const getUserDetails = async (req: Request, res: Response) => {
   try {
@@ -42,6 +43,11 @@ export const getUserDetails = async (req: Request, res: Response) => {
 
 export const changeUsername = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
     const { newUsername, password } = req.body;
     const userId = req.user.id;
 
@@ -67,6 +73,11 @@ export const changeUsername = async (req: Request, res: Response) => {
 
 export const changeDisplayName = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
     const { newDisplayName, password } = req.body;
     const userId = req.user.id;
 
@@ -94,6 +105,11 @@ export const changeDisplayName = async (req: Request, res: Response) => {
 
 export const changePassword = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
     const { currentPassword, newPassword } = req.body;
     const userId = req.user.id;
 
@@ -120,6 +136,11 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    
     const userId = req.user.id;
     const { password } = req.body;
 
