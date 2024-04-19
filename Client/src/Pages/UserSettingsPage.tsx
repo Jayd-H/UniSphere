@@ -34,7 +34,6 @@ const UserSettingsPage: React.FC = () => {
         console.error("Error fetching user details:", error);
       }
     };
-
     fetchData();
   }, [user]);
 
@@ -72,6 +71,7 @@ const UserSettingsPage: React.FC = () => {
       },
     },
   };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -89,14 +89,12 @@ const UserSettingsPage: React.FC = () => {
       >
         User Settings
       </motion.h1>
-
       <UserDetails
         user={user}
         userDetails={userDetails}
         showAlert={showAlert}
         setUser={setUser}
       />
-
       <SocietiesList
         societies={societies}
         setSocieties={setSocieties}

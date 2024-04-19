@@ -56,6 +56,13 @@ const AccountActions: React.FC<AccountActionsProps> = ({
     setPopupType(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    showAlert("Logged out successfully", true);
+    navigate("/login");
+  };
+
   return (
     <motion.div className="mt-8 mb-24" variants={childVariants} custom={0}>
       <motion.button
@@ -68,12 +75,21 @@ const AccountActions: React.FC<AccountActionsProps> = ({
         Delete Account
       </motion.button>
       <motion.button
-        className="bg-gray-200 text-black px-4 py-2 rounded-md font-semibold"
+        className="bg-gray-200 text-black px-4 py-2 rounded-md font-semibold mr-4"
         variants={buttonVariants}
         whileHover="hover"
         whileTap="tap"
       >
         Request Data
+      </motion.button>
+      <motion.button
+        className="bg-mint text-black px-4 py-2 rounded-md font-semibold mr-4"
+        variants={buttonVariants}
+        whileHover="hover"
+        whileTap="tap"
+        onClick={handleLogout}
+      >
+        Logout
       </motion.button>
       <AnimatePresence>
         {popupType === "deleteAccount" && (
