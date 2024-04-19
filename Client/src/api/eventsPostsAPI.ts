@@ -7,7 +7,6 @@ export const createEventsPost = async (
   eventLocation: string,
   eventTime: string,
   token: string,
-  timestamp: string
 ) => {
   try {
     const response = await axiosInstance.post(
@@ -18,7 +17,6 @@ export const createEventsPost = async (
         eventType,
         eventLocation,
         eventTime,
-        timestamp,
       },
       {
         headers: {

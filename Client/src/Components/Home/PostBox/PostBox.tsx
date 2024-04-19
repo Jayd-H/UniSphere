@@ -33,7 +33,6 @@ const PostBox: React.FC<PostBoxProps> = ({ addNewPost }) => {
             sanitizedContent,
             selectedSociety.id,
             token,
-            timestamp
           );
           const newPost: PostType = {
             postId,

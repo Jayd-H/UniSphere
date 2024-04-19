@@ -44,7 +44,6 @@ const EventsPostBox: React.FC<EventsPostBoxProps> = ({ addNewEventsPost }) => {
             eventLocation,
             eventTime,
             token,
-            timestamp
           );
           const newEventsPost: EventsPostType = {
             eventsPostId,

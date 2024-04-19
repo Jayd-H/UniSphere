@@ -1,13 +1,12 @@
 import axiosInstance from './axiosConfig';
 
-export const createPost = async (content: string, societyId: number, token: string, timestamp: string) => {
+export const createPost = async (content: string, societyId: number, token: string) => {
   try {
     const response = await axiosInstance.post(
       '/api/posts',
       {
         content,
         societyId,
-        timestamp,
       },
       {
         headers: {
