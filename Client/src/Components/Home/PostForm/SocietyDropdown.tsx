@@ -59,7 +59,7 @@ const SocietyDropdown: React.FC<SocietyDropdownProps> = ({
   return (
     <motion.div className="relative">
       <motion.button
-        className="flex items-center text-md font-bold mr-2 px-2.5 py-0.5 rounded bg-white border-2 border-dashed border-mint text-black"
+        className="flex items-center text-md font-semibold mr-2 px-2.5 py-0.5 rounded bg-white border-2 border-dashed border-mint text-black"
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
       >
