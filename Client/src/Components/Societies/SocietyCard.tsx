@@ -59,7 +59,7 @@ const SocietyCard: React.FC<SocietyProps> = ({
 
   return (
     <motion.div
-      className="relative cursor-pointer w-full h-64 border-[4px] border-dashed border-black rounded-lg font-montserrat"
+      className="relative cursor-pointer w-full h-64 border-[4px] border-dashed border-black rounded-lg font-montserrat shadow-md"
       whileHover={{ scale: isLeaveSocietyPopupOpen ? 1 : 1.05 }}
       whileTap={{ scale: isLeaveSocietyPopupOpen ? 1 : 0.95 }}
       onClick={() => {

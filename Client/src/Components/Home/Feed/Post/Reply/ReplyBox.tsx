@@ -29,11 +29,18 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+    }
+  };
+
   const remainingCharacters = maxCharacters - replyContent.length;
 
   return (
     <motion.div
-      className="pl-4 mt-3 font-work-sans"
+      className="pl-4 mt-4 font-work-sans"
       initial={{ opacity: 0, y: -10 }}
       animate={{
         opacity: 1,
@@ -41,18 +48,32 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
         transition: { ease: "easeOut", duration: 0.4 },
       }}
     >
-      <div>
-        <span className="font-semibold font-montserrat text-md">
+      <div className="flex justify-between items-center mb-1">
+        <span className=" font-montserrat text-base">
           {user?.displayName || ""}
         </span>
+        <AnimatePresence>
+          {replyContent.trim().length > 0 && (
+            <motion.p
+              className="text-sm text-grey"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              {remainingCharacters} characters remaining
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
       <form onSubmit={handleSubmit} className="relative">
         <motion.textarea
           placeholder="Write a reply..."
-          className="w-full text-sm text-black border-b-2 border-mint focus:outline-none focus:border-blue bg-white pr-8 resize-none"
+          className="w-full text-sm text-black border-2 px-2 py-1 border-mint mb-1 focus:outline-none focus:border-blue rounded-lg bg-white pr-8 resize-none"
           name="replyContent"
           value={replyContent}
           onChange={handleReplyChange}
+          onKeyDown={handleKeyDown}
           maxLength={maxCharacters}
           rows={1}
           ref={(textarea) => {
@@ -68,7 +89,7 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
           {replyContent.trim().length > 0 && (
             <motion.button
               type="submit"
-              className="absolute right-2 bottom-3 text-blue"
+              className="absolute right-3 bottom-4 text-blue"
               aria-label="Send reply"
               initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -80,16 +101,6 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ onSubmit, maxCharacters }) => {
           )}
         </AnimatePresence>
       </form>
-      <motion.div
-        className="flex justify-center mr-2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-      >
-        <p className="text-sm text-grey -mt-2 mb-4">
-          {remainingCharacters} characters remaining
-        </p>
-      </motion.div>
     </motion.div>
   );
 };
