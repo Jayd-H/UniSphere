@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import EventsPostHeader from "./EventsPostHeader";
 import EventsPostContent from "./EventsPostContent";
@@ -11,7 +11,7 @@ import { EventsReply as EventsReplyType } from "../../../../types/eventsReply";
 import { createEventsReply } from "../../../../api/eventsRepliesAPI";
 
 const postVariants: Variants = {
-  hidden: { opacity: 0, y: 50 },
+  hidden: { opacity: 0, y: -10 },
   visible: {
     opacity: 1,
     y: 0,
@@ -31,6 +31,8 @@ const EventsPost: React.FC<EventsPostType> = (eventsPost) => {
 
   const toggleRepliesVisibility = () =>
     setAreRepliesVisible(!areRepliesVisible);
+
+  const [replyCount, setReplyCount] = useState(eventsPost.replyCount);
 
   const handleReplySubmit = async (content: string) => {
     try {
@@ -53,17 +55,24 @@ const EventsPost: React.FC<EventsPostType> = (eventsPost) => {
           isLiked: false,
         };
         setReplies((prevReplies) => [...prevReplies, fakeReply]);
+        setReplyCount((prevCount) => prevCount + 1); // Increment reply count
       }
     } catch (error) {
       console.error("Error creating event reply:", error);
     }
   };
 
+  useEffect(() => {
+    if (replies.length === 0) {
+      setAreRepliesVisible(true);
+    }
+  }, [replies]);
+
   const repliesCount = replies.length;
 
   return (
     <motion.div
-      className="bg-white rounded-xl p-6 shadow-sm shadow-mint max-w-2xl mx-auto my-6 font-work-sans"
+      className="bg-white rounded-xl shadow-sm border-2 pb-2 border-dashed border-muted-mint max-w-2xl mx-auto my-4 font-work-sans"
       variants={postVariants}
       initial="hidden"
       animate="visible"
@@ -84,34 +93,36 @@ const EventsPost: React.FC<EventsPostType> = (eventsPost) => {
         likesCount={eventsPost.likesCount}
         isLiked={postIsLiked}
         setIsLiked={setPostIsLiked}
-        replyCount={eventsPost.replyCount}
+        replyCount={replyCount}
         areRepliesVisible={areRepliesVisible}
         toggleRepliesVisibility={toggleRepliesVisibility}
       />
       <AnimatePresence>
-        {(areRepliesVisible || repliesCount === 0) && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-              transition: {
-                opacity: { duration: 0.2 },
-                height: { duration: 0.4, ease: "easeInOut" },
-              },
-            }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <ReplyBox
-              postId={eventsPost.eventsPostId}
-              onSubmit={handleReplySubmit}
-              maxCharacters={512}
-            />
-            {replies.map((reply, index) => (
-              <EventsReply key={reply.replyId} {...reply} index={index} />
-            ))}
-          </motion.div>
-        )}
+        <div className="px-6">
+          {(areRepliesVisible || repliesCount === 0) && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{
+                opacity: 1,
+                height: "auto",
+                transition: {
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.4, ease: "easeInOut" },
+                },
+              }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              <ReplyBox
+                postId={eventsPost.eventsPostId}
+                onSubmit={handleReplySubmit}
+                maxCharacters={512}
+              />
+              {replies.map((reply, index) => (
+                <EventsReply key={reply.replyId} {...reply} index={index} />
+              ))}
+            </motion.div>
+          )}
+        </div>
       </AnimatePresence>
     </motion.div>
   );

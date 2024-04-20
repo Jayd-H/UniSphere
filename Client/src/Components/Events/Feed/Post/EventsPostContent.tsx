@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   CalendarIcon,
@@ -19,40 +19,81 @@ const EventsPostContent: React.FC<EventsPostContentProps> = ({
   eventLocation,
   eventTime,
 }) => {
+  const [expandedText, setExpandedText] = useState<string | null>(null);
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+
+    return (
+      <>
+        {text.slice(0, maxLength)}
+        <span className="text-blue font-semibold">...</span>
+      </>
+    );
+  };
+
+  const renderText = (text: string) => {
+    if (expandedText === text) {
+      return (
+        <div
+          className="italic text-grey text-md font-normal flex items-center w-full cursor-pointer hover:text-blue"
+          onClick={() => setExpandedText(null)}
+        >
+          {text}
+          <span className="text-blue font-semibold">...</span>
+        </div>
+      );
+    }
+
+    if (text.length > 15) {
+      return (
+        <div
+          className="italic text-grey flex items-center cursor-pointer hover:text-blue sm:max-w-[200px] max-w-[120px] truncate"
+          onClick={() => setExpandedText(text)}
+        >
+          {truncateText(text, window.innerWidth <= 640 ? 10 : 15)}
+        </div>
+      );
+    }
+
+    return <div className="italic text-grey flex items-center">{text}</div>;
+  };
+
   return (
     <>
-      <motion.p
-        className="text-black text-md italic font-montserrat flex items-center md:justify-start justify-center mb-2"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <CalendarIcon className="w-5 h-5 mr-2" />
-        {eventType}
-      </motion.p>
-
       <motion.div
-        className="md:flex md:justify-between md:items-center items-center flex-col"
+        className="flex items-center justify-between text-base font-light px-6 mb-2 font-work-sans"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <p className="font-montserrat italic text-grey flex items-center justify-center mb-2 md:mb-0 md:mr-auto">
-          <MapPinIcon className="w-5 h-5 mr-2" />
-          {eventLocation}
-        </p>
-
-        <p className="italic font-montserrat-alt text-md text-black font-light flex items-center justify-center md:-mt-20 md:ml-auto">
-          {eventTime}
-          <ClockIcon className="w-5 h-5 ml-2" />
-        </p>
+        {expandedText !== eventLocation && (
+          <div className="italic text-grey flex items-center">
+            <CalendarIcon className="w-5 h-5 mr-2" />
+            {renderText(eventType)}
+          </div>
+        )}
+        {expandedText !== eventType && (
+          <div className="italic text-grey flex items-center">
+            <MapPinIcon className="w-5 h-5 mr-2" />
+            {renderText(eventLocation)}
+          </div>
+        )}
+        {!expandedText && (
+          <div className="text-grey flex items-center">
+            {eventTime}
+            <ClockIcon className="w-5 h-5 ml-2" />
+          </div>
+        )}
       </motion.div>
-
-      <motion.p
-        className="mb-3 mt-3 md:mt-10 text-black"
+      <motion.div
+        className="pt-3 pb-6 mr-2 text-dark-grey px-6"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {content}
-      </motion.p>
+      </motion.div>
     </>
   );
 };
