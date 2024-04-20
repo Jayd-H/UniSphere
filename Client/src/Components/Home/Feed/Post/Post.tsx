@@ -47,7 +47,7 @@ const Post: React.FC<PostType> = (post) => {
 
   return (
     <motion.div
-      className="bg-white rounded-xl p-6 shadow-sm shadow-mint max-w-2xl mx-auto my-4 font-work-sans"
+      className="bg-white rounded-xl shadow-sm border-2 pb-2 border-dashed border-muted-mint max-w-2xl mx-auto my-4 font-work-sans"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
@@ -67,36 +67,38 @@ const Post: React.FC<PostType> = (post) => {
         toggleRepliesVisibility={toggleRepliesVisibility}
       />
       <AnimatePresence>
-        {areRepliesVisible && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-              transition: {
-                opacity: { duration: 0.2 },
-                height: { duration: 0.4, ease: "easeInOut" },
-              },
-            }}
-            exit={{
-              opacity: 0,
-              height: 0,
-              transition: {
-                opacity: { duration: 0.2 },
-                height: { duration: 0.4, ease: "easeInOut" },
-              },
-            }}
-          >
-            <ReplyBox
-              postId={post.postId}
-              onSubmit={handleReplySubmit}
-              maxCharacters={512}
-            />
-            {replies.map((reply, index) => (
-              <Reply key={reply.replyId} {...reply} index={index} />
-            ))}
-          </motion.div>
-        )}
+        <div className="px-6">
+          {areRepliesVisible && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{
+                opacity: 1,
+                height: "auto",
+                transition: {
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.4, ease: "easeInOut" },
+                },
+              }}
+              exit={{
+                opacity: 0,
+                height: 0,
+                transition: {
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.4, ease: "easeInOut" },
+                },
+              }}
+            >
+              <ReplyBox
+                postId={post.postId}
+                onSubmit={handleReplySubmit}
+                maxCharacters={512}
+              />
+              {replies.map((reply, index) => (
+                <Reply key={reply.replyId} {...reply} index={index} />
+              ))}
+            </motion.div>
+          )}
+        </div>
       </AnimatePresence>
     </motion.div>
   );

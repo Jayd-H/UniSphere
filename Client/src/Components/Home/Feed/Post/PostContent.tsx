@@ -8,7 +8,7 @@ interface PostContentProps {
 const PostContent: React.FC<PostContentProps> = ({ content }) => {
   return (
     <motion.p
-      className="mb-3 mr-2 text-black"
+      className="pt-2 pb-6 mr-2 text-dark-grey px-6"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
     >
