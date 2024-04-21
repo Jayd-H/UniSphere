@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, AnimatePresence } from "framer-motion";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { leaveSociety } from "../../api/societiesAPI";
 import { useUserContext } from "../../UserContext";
@@ -27,6 +27,11 @@ const popupVariants: Variants = {
   exit: { opacity: 0, scale: 0.8 },
 };
 
+const buttonVariants: Variants = {
+  hover: { scale: 1.05 },
+  tap: { scale: 0.95 },
+};
+
 const SocietyCard: React.FC<SocietyProps> = ({
   society,
   onClick,
@@ -43,11 +48,14 @@ const SocietyCard: React.FC<SocietyProps> = ({
         await leaveSociety(society.id, user.id, token);
         onLeaveSociety(society.id);
         setIsLeaveSocietyPopupOpen(false);
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error leaving society:", error);
     }
   };
+
+  const fontSize = society.societyName.length > 25 ? "text-sm" : "text-md";
 
   return (
     <motion.div
@@ -77,40 +85,59 @@ const SocietyCard: React.FC<SocietyProps> = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          onClick={() => setIsLeaveSocietyPopupOpen(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLeaveSocietyPopupOpen(true);
+          }}
         >
           <TrashIcon className="h-5 w-5 text-red" />
         </motion.div>
       )}
-      {isLeaveSocietyPopupOpen && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center z-50"
-          variants={popupVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-        >
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <h4 className="text-xl font-bold mb-4">
-              Are you sure you want to leave {society.societyName}?
-            </h4>
-            <div className="flex justify-end">
-              <button
-                className="bg-blue text-white font-bold py-2 px-4 rounded-lg mr-2"
+      <AnimatePresence>
+        {isLeaveSocietyPopupOpen && (
+          <motion.div
+            className="absolute inset-0 flex flex-col justify-between bg-white rounded-lg p-4"
+            variants={popupVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex-grow flex flex-col items-center justify-center">
+              <h4
+                className={
+                  "font-bold text-lg font-montserrat-alt -mt-4 text-center mb-2"
+                }
+              >
+                Leave Society
+              </h4>
+              <p className={`${fontSize} text-center mt-4`}>
+                Are you sure you want to leave "{society.societyName}"?
+              </p>
+            </div>
+            <div className="flex justify-between mt-4">
+              <motion.button
+                className="bg-gray-200 text-black px-4 py-2 rounded-md font-semibold"
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
                 onClick={() => setIsLeaveSocietyPopupOpen(false)}
               >
                 Cancel
-              </button>
-              <button
-                className="bg-red text-white font-bold py-2 px-4 rounded-lg"
+              </motion.button>
+              <motion.button
+                className="bg-red text-white px-4 py-2 rounded-md font-semibold"
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
                 onClick={handleLeaveSociety}
               >
                 Leave
-              </button>
+              </motion.button>
             </div>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

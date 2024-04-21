@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { User } from "./types/user";
 import { Society } from "./types/society";
 import { fetchUserData } from "./api/userAPI";
+import { isTokenExpired } from "./Components/Common/TokenUtils";
 
 interface UserContextType {
   user: User | null;
@@ -30,12 +31,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const token = localStorage.getItem("token");
         if (token) {
-          const userData = await fetchUserData(token);
-          if (userData.user) {
-            setUser(userData.user);
-            setSocieties(userData.user.societies);
+          if (isTokenExpired(token)) {
+            // Token has expired, log out the user
+            setUser(null);
+            setSocieties([]);
+            localStorage.removeItem("token");
           } else {
-            console.error("Error: User data not received from the server");
+            const userData = await fetchUserData(token);
+            if (userData.user) {
+              setUser(userData.user);
+              setSocieties(userData.user.societies);
+            } else {
+              console.error("Error: User data not received from the server");
+            }
           }
         }
       } catch (error) {
