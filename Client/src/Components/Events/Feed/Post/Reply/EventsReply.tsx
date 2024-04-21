@@ -77,23 +77,23 @@ const EventsReply: React.FC<EventsReplyProps> = ({
 
   return (
     <motion.div
-      className="pl-4 py-2 my-2 font-work-sans"
+      className="pl-4 py-2 font-work-sans"
       variants={replyVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
       custom={index}
     >
-      <hr className="border-t-2 border-muted-mint border-dashed w-3/4 mx-auto -mt-4 pt-2" />
+      <hr className="border-t-2 pt-2 border-muted-mint border-dashed mx-auto" />
       <div className="mb-1">
-        <span className="font-semibold font-montserrat text-md">
+        <span className=" font-montserrat font-medium text-base">
           {user.displayName}
         </span>
         <span className="text-xs text-grey ml-2">{timeSince(timestamp)}</span>
       </div>
       <div className="flex justify-between">
-        <p className="text-sm text-luni-black flex-grow">{replyContent}</p>
-        <div className="flex-shrink-0 ml-4 self-end flex items-center pr-1">
+        <p className="text-sm text-dark-grey flex-grow">{replyContent}</p>
+        <div className="ml-4 flex items-center pr-2 -mt-6">
           <motion.button
             type="button"
             onClick={handleLike}

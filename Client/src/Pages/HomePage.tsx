@@ -2,6 +2,7 @@ import React from "react";
 import { useUserContext } from "../UserContext";
 import Feed from "../Components/Home/Feed/Feed";
 import HomeSocietiesList from "../Components/Home/FeedSocietiesList";
+import GreetingHeader from "../Components/Home/Feed/GreetingHeader";
 
 const HomePage: React.FC = () => {
   const { user, societies, setSocieties } = useUserContext();
@@ -19,6 +20,7 @@ const HomePage: React.FC = () => {
       />
       <div className="flex-grow">
         <div className="max-w-2xl mx-auto w-full">
+          <GreetingHeader displayName={user.displayName} />
           <Feed />
         </div>
       </div>

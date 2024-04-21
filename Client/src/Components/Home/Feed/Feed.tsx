@@ -4,7 +4,7 @@ import { fetchPosts } from "../../../api/postsAPI";
 import { useUserContext } from "../../../UserContext";
 import { Post as PostType } from "../../../types/post";
 import Post from "./Post/Post";
-import PostBox from "../PostBox/PostBox";
+import PostForm from "../PostForm/PostForm";
 import Pagination from "./Pagination";
 
 const Feed: React.FC = () => {
@@ -12,7 +12,7 @@ const Feed: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState<Error | null>(null);
-  const { societies } = useUserContext();
+  const { user, societies } = useUserContext();
   const feedRef = useRef<HTMLDivElement>(null);
 
   const addNewPost = (post: PostType) => {
@@ -48,7 +48,22 @@ const Feed: React.FC = () => {
 
   return (
     <div ref={feedRef}>
-      <PostBox addNewPost={addNewPost} />
+      {user && (
+        <PostForm
+          societies={societies || []}
+          addNewPost={addNewPost}
+          maxCharacters={512}
+        />
+      )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+      >
+        <h1 className="text-xl font-light font-montserrat-alt text-center mt-6">
+          Recent Posts
+        </h1>
+      </motion.div>
       {posts.map((post, index) => (
         <motion.div
           key={`${post.postId}-${index}`}

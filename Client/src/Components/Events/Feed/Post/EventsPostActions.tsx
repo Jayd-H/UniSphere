@@ -48,7 +48,7 @@ const EventsPostActions: React.FC<EventsPostActionsProps> = ({
   };
 
   return (
-    <div className="flex justify-between items-center text-sm text-blue">
+    <div className="flex justify-between items-center text-sm px-7 mb-2 text-blue border-muted-mint">
       <motion.button
         type="button"
         className="flex items-center"

@@ -1,9 +1,10 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import AutoResizeTextArea from "./AutoResizeTextArea";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import EventDescriptionInput from "./InputFields/EventDescriptionInput";
+import EventTypeInput from "./InputFields/EventTypeInput";
+import EventLocationInput from "./InputFields/EventLocationInput";
+import EventDateTimeInput from "./InputFields/EventDateTimeInput";
 import { Society } from "../../../types/society";
 
 interface EventsPostTextAreaProps {
@@ -95,16 +96,12 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
     setPostContent("");
   };
 
-  const DateTimeInput = forwardRef<HTMLInputElement>((props, ref) => (
-    <input
-      {...props}
-      ref={ref}
-      type="text"
-      value={eventTime}
-      placeholder="Event time..?"
-      className="date-time-input w-full px-4 py-2 text-md bg-white font-work-sans focus:outline-none border-b-2 focus:border-blue border-mint resize-none"
-    />
-  ));
+  const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" && isAllFieldsFilled) {
+      handleSubmit();
+    }
+  };
+
   return (
     <motion.div
       className="relative"
@@ -112,12 +109,10 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
       animate={{ height: isAllFieldsFilled ? "auto" : "auto" }}
       transition={{ duration: 1, ease: "easeInOut" }}
     >
-      <AutoResizeTextArea
+      <EventDescriptionInput
         value={postContent}
         onChange={handlePostChange}
-        placeholder="Describe your event..."
         maxLength={maxCharacters.content}
-        className="px-4"
       />
       <AnimatePresence>
         {postContent.trim().length > 0 && (
@@ -127,12 +122,10 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            <AutoResizeTextArea
+            <EventTypeInput
               value={eventType}
               onChange={handleEventTypeChange}
-              placeholder="Type of event..?"
               maxLength={maxCharacters.eventType}
-              className="px-4"
             />
             <AnimatePresence>
               {eventType.trim().length > 0 && (
@@ -142,12 +135,10 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                 >
-                  <AutoResizeTextArea
+                  <EventLocationInput
                     value={eventLocation}
                     onChange={handleEventLocationChange}
-                    placeholder="Event location..?"
                     maxLength={maxCharacters.eventLocation}
-                    className="px-4"
                   />
                   <AnimatePresence>
                     {eventLocation.trim().length > 0 && (
@@ -156,61 +147,29 @@ const EventsPostTextArea: React.FC<EventsPostTextAreaProps> = ({
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
+                        onKeyPress={handleKeyPress}
+                        tabIndex={0}
                       >
-                        <div className="relative">
-                          <DatePicker
-                            selected={selectedDate}
-                            onChange={handleDateTimeChange}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={30}
-                            timeCaption="Time"
-                            dateFormat="dd/MM/yy"
-                            customInput={<DateTimeInput />}
-                            popperPlacement="bottom-end"
-                            popperModifiers={[
-                              {
-                                name: "offset",
-                                options: {
-                                  offset: [0, 10],
-                                },
-                                fn: () => ({}),
-                              },
-                              {
-                                name: "preventOverflow",
-                                options: {
-                                  rootBoundary: "viewport",
-                                  tether: false,
-                                  altAxis: true,
-                                },
-                                fn: () => ({}),
-                              },
-                            ]}
-                            className="text-black bg-white font-montserrat border-dashed border-2 border-black"
-                            calendarClassName="text-black bg-white font-montserrat border-dashed border-2 border-black"
-                            dayClassName={(date: Date) =>
-                              date.getDate() === selectedDate?.getDate()
-                                ? "selected"
-                                : null
-                            }
-                          />
-                          {isAllFieldsFilled && (
-                            <motion.button
-                              initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                              exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                              transition={{
-                                duration: 0.2,
-                                type: "spring",
-                                stiffness: 150,
-                              }}
-                              className="absolute bottom-0 right-2 p-2 text-blue"
-                              onClick={handleSubmit}
-                            >
-                              <PaperAirplaneIcon className="h-5 w-5" />
-                            </motion.button>
-                          )}
-                        </div>
+                        <EventDateTimeInput
+                          selected={selectedDate}
+                          onChange={handleDateTimeChange}
+                        />
+                        {isAllFieldsFilled && (
+                          <motion.button
+                            initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                            transition={{
+                              duration: 0.2,
+                              type: "spring",
+                              stiffness: 150,
+                            }}
+                            className="absolute bottom-3 right-4 p-2 text-blue"
+                            onClick={handleSubmit}
+                          >
+                            <PaperAirplaneIcon className="h-5 w-5" />
+                          </motion.button>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>

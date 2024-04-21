@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import EventsPostTextArea from "./EventsPostTextArea";
-import AlertMessage from "../../Common/AlertMessage";
-import EventsGreetingHeader from "./EventsGreetingHeader";
-import SocietyDropdown from "../../Home/PostBox/SocietyDropdown";
+import SocietyDropdown from "../../Home/PostForm/SocietyDropdown";
 import { useUserContext } from "../../../UserContext";
 import { Society } from "../../../types/society";
 import { EventsPost as EventsPostType } from "../../../types/eventsPost";
 import { createEventsPost } from "../../../api/eventsPostsAPI";
 
-interface EventsPostBoxProps {
+interface EventsPostFormProps {
   addNewEventsPost: (post: EventsPostType) => void;
+  societies: Society[];
+  maxCharacters: {
+    content: number;
+    eventType: number;
+    eventLocation: number;
+    eventTime: number;
+  };
 }
 
-const EventsPostBox: React.FC<EventsPostBoxProps> = ({ addNewEventsPost }) => {
+const EventsPostForm: React.FC<EventsPostFormProps> = ({
+  addNewEventsPost,
+  societies,
+  maxCharacters,
+}) => {
   const [postContent, setPostContent] = useState("");
   const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
   const [eventType, setEventType] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventTime, setEventTime] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const { user, societies } = useUserContext();
-
-  const maxCharacters = {
-    content: 512,
-    eventType: 32,
-    eventLocation: 64,
-    eventTime: 16,
-  };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { user } = useUserContext();
 
   const handlePostSubmit = async () => {
     if (selectedSociety && user) {
@@ -68,26 +69,14 @@ const EventsPostBox: React.FC<EventsPostBoxProps> = ({ addNewEventsPost }) => {
           setEventType("");
           setEventLocation("");
           setEventTime("");
+          setSelectedSociety(null);
         }
       } catch (error) {
         console.error("Error creating event post:", error);
-        setShowAlert(true);
       }
     } else {
-      setShowAlert(true);
     }
   };
-
-  useEffect(() => {
-    if (showAlert) {
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [showAlert]);
 
   return (
     <motion.div
@@ -96,53 +85,42 @@ const EventsPostBox: React.FC<EventsPostBoxProps> = ({ addNewEventsPost }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <AlertMessage
-        isSuccess={false}
-        message="Please select a society to create an event post"
-        isVisible={showAlert}
-      />
-      {user && <EventsGreetingHeader />}
       <motion.div
-        className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
+        className="bg-white rounded-xl max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="md:flex md:justify-between grid-cols-1 items-center mb-4">
-          <motion.h1
-            className="md:text-lg text-xl font-montserrat underline decoration-mint text-center mb-2 md:mb-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            What's the event?
-          </motion.h1>
-          <div className="flex justify-center mb-6">
-            <SocietyDropdown
-              selectedSociety={selectedSociety}
-              societies={societies}
-              isOpen={isOpen}
-              setSelectedSociety={setSelectedSociety}
-              setIsOpen={setIsOpen}
-            />
-          </div>
+        <h1 className="text-base font-medium mb-1 pr-2 font-montserrat-alt text-center">
+          Select a Society to Post
+        </h1>
+        <div className="flex justify-center mb-6">
+          <SocietyDropdown
+            selectedSociety={selectedSociety}
+            societies={societies}
+            isOpen={isDropdownOpen}
+            setSelectedSociety={setSelectedSociety}
+            setIsOpen={setIsDropdownOpen}
+          />
         </div>
-        <EventsPostTextArea
-          postContent={postContent}
-          setPostContent={setPostContent}
-          eventType={eventType}
-          setEventType={setEventType}
-          eventLocation={eventLocation}
-          setEventLocation={setEventLocation}
-          eventTime={eventTime}
-          setEventTime={setEventTime}
-          handlePostSubmit={handlePostSubmit}
-          maxCharacters={maxCharacters}
-          selectedSociety={selectedSociety}
-        />
+        {selectedSociety && (
+          <EventsPostTextArea
+            postContent={postContent}
+            setPostContent={setPostContent}
+            eventType={eventType}
+            setEventType={setEventType}
+            eventLocation={eventLocation}
+            setEventLocation={setEventLocation}
+            eventTime={eventTime}
+            setEventTime={setEventTime}
+            handlePostSubmit={handlePostSubmit}
+            maxCharacters={maxCharacters}
+            selectedSociety={selectedSociety}
+          />
+        )}
       </motion.div>
     </motion.div>
   );
 };
 
-export default EventsPostBox;
+export default EventsPostForm;

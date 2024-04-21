@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import GreetingHeader from "./GreetingHeader";
-import SocietyDropdown from "./SocietyDropdown";
 import PostTextArea from "./PostTextArea";
+import SocietyDropdown from "./SocietyDropdown";
 import AlertMessage from "../../Common/AlertMessage";
 import { createPost } from "../../../api/postsAPI";
 import { useUserContext } from "../../../UserContext";
 import { Society } from "../../../types/society";
 import { Post as PostType } from "../../../types/post";
 
-interface PostBoxProps {
+interface PostFormProps {
   addNewPost: (post: PostType) => void;
+  societies: Society[];
+  maxCharacters: number;
 }
 
-const PostBox: React.FC<PostBoxProps> = ({ addNewPost }) => {
+const PostForm: React.FC<PostFormProps> = ({
+  addNewPost,
+  societies,
+  maxCharacters,
+}) => {
   const [postContent, setPostContent] = useState("");
   const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const maxCharacters = 512;
-  const { user, societies } = useUserContext();
+  const { user } = useUserContext();
   let message = "Please select a society to create a post";
 
   const handlePostSubmit = async () => {
@@ -51,6 +55,7 @@ const PostBox: React.FC<PostBoxProps> = ({ addNewPost }) => {
           };
           addNewPost(newPost);
           setPostContent("");
+          setSelectedSociety(null);
         }
       } catch (error) {
         console.error("Error creating post:", error);
@@ -81,42 +86,36 @@ const PostBox: React.FC<PostBoxProps> = ({ addNewPost }) => {
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <AlertMessage isSuccess={false} message={message} isVisible={showAlert} />
-      {user && <GreetingHeader displayName={user.displayName} />}
       <motion.div
-        className="bg-white rounded-xl p-6 max-w-2xl mx-auto shadow-sm shadow-muted-mint hover:shadow-mint mt-4"
+        className="bg-white rounded-xl max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="md:flex md:justify-between grid-cols-1 items-center mb-4">
-          <motion.h1
-            className="md:text-lg text-xl font-montserrat underline decoration-mint text-center mb-2 md:mb-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            What's going on?
-          </motion.h1>
-          <div className="flex justify-center mb-6">
-            <SocietyDropdown
-              selectedSociety={selectedSociety}
-              societies={societies}
-              isOpen={isOpen}
-              setSelectedSociety={setSelectedSociety}
-              setIsOpen={setIsOpen}
-            />
-          </div>
+        <h1 className="text-base font-medium mb-1 pr-3 font-montserrat-alt text-center">
+          Select a Society to Post
+        </h1>
+        <div className="flex justify-center mb-6">
+          <SocietyDropdown
+            selectedSociety={selectedSociety}
+            societies={societies}
+            isOpen={isDropdownOpen}
+            setSelectedSociety={setSelectedSociety}
+            setIsOpen={setIsDropdownOpen}
+          />
         </div>
-        <PostTextArea
-          postContent={postContent}
-          setPostContent={setPostContent}
-          handlePostSubmit={handlePostSubmit}
-          selectedSociety={selectedSociety}
-          maxCharacters={maxCharacters}
-        />
+        {selectedSociety && (
+          <PostTextArea
+            postContent={postContent}
+            setPostContent={setPostContent}
+            handlePostSubmit={handlePostSubmit}
+            selectedSociety={selectedSociety}
+            maxCharacters={maxCharacters}
+          />
+        )}
       </motion.div>
     </motion.div>
   );
 };
 
-export default PostBox;
+export default PostForm;
