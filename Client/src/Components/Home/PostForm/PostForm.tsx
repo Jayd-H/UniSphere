@@ -37,7 +37,6 @@ const PostForm: React.FC<PostFormProps> = ({
             sanitizedContent,
             selectedSociety.id,
             token,
-            timestamp
           );
           const newPost: PostType = {
             postId,

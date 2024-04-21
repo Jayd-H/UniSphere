@@ -45,7 +45,6 @@ const EventsPostForm: React.FC<EventsPostFormProps> = ({
             eventLocation,
             eventTime,
             token,
-            timestamp
           );
           const newEventsPost: EventsPostType = {
             eventsPostId,

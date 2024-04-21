@@ -3,6 +3,7 @@ import { EventPosts } from '../Data/EventPosts';
 import { Societies } from '../Data/Societies';
 import { UserLikesEventPosts } from '../Data/UserLikesEventPosts';
 import { UserLikesEventReplies } from '../Data/UserLikesEventReplies';
+import { validationResult } from 'express-validator';
 
 export const getEventPostsInAllSocieties = async (req: Request, res: Response) => {
   try {
@@ -79,7 +80,12 @@ export const getEventPostsInAllSocieties = async (req: Request, res: Response) =
 
 export const createEventPost = async (req: Request, res: Response) => {
   try {
-    const { content, societyId, eventType, eventLocation, eventTime, timestamp } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    
+    const { content, societyId, eventType, eventLocation, eventTime } = req.body;
     const userId = req.user.id;
 
     const society = await Societies.findOne({ where: { id: societyId } });
@@ -93,7 +99,6 @@ export const createEventPost = async (req: Request, res: Response) => {
       eventType,
       location: eventLocation,
       eventTime,
-      timestamp,
       society,
       user: { id: userId },
     });

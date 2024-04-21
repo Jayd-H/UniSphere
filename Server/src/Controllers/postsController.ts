@@ -5,6 +5,7 @@ import { Societies } from '../Data/Societies';
 import { UserLikesPosts } from '../Data/UserLikesPosts';
 import { UserLikesReplies } from '../Data/UserLikesReplies';
 import { LessThan } from 'typeorm';
+import { validationResult } from 'express-validator';
 
 
 export const getPostsInAllSocieties = async (req: Request, res: Response) => {
@@ -102,7 +103,12 @@ export const getPostsInSociety = async (req: Request, res: Response) => {
 // Create a new post
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { content, societyId, timestamp } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { content, societyId } = req.body;
     const userId = req.user.id;
 
     const society = await Societies.findOne({ where: { id: societyId } });
@@ -111,7 +117,7 @@ export const createPost = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Society not found' });
     }
 
-    const post = Posts.create({ content, timestamp, society, user: { id: userId } });
+    const post = Posts.create({ content, society, user: { id: userId } });
     await Posts.save(post);
 
     res.json({ postId: post.id });

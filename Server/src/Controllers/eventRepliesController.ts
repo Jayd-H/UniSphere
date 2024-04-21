@@ -3,10 +3,16 @@ import { EventReplies } from '../Data/EventReplies';
 import { Users } from '../Data/Users';
 import { EventPosts } from '../Data/EventPosts';
 import { UserLikesEventReplies } from '../Data/UserLikesEventReplies';
+import { validationResult } from 'express-validator';
 
 export const createEventReply = async (req: Request, res: Response) => {
   try {
-    const { content, timestamp } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    
+    const { content } = req.body;
     const eventPostId = parseInt(req.params.eventPostId);
     const userId = req.user.id;
 
@@ -15,7 +21,7 @@ export const createEventReply = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Event post not found' });
     }
 
-    const reply = EventReplies.create({ content, timestamp, eventPost, user: { id: userId } });
+    const reply = EventReplies.create({ content, eventPost, user: { id: userId } });
     await EventReplies.save(reply);
 
     res.json({ replyId: reply.id });
