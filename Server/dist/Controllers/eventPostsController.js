@@ -5,6 +5,7 @@ const EventPosts_1 = require("../Data/EventPosts");
 const Societies_1 = require("../Data/Societies");
 const UserLikesEventPosts_1 = require("../Data/UserLikesEventPosts");
 const UserLikesEventReplies_1 = require("../Data/UserLikesEventReplies");
+const express_validator_1 = require("express-validator");
 const getEventPostsInAllSocieties = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -70,7 +71,11 @@ const getEventPostsInAllSocieties = async (req, res) => {
 exports.getEventPostsInAllSocieties = getEventPostsInAllSocieties;
 const createEventPost = async (req, res) => {
     try {
-        const { content, societyId, eventType, eventLocation, eventTime, timestamp } = req.body;
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { content, societyId, eventType, eventLocation, eventTime } = req.body;
         const userId = req.user.id;
         const society = await Societies_1.Societies.findOne({ where: { id: societyId } });
         if (!society) {
@@ -81,7 +86,6 @@ const createEventPost = async (req, res) => {
             eventType,
             location: eventLocation,
             eventTime,
-            timestamp,
             society,
             user: { id: userId },
         });

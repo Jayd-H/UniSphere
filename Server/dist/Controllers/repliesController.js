@@ -4,17 +4,22 @@ exports.unlikeReply = exports.likeReply = exports.createReply = void 0;
 const Replies_1 = require("../Data/Replies");
 const Posts_1 = require("../Data/Posts");
 const UserLikesReplies_1 = require("../Data/UserLikesReplies");
+const express_validator_1 = require("express-validator");
 // Create a new reply
 const createReply = async (req, res) => {
     try {
-        const { content, timestamp } = req.body;
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { content } = req.body;
         const postId = parseInt(req.params.postId);
         const userId = req.user.id;
         const post = await Posts_1.Posts.findOneBy({ id: postId });
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
-        const reply = Replies_1.Replies.create({ content, timestamp, post, user: { id: userId } });
+        const reply = Replies_1.Replies.create({ content, post, user: { id: userId } });
         await Replies_1.Replies.save(reply);
         res.json({ replyId: reply.id });
     }

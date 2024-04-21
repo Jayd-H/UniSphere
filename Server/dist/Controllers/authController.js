@@ -8,11 +8,13 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const data_source_1 = require("../Data/data-source");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Users_1 = require("../Data/Users");
+const express_validator_1 = require("express-validator");
 const login = async (req, res) => {
-    const { userName, password } = req.body;
-    if (!userName || !password) {
-        return res.status(400).json({ success: false, message: "Username and password are required" });
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+    const { userName, password } = req.body;
     try {
         const existingUser = await data_source_1.Database.getRepository(Users_1.Users).findOne({
             where: { userName }
@@ -50,6 +52,10 @@ const login = async (req, res) => {
 };
 exports.login = login;
 const register = async (req, res) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     const { userName, password, displayName } = req.body;
     try {
         const existingUser = await data_source_1.Database.getRepository(Users_1.Users).findOne({

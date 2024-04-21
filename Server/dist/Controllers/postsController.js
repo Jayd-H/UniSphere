@@ -6,6 +6,7 @@ const Posts_1 = require("../Data/Posts");
 const Societies_1 = require("../Data/Societies");
 const UserLikesPosts_1 = require("../Data/UserLikesPosts");
 const UserLikesReplies_1 = require("../Data/UserLikesReplies");
+const express_validator_1 = require("express-validator");
 const getPostsInAllSocieties = async (req, res) => {
     try {
         const societies = await Societies_1.Societies.find();
@@ -93,13 +94,17 @@ exports.getPostsInSociety = getPostsInSociety;
 // Create a new post
 const createPost = async (req, res) => {
     try {
-        const { content, societyId, timestamp } = req.body;
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { content, societyId } = req.body;
         const userId = req.user.id;
         const society = await Societies_1.Societies.findOne({ where: { id: societyId } });
         if (!society) {
             return res.status(404).json({ message: 'Society not found' });
         }
-        const post = Posts_1.Posts.create({ content, timestamp, society, user: { id: userId } });
+        const post = Posts_1.Posts.create({ content, society, user: { id: userId } });
         await Posts_1.Posts.save(post);
         res.json({ postId: post.id });
     }

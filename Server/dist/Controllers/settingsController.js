@@ -11,6 +11,7 @@ const Posts_1 = require("../Data/Posts");
 const EventReplies_1 = require("../Data/EventReplies");
 const EventPosts_1 = require("../Data/EventPosts");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const express_validator_1 = require("express-validator");
 const getUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -44,6 +45,10 @@ const getUserDetails = async (req, res) => {
 exports.getUserDetails = getUserDetails;
 const changeUsername = async (req, res) => {
     try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const { newUsername, password } = req.body;
         const userId = req.user.id;
         const user = await Users_1.Users.findOne({ where: { id: userId } });
@@ -66,6 +71,10 @@ const changeUsername = async (req, res) => {
 exports.changeUsername = changeUsername;
 const changeDisplayName = async (req, res) => {
     try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const { newDisplayName, password } = req.body;
         const userId = req.user.id;
         console.log("newdisplayname", newDisplayName, "password", password, "userid", userId);
@@ -89,6 +98,10 @@ const changeDisplayName = async (req, res) => {
 exports.changeDisplayName = changeDisplayName;
 const changePassword = async (req, res) => {
     try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const { currentPassword, newPassword } = req.body;
         const userId = req.user.id;
         const user = await Users_1.Users.findOne({ where: { id: userId } });
@@ -112,6 +125,10 @@ const changePassword = async (req, res) => {
 exports.changePassword = changePassword;
 const deleteAccount = async (req, res) => {
     try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const userId = req.user.id;
         const { password } = req.body;
         const user = await Users_1.Users.findOne({ where: { id: userId } });

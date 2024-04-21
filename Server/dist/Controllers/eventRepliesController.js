@@ -4,16 +4,21 @@ exports.unlikeEventReply = exports.likeEventReply = exports.createEventReply = v
 const EventReplies_1 = require("../Data/EventReplies");
 const EventPosts_1 = require("../Data/EventPosts");
 const UserLikesEventReplies_1 = require("../Data/UserLikesEventReplies");
+const express_validator_1 = require("express-validator");
 const createEventReply = async (req, res) => {
     try {
-        const { content, timestamp } = req.body;
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { content } = req.body;
         const eventPostId = parseInt(req.params.eventPostId);
         const userId = req.user.id;
         const eventPost = await EventPosts_1.EventPosts.findOneBy({ id: eventPostId });
         if (!eventPost) {
             return res.status(404).json({ message: 'Event post not found' });
         }
-        const reply = EventReplies_1.EventReplies.create({ content, timestamp, eventPost, user: { id: userId } });
+        const reply = EventReplies_1.EventReplies.create({ content, eventPost, user: { id: userId } });
         await EventReplies_1.EventReplies.save(reply);
         res.json({ replyId: reply.id });
     }
