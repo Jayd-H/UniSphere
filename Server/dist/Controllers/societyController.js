@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSocietyMemberCount = exports.leaveSociety = exports.joinSociety = exports.getSocietyPosts = exports.getSpecificSociety = exports.getUserSocieties = exports.getAllSocieties = void 0;
+exports.getSocietyMemberCount = exports.leaveSociety = exports.joinSociety = exports.getSocietyPosts = exports.getSpecificSociety = exports.getUserSocieties = exports.getRecommendedSocieties = exports.getAllSocieties = void 0;
 const UserSocieties_1 = require("../Data/UserSocieties");
 const Societies_1 = require("../Data/Societies");
 const data_source_1 = require("../Data/data-source");
@@ -18,6 +18,25 @@ const getAllSocieties = async (req, res) => {
     }
 };
 exports.getAllSocieties = getAllSocieties;
+const getRecommendedSocieties = async (req, res) => {
+    try {
+        const userId = parseInt(req.query.userId);
+        // Find the societies the user has not joined
+        const userSocieties = await UserSocieties_1.UserSocieties.find({ where: { userId } });
+        const joinedSocietyIds = userSocieties.map((us) => us.societyId);
+        const recommendedSocieties = await Societies_1.Societies.createQueryBuilder("society")
+            .where("society.id NOT IN (:...joinedSocietyIds)", { joinedSocietyIds })
+            .orderBy("RAND()")
+            .take(5)
+            .getMany();
+        res.status(200).json({ success: true, data: recommendedSocieties });
+    }
+    catch (error) {
+        console.error("Error fetching recommended societies:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getRecommendedSocieties = getRecommendedSocieties;
 const getUserSocieties = async (req, res) => {
     try {
         const userSocieties = await UserSocieties_1.UserSocieties.find({ where: { userId: req.user.id } });
