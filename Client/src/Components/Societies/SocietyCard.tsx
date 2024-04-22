@@ -55,11 +55,12 @@ const SocietyCard: React.FC<SocietyProps> = ({
     }
   };
 
-  const fontSize = society.societyName.length > 25 ? "text-sm" : "text-md";
+  const fontSize =
+    society.societyName.length > 25 ? "xl:text-lg" : "xl:text-xl";
 
   return (
     <motion.div
-      className="relative cursor-pointer w-full h-64 border-[4px] border-dashed border-black rounded-lg font-montserrat shadow-md"
+      className="relative cursor-pointer w-full h-full aspect-square border-[4px] border-dashed border-black rounded-lg font-montserrat shadow-md"
       whileHover={{ scale: isLeaveSocietyPopupOpen ? 1 : 1.05 }}
       whileTap={{ scale: isLeaveSocietyPopupOpen ? 1 : 0.95 }}
       onClick={() => {
@@ -77,7 +78,11 @@ const SocietyCard: React.FC<SocietyProps> = ({
         />
       </div>
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-        <h3 className="text-white text-xl font-bold">{society.societyName}</h3>
+        <h3
+          className={`text-white font-bold ${fontSize} md:text-base text-md sm:text-xl`}
+        >
+          {society.societyName}
+        </h3>
       </div>
       {bin && (
         <motion.div
