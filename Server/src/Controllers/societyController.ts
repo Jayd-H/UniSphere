@@ -17,6 +17,27 @@ export const getAllSocieties = async (req: Request, res: Response) => {
   }
 };
 
+export const getRecommendedSocieties = async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.query.userId as string);
+
+    // Find the societies the user has not joined
+    const userSocieties = await UserSocieties.find({ where: { userId } });
+    const joinedSocietyIds = userSocieties.map((us) => us.societyId);
+
+    const recommendedSocieties = await Societies.createQueryBuilder("society")
+      .where("society.id NOT IN (:...joinedSocietyIds)", { joinedSocietyIds })
+      .orderBy("RAND()")
+      .take(5)
+      .getMany();
+
+    res.status(200).json({ success: true, data: recommendedSocieties });
+  } catch (error) {
+    console.error("Error fetching recommended societies:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export const getUserSocieties = async (req: Request, res: Response) => {
   try {
     const userSocieties = await UserSocieties.find({ where: { userId: req.user.id } });
