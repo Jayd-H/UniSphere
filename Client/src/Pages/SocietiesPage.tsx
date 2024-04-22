@@ -88,7 +88,7 @@ const SocietiesPage: React.FC = () => {
   );
 
   return (
-    <div className="px-4 pt-4">
+    <div className="px-4 pt-4 -mt-16 sm:mt-0">
       <motion.div
         className="text-center font-montserrat-alt"
         initial="hidden"
@@ -132,7 +132,7 @@ const SocietiesPage: React.FC = () => {
           <>
             {filteredSocieties.length > 0 ? (
               <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"

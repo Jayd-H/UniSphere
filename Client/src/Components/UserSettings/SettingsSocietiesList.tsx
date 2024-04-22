@@ -56,7 +56,10 @@ const SocietiesList: React.FC<SocietiesListProps> = ({
 
   return (
     <motion.div variants={childVariants}>
-      <motion.h2 className="text-2xl font-bold mb-4" variants={childVariants}>
+      <motion.h2
+        className="sm:text-2xl text-xl font-semibold mb-4 text-center sm:text-left"
+        variants={childVariants}
+      >
         Societies You Are In
       </motion.h2>
 
@@ -72,7 +75,7 @@ const SocietiesList: React.FC<SocietiesListProps> = ({
         </motion.div>
       ) : (
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
           variants={childVariants}
         >
           {societies.map((society) => (

@@ -12,7 +12,7 @@ interface HomeSocietiesListProps {
   user: User;
 }
 
-const HomeSocietiesList: React.FC<HomeSocietiesListProps> = ({
+const JoinedSocietiesList: React.FC<HomeSocietiesListProps> = ({
   societies,
   setSocieties,
   user,
@@ -75,7 +75,7 @@ const HomeSocietiesList: React.FC<HomeSocietiesListProps> = ({
   };
 
   return (
-    <div className="hidden xl:block ml-16 mt-9 mr-8 w-64">
+    <div className="hidden lg:block w-64">
       <motion.div
         className="mb-8"
         variants={containerVariants}
@@ -83,13 +83,17 @@ const HomeSocietiesList: React.FC<HomeSocietiesListProps> = ({
         animate="visible"
       >
         <motion.h2
-          className="text-lg font-semibold mb-4 text-center font-montserrat-alt underline underline-offset-8 decoration-muted-mint decoration-dashed"
+          className="xl:text-lg text-base font-semibold mb-4 text-center font-montserrat-alt underline underline-offset-8 decoration-muted-mint decoration-dashed"
           variants={headingVariants}
         >
           Joined Societies
         </motion.h2>
         {societies.map((society) => (
-          <motion.div key={society.id} className="mb-4" variants={cardVariants}>
+          <motion.div
+            key={society.id}
+            className="mb-4 xl:w-52 xl:h-52 lg:w-36  lg:h-36 mx-auto"
+            variants={cardVariants}
+          >
             <SocietyCard
               society={society}
               onClick={handleCardClick}
@@ -124,4 +128,4 @@ const HomeSocietiesList: React.FC<HomeSocietiesListProps> = ({
   );
 };
 
-export default HomeSocietiesList;
+export default JoinedSocietiesList;

@@ -83,7 +83,7 @@ const AccountActions: React.FC<AccountActionsProps> = ({
         Request Data
       </motion.button>
       <motion.button
-        className="bg-mint text-black px-4 py-2 rounded-md font-semibold mr-4"
+        className="bg-mint text-black px-4 py-2 rounded-md font-semibold mr-4 mt-4 sm:mt-0"
         variants={buttonVariants}
         whileHover="hover"
         whileTap="tap"
