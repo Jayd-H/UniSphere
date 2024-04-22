@@ -22,6 +22,22 @@ export const fetchSocietiesByIds = async (societyIds: number[]) => {
   }
 };
 
+export const fetchRecommendedSocieties = async (userId: number, token: string) => {
+  try {
+    const response = await axiosInstance.get('/api/societies/recommended', {
+      params: {
+        userId,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchSocietyPosts = async (societyId: number, token: string) => {
   try {
     const response = await axiosInstance.get(`/api/societies/${societyId}/posts`, {
