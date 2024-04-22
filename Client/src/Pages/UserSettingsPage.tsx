@@ -4,7 +4,7 @@ import AlertMessage from "../Components/Common/AlertMessage";
 import { useUserContext } from "../UserContext";
 import { fetchUserDetails } from "../api/settingsAPI";
 import UserDetails from "../Components/UserSettings/UserDetails";
-import SocietiesList from "../Components/UserSettings/SocietiesList";
+import SocietiesList from "../Components/UserSettings/SettingsSocietiesList";
 import AccountActions from "../Components/UserSettings/AccountActions";
 
 const UserSettingsPage: React.FC = () => {
@@ -78,13 +78,13 @@ const UserSettingsPage: React.FC = () => {
 
   return (
     <motion.div
-      className="container mx-auto px-4 xl:px-72 text-black font-montserrat"
+      className="container mx-auto xl:px-52 px-6 text-black font-montserrat"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.h1
-        className="text-2xl font-bold text-center font-montserrat-alt mb-8"
+        className="text-2xl font-semibold text-center font-montserrat-alt mb-8 sm:mt-0 -mt-10 underline underline-offset-4 decoration-muted-mint decoration-dashed"
         variants={childVariants}
       >
         User Settings
