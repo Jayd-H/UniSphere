@@ -90,7 +90,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   return (
     <motion.div className="mb-8" variants={childVariants}>
       <motion.h2
-        className="text-2xl font-bold mb-3 font-montserrat-alt"
+        className="sm:text-2xl text-xl font-medium mb-3 text-center sm:text-left  font-montserrat-alt"
         variants={childVariants}
         custom={0}
       >
@@ -101,10 +101,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         variants={childVariants}
         custom={1}
       >
-        <span className="font-bold mr-2">Username:</span>
+        <span className="font-semibold mr-2">Username:</span>
         <span>{user.userName}</span>
         <motion.div
-          className="h-5 w-5 ml-2 cursor-pointer"
+          className="h-5 w-5 ml-2 cursor-pointer text-blue"
           variants={iconVariants}
           whileHover="hover"
           whileTap="tap"
@@ -119,10 +119,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         variants={childVariants}
         custom={3}
       >
-        <span className="font-bold mr-2">Display Name:</span>
+        <span className="font-semibold mr-2">Display Name:</span>
         <span>{user.displayName}</span>
         <motion.div
-          className="h-5 w-5 ml-2 cursor-pointer"
+          className="h-5 w-5 ml-2 cursor-pointer text-blue"
           variants={iconVariants}
           whileHover="hover"
           whileTap="tap"
@@ -133,23 +133,23 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         </motion.div>
       </motion.div>
       <motion.div className="mb-2" variants={childVariants} custom={5}>
-        <span className="font-bold mr-2">Societies:</span>
+        <span className="font-semibold mr-2">Societies:</span>
         <span>{userDetails.societyCount}</span>
       </motion.div>
       <motion.div className="mb-2" variants={childVariants} custom={6}>
-        <span className="font-bold mr-2">Replies:</span>
+        <span className="font-semibold mr-2">Replies:</span>
         <span>{userDetails.replyCount}</span>
       </motion.div>
       <motion.div className="mb-2" variants={childVariants} custom={7}>
-        <span className="font-bold mr-2">Event Replies:</span>
+        <span className="font-semibold mr-2">Event Replies:</span>
         <span>{userDetails.eventReplyCount}</span>
       </motion.div>
       <motion.div className="mb-2" variants={childVariants} custom={8}>
-        <span className="font-bold mr-2">Posts:</span>
+        <span className="font-semibold mr-2">Posts:</span>
         <span>{userDetails.regularPostCount}</span>
       </motion.div>
       <motion.div className="mb-2" variants={childVariants} custom={9}>
-        <span className="font-bold mr-2">Event Posts:</span>
+        <span className="font-semibold mr-2">Event Posts:</span>
         <span>{userDetails.eventPostCount}</span>
       </motion.div>
       <motion.button
