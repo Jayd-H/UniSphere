@@ -64,16 +64,29 @@ const Feed: React.FC = () => {
           Recent Posts
         </h1>
       </motion.div>
-      {posts.map((post, index) => (
+      {posts.length === 0 ? (
         <motion.div
-          key={`${post.postId}-${index}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 * index, duration: 0.6, ease: "easeOut" }}
+          transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
+          className="text-center"
         >
-          <Post {...post} />
+          <p className="text-md font-light font-montserrat-alt">
+            No posts found in your societies.
+          </p>
         </motion.div>
-      ))}
+      ) : (
+        posts.map((post, index) => (
+          <motion.div
+            key={`${post.postId}-${index}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 * index, duration: 0.6, ease: "easeOut" }}
+          >
+            <Post {...post} />
+          </motion.div>
+        ))
+      )}
       <div className="flex justify-center mt-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

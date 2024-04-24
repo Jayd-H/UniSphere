@@ -55,8 +55,8 @@ const SocietyFeed: React.FC<SocietyFeedProps> = ({ societyId }) => {
 
   if (posts.length === 0) {
     return (
-      <div className="text-center font-bold font-montserrat-alt mt-20 text-xl">
-        No posts available at this time
+      <div className="text-center font-light font-montserrat-alt mt-8 text-xl">
+        No posts available from this society
       </div>
     );
   }

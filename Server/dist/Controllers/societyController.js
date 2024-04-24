@@ -23,13 +23,24 @@ const getRecommendedSocieties = async (req, res) => {
         const userId = parseInt(req.query.userId);
         // Find the societies the user has not joined
         const userSocieties = await UserSocieties_1.UserSocieties.find({ where: { userId } });
-        const joinedSocietyIds = userSocieties.map((us) => us.societyId);
-        const recommendedSocieties = await Societies_1.Societies.createQueryBuilder("society")
-            .where("society.id NOT IN (:...joinedSocietyIds)", { joinedSocietyIds })
-            .orderBy("RAND()")
-            .take(5)
-            .getMany();
-        res.status(200).json({ success: true, data: recommendedSocieties });
+        if (userSocieties.length === 0) {
+            // If the user is not part of any societies, return 5 random societies
+            const recommendedSocieties = await Societies_1.Societies.createQueryBuilder("society")
+                .orderBy("RAND()")
+                .take(5)
+                .getMany();
+            res.status(200).json({ success: true, data: recommendedSocieties });
+        }
+        else {
+            // If the user is part of some societies, return 5 random societies they have not joined
+            const joinedSocietyIds = userSocieties.map((us) => us.societyId);
+            const recommendedSocieties = await Societies_1.Societies.createQueryBuilder("society")
+                .where("society.id NOT IN (:...joinedSocietyIds)", { joinedSocietyIds })
+                .orderBy("RAND()")
+                .take(5)
+                .getMany();
+            res.status(200).json({ success: true, data: recommendedSocieties });
+        }
     }
     catch (error) {
         console.error("Error fetching recommended societies:", error);

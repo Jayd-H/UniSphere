@@ -52,9 +52,9 @@ const EventsFeed: React.FC = () => {
 
   return (
     <div ref={feedRef}>
-      {user && (
+      {user && societies.length > 0 && (
         <EventsPostForm
-          societies={societies || []}
+          societies={societies}
           addNewEventsPost={addNewEventsPost}
           maxCharacters={{
             content: 512,
