@@ -36,7 +36,7 @@ const EventDescriptionInput: React.FC<EventDescriptionInputProps> = ({
         onChange={onChange}
         placeholder="Describe your event..."
         maxLength={maxLength}
-        className="px-4 py-3 pr-10 rounded-lg border-2 border-mint focus:border-blue"
+        className="px-4 py-1.5 pr-10 rounded-lg border-2 border-mint focus:border-blue"
       />
     </div>
   );

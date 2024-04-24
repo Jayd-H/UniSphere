@@ -27,7 +27,7 @@ const AutoResizeTextArea: React.FC<AutoResizeTextAreaProps> = ({
 
   return (
     <motion.textarea
-      className={`w-full p-3 py-1.5 pr-10 text-base bg-white font-work-sans focus:outline-none resize-none ${className}`}
+      className={`w-full p-3 pr-10 py-1 text-base bg-white font-work-sans focus:outline-none resize-none ${className}`}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
