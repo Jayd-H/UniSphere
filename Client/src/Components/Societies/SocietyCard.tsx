@@ -55,6 +55,11 @@ const SocietyCard: React.FC<SocietyProps> = ({
     }
   };
 
+  const fontPopupSize =
+    society.societyName.length > 20
+      ? "xl:text-sm text-xs"
+      : "xl:text-base text-sm";
+
   const fontSize =
     society.societyName.length > 25 ? "xl:text-lg" : "xl:text-xl";
 
@@ -101,7 +106,7 @@ const SocietyCard: React.FC<SocietyProps> = ({
       <AnimatePresence>
         {isLeaveSocietyPopupOpen && (
           <motion.div
-            className="absolute inset-0 flex flex-col justify-between bg-white rounded-lg p-4"
+            className="absolute inset-0 flex flex-col justify-between bg-white rounded-lg xl:p-4 lg:p-2"
             variants={popupVariants}
             initial="hidden"
             animate="visible"
@@ -111,18 +116,18 @@ const SocietyCard: React.FC<SocietyProps> = ({
             <div className="flex-grow flex flex-col items-center justify-center">
               <h4
                 className={
-                  "font-bold text-lg font-montserrat-alt -mt-4 text-center mb-2"
+                  "font-bold xl:text-md text-sm font-montserrat-alt -mt-4 text-center xl:mb-2"
                 }
               >
                 Leave Society
               </h4>
-              <p className={`${fontSize} text-center mt-4`}>
-                Are you sure you want to leave "{society.societyName}"?
+              <p className={`${fontPopupSize} text-center xl:mt-4 mt-1`}>
+                Leave "{society.societyName}"?
               </p>
             </div>
-            <div className="flex justify-between mt-4">
+            <div className="flex justify-between xl:mt-4 mt-1 xl:text-sm text-xs">
               <motion.button
-                className="bg-gray-200 text-black px-4 py-2 rounded-md font-semibold"
+                className="bg-gray-200 text-black xl:px-4 xl:py-2 xl:w-full w-20 rounded-md font-semibold"
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
@@ -131,7 +136,7 @@ const SocietyCard: React.FC<SocietyProps> = ({
                 Cancel
               </motion.button>
               <motion.button
-                className="bg-red text-white px-4 py-2 rounded-md font-semibold"
+                className="bg-red text-white xl:px-4 xl:py-2 p-2 xl:w-full w-20 rounded-md font-semibold"
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
