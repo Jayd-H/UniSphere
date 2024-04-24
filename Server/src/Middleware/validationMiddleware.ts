@@ -52,9 +52,21 @@ export const eventValidation = [
         .isAlphanumeric('en-GB', {ignore: " "}).withMessage("Event location must be alpha numeric")
         .escape(),
 
-    body('eventTime')
-        .notEmpty().withMessage("Event time must not be empty")
-        .isLength({min: 1, max: 32})
-        .isTime({hourFormat: 'hour24', mode: 'default'}).withMessage("Event time must be a valid date time")
-        .escape()
+   body('eventTime')
+    .notEmpty().withMessage("Event time must not be empty")
+    .isLength({ min: 1, max: 32 })
+    .matches(/^\d{2}\/\d{2}\/\d{2} \d{2}:(00|30)$/).withMessage("Event time must be in the format 'DD/MM/YY HH:mm' with minutes being either 00 or 30")
+    .custom((value) => {
+      const [date, time] = value.split(' ');
+      const [day, month, year] = date.split('/');
+      const [hours, minutes] = time.split(':');
+
+      const eventDate = new Date(`20${year}-${month}-${day}T${hours}:${minutes}:00`);
+
+      if (isNaN(eventDate.getTime())) {
+        throw new Error('Invalid event time');
+      }
+
+      return true;
+    }),
 ]
