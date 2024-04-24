@@ -25,7 +25,6 @@ const EventsPostContent: React.FC<EventsPostContentProps> = ({
     if (text.length <= maxLength) {
       return text;
     }
-
     return (
       <>
         {text.slice(0, maxLength)}
@@ -34,61 +33,97 @@ const EventsPostContent: React.FC<EventsPostContentProps> = ({
     );
   };
 
-  const renderText = (text: string) => {
-    if (expandedText === text) {
-      return (
-        <div
-          className="italic text-grey text-md font-normal flex items-center w-full cursor-pointer hover:text-blue"
-          onClick={() => setExpandedText(null)}
-        >
-          {text}
-          <span className="text-blue font-semibold">...</span>
-        </div>
-      );
-    }
-
-    if (text.length > 15) {
-      return (
-        <div
-          className="italic text-grey flex items-center cursor-pointer hover:text-blue sm:max-w-[200px] max-w-[120px] truncate"
-          onClick={() => setExpandedText(text)}
-        >
-          {truncateText(text, window.innerWidth <= 640 ? 10 : 15)}
-        </div>
-      );
-    }
-
-    return <div className="italic text-grey flex items-center">{text}</div>;
+  const renderExpandedText = () => {
+    return (
+      <motion.div
+        className="italic text-grey text-md font-normal w-full cursor-pointer hover:text-blue break-words px-6"
+        onClick={() => setExpandedText(null)}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        {expandedText}
+      </motion.div>
+    );
   };
 
-  return (
-    <>
+  const renderDesktopView = () => {
+    if (expandedText) {
+      return null;
+    }
+
+    return (
       <motion.div
         className="flex items-center justify-between text-base font-light px-6 mb-2 font-work-sans"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        {expandedText !== eventLocation && (
-          <div className="italic text-grey flex items-center">
-            <CalendarIcon className="w-5 h-5 mr-2" />
-            {renderText(eventType)}
-          </div>
-        )}
-        {expandedText !== eventType && (
-          <div className="italic text-grey flex items-center">
-            <MapPinIcon className="w-5 h-5 mr-2" />
-            {renderText(eventLocation)}
-          </div>
-        )}
-        {!expandedText && (
-          <div className="text-grey flex items-center">
-            {eventTime}
-            <ClockIcon className="w-5 h-5 ml-2" />
-          </div>
-        )}
+        <div
+          className={`italic text-grey flex items-center ${
+            eventType.length > 15 ? "cursor-pointer hover:text-blue" : ""
+          }`}
+          onClick={() => {
+            if (eventType.length > 15) {
+              setExpandedText(eventType);
+            }
+          }}
+        >
+          <CalendarIcon className="w-5 h-5 mr-2" />
+          {truncateText(eventType, 15)}
+        </div>
+        <div
+          className={`italic text-grey flex items-center ${
+            eventLocation.length > 15 ? "cursor-pointer hover:text-blue" : ""
+          }`}
+          onClick={() => {
+            if (eventLocation.length > 15) {
+              setExpandedText(eventLocation);
+            }
+          }}
+        >
+          <MapPinIcon className="w-5 h-5 mr-2" />
+          {truncateText(eventLocation, 15)}
+        </div>
+        <div className="text-grey flex items-center">
+          {eventTime}
+          <ClockIcon className="w-5 h-5 ml-2" />
+        </div>
       </motion.div>
+    );
+  };
+
+  const renderMobileView = () => {
+    if (expandedText) {
+      return null;
+    }
+
+    return (
       <motion.div
-        className="pt-3 pb-6 mr-2 text-dark-grey px-6"
+        className="flex items-center justify-between text-dark-grey px-6 mb-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <CalendarIcon
+          className="w-5 h-5 cursor-pointer hover:text-blue"
+          onClick={() => setExpandedText(eventType)}
+        />
+        <MapPinIcon
+          className="w-5 h-5 cursor-pointer hover:text-blue"
+          onClick={() => setExpandedText(eventLocation)}
+        />
+        <ClockIcon
+          className="w-5 h-5 cursor-pointer hover:text-blue"
+          onClick={() => setExpandedText(eventTime)}
+        />
+      </motion.div>
+    );
+  };
+
+  return (
+    <>
+      {window.innerWidth <= 640 ? renderMobileView() : renderDesktopView()}
+      {expandedText && renderExpandedText()}
+      <motion.div
+        className="pt-3 pb-6 mr-2 text-dark-grey px-6 break-words"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
